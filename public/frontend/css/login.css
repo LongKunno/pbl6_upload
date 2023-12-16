@@ -1,0 +1,28 @@
+.btn-custom:hover .effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 200%;
+    width: 200%;
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    animation: scaleAndFade 0.8s ease-in-out infinite;
+}
+
+@keyframes scaleAndFade {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
