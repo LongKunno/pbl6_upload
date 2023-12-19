@@ -50,7 +50,7 @@ class SanphamController extends Controller
         //     ->orderBy('id','DESC')->get();
     	// return view('backend.sanpham.danhsach',compact('data'));
 
-        $api_url = 'http://192.168.216.17:8080/api/product/product/getAll?pageSize=9999';
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/getAll?pageSize=9999';
         $response = file_get_contents($api_url);
         $data = json_decode($response);
         // print_r($loaisp);
@@ -70,14 +70,14 @@ class SanphamController extends Controller
         // }
 
         //========== category ============
-        $api_url_category = 'http://192.168.216.17:8080/api/category';
+        $api_url_category = 'https://pbl6shopfashion-production.up.railway.app/api/category';
         $response_category = file_get_contents($api_url_category);
         $data_category = json_decode($response_category);
         foreach ($data_category as $key => $val) {
             $category[] = ['id' => $val->id, 'name'=> $val->name];
         }
         //========== brand ============
-        $api_url_brand = 'http://192.168.216.17:8080/api/brand';
+        $api_url_brand = 'https://pbl6shopfashion-production.up.railway.app/api/brand';
         $response_brand = file_get_contents($api_url_brand);
         $data_brand = json_decode($response_brand);
         foreach ($data_brand as $key => $val) {
@@ -143,7 +143,7 @@ class SanphamController extends Controller
         }
 
 
-        $url = 'http://192.168.216.17:8080/api/product';
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/product';
 
         if (count($files) != 0) {
             $data = array(
@@ -234,19 +234,19 @@ class SanphamController extends Controller
     public function getEdit($id)
     {
         //========== data product ============
-        $api_url_product = 'http://192.168.216.17:8080/api/product/product_detail?id='.$id;
+        $api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/product/product_detail?id='.$id;
         $response_product = file_get_contents($api_url_product);
         $data_product = json_decode($response_product);
 
         //========== category ============
-        $api_url_category = 'http://192.168.216.17:8080/api/category';
+        $api_url_category = 'https://pbl6shopfashion-production.up.railway.app/api/category';
         $response_category = file_get_contents($api_url_category);
         $data_category = json_decode($response_category);
         foreach ($data_category as $key => $val) {
             $category[] = ['id' => $val->id, 'name'=> $val->name];
         }
         //========== brand ============
-        $api_url_brand = 'http://192.168.216.17:8080/api/brand';
+        $api_url_brand = 'https://pbl6shopfashion-production.up.railway.app/api/brand';
         $response_brand = file_get_contents($api_url_brand);
         $data_brand = json_decode($response_brand);
         foreach ($data_brand as $key => $val) {

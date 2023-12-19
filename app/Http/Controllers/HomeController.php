@@ -140,7 +140,7 @@ class HomeController extends Controller
 
     public function postLogin(Request $request)
     {
-        $url = 'http://192.168.216.17:8080/api/auth/authenticate';
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/auth/authenticate';
         $data = array(
             'username' => Request::input('username'),
             'password' => Request::input('password'),
@@ -222,7 +222,7 @@ class HomeController extends Controller
         }
                 
         # Send data
-        $url = 'http://192.168.216.17:8080/api/auth/register';
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/auth/register';
         $data = array(
             'email' => $email,
             'username' => $username,
@@ -283,7 +283,7 @@ class HomeController extends Controller
             return view('auth.forgotpassword',compact('error'));
         }
         # Send data
-        $url = 'http://192.168.216.17:8080/api/auth/forgot-password?username='.$username;
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/auth/forgot-password?username='.$username;
         $data = array(
             'username' => $username,
         );
@@ -316,7 +316,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $api_url = 'http://192.168.216.17:8080/api/product/home/12';
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/home/12';
         $response = file_get_contents($api_url);
         $data = json_decode($response);
         // print_r($loaisp);
@@ -326,7 +326,7 @@ class HomeController extends Controller
     public function group($url_id)
     { 
         $page = Request::input('page', 1);
-        $api_url = 'http://192.168.216.17:8080/api/product/product/getByCategory';
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/getByCategory';
         $api_url = $api_url."?category_id=".$url_id."&page=".$page."&pageSize=9";
         $response = file_get_contents($api_url);
         $data = json_decode($response);
@@ -340,7 +340,7 @@ class HomeController extends Controller
     {
 
         $page = Request::input('page', 1);
-        $api_url = 'http://192.168.216.17:8080/api/product/product/getByCategory';
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/getByCategory';
         $api_url = $api_url."?brand_id=".$id_brand."&category_id=".$id_category."&page=".$page."&pageSize=9";
         $response = file_get_contents($api_url);
         $data = json_decode($response);
@@ -420,7 +420,7 @@ class HomeController extends Controller
 
     public function product($url_id)
     {
-        $api_url = 'http://192.168.216.17:8080/api/product/detail/'.$url_id;
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$url_id;
         $response = file_get_contents($api_url);
         $data = json_decode($response);
         // $hinhsanpham_url = $data->hinhsanpham_url;
@@ -453,7 +453,7 @@ class HomeController extends Controller
         $user_id=request()->cookie('user_id');
         // Xoá sản hết phẩm
         // $postData = array("userId"=> $user_id);
-        // $url = 'http://192.168.216.17:8080/api/carts/user/'.$user_id."/clean";
+        // $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id."/clean";
         // $data = $this->send_data_access_token($postData,$url,"DELETE");
 
         // add sản phẩm vào giỏ hàng
@@ -462,7 +462,7 @@ class HomeController extends Controller
                 "productId"=> $id,
                 "size"=> "S"
             );
-        $url = 'http://192.168.216.17:8080/api/carts/user/'.$user_id;
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $data = $this->send_data_access_token($postData,$url,"POST");
     
         return redirect()->route('giohang');
@@ -475,7 +475,7 @@ class HomeController extends Controller
         $postData = array(
                 "userId"=> $user_id
             );
-        $url = 'http://192.168.216.17:8080/api/carts/user/'.$user_id;
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $data = $this->send_data_access_token($postData,$url,"GET");
 
         // data test
@@ -499,7 +499,7 @@ class HomeController extends Controller
         $postData = array(
                 $id
             );
-        $url = 'http://192.168.216.17:8080/api/carts/user/'.$user_id."?userId=".$user_id;
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id."?userId=".$user_id;
         $data = $this->send_data_access_token($postData,$url,"DELETE");
         return redirect()->route('giohang');
     }
@@ -524,7 +524,7 @@ class HomeController extends Controller
                 "productId"=> 0,
                 "size"=> "S"
             );
-        $url = 'http://192.168.216.17:8080/api/carts/user/'.$user_id;
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $data = $this->send_data_access_token($postData,$url,"DELETE");
         dd($data);
         return redirect()->route('giohang');
@@ -613,7 +613,7 @@ class HomeController extends Controller
         $postData = array(
 
             );
-        $url = 'http://192.168.216.17:8080/api/comment?rate='.$rate.'&userId='.$user_id.'&productId='.(int)$sanpham_id.'&content='.$binhluan_noi_dung;
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/comment?rate='.$rate.'&userId='.$user_id.'&productId='.(int)$sanpham_id.'&content='.$binhluan_noi_dung;
         $data = $this->send_data_access_token($postData,$url,"POST");
         
         
@@ -640,7 +640,7 @@ class HomeController extends Controller
         //         ->groupBy('sanpham.id')
         //     ->paginate(5);
 
-        $api_url = 'http://192.168.216.17:8080/api/product/product/getByCategory';
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/getByCategory';
         $api_url = $api_url."?category_id=".$url_id."&page=1"."&pageSize=9";
         $response = file_get_contents($api_url);
         $sanpham = json_decode($response);

@@ -43,7 +43,7 @@ class NhomController extends Controller
         // return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Thêm nhóm sản phẩm thành công!!!']);
 
         //=========================================================================
-        // $url = 'http://192.168.216.17:8080/api/category/add';
+        // $url = 'https://pbl6shopfashion-production.up.railway.app/api/category/add';
         // $data = array(
         //     'image' => $request->file('fImage'),
         //     'name' => $request->txtNName,
@@ -77,7 +77,7 @@ class NhomController extends Controller
         // }
 
 
-        $url = 'http://192.168.216.17:8080/api/category/add';
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/category/add';
         $file = $request->file('fImage');
 
         if ($file) {

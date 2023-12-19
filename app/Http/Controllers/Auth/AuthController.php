@@ -127,7 +127,7 @@ class AuthController extends Controller
         //======================================
 
 
-        $url = 'http://192.168.216.17:8080/api/auth/authenticate';
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/auth/authenticate';
         $data = array(
             'username' => $request->username,
             'password' => $request->password,
