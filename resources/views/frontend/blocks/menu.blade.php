@@ -3,8 +3,15 @@
     <ul class="nav navbar-nav">
       <li><a href="{!! url('/') !!}" style="font: 18px tahoma, sans-serif;">Trang chủ</a></li>
       <?php 
+      $options = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false
+            ]
+        ];
+        $context = stream_context_create($options);
         $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/category/home';
-        $response = file_get_contents($api_url);
+        $response = file_get_contents($api_url, false, $context);
         $data = json_decode($response);
        ?>
       @foreach ($data as $menu_1)

@@ -47,8 +47,15 @@
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}" />
                     @foreach ($data as $item)
                       <?php 
+                          $options = [
+                              'ssl' => [
+                                  'verify_peer' => false,
+                                  'verify_peer_name' => false
+                              ]
+                          ];
+                          $context = stream_context_create($options);
                           $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$item->productId;
-                          $response = file_get_contents($api_url);
+                          $response = file_get_contents($api_url, false, $context);
                           $sanpham = json_decode($response);
                        ?>
                       <tr>

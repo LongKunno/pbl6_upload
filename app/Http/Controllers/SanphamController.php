@@ -17,6 +17,61 @@ use Input,File;
 use CURLFile;
 class SanphamController extends Controller
 {
+    public function send_data_access_token($postData,$url,$phuongthuc){
+        $user_id = request()->cookie('user_id');
+        if (request()->hasCookie('access_token')) {
+            // Tạo một yêu cầu mới
+             $headers = array(
+                'Authorization: Bearer ' .request()->cookie('access_token'),
+                'Content-Type: application/json'
+            );
+            $postData = json_encode($postData);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $phuongthuc);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            // Thực hiện yêu cầu POST
+            $response = curl_exec($ch);
+            // Kiểm tra lỗi
+            if (curl_errno($ch)) {
+                $error = curl_error($ch);
+                dd($error);
+            }
+            // Đóng kết nối cURL
+            curl_close($ch);
+            return json_decode($response);
+        } else {
+            dd("Vui lòng đăng nhập");
+        }
+    }
+
+    public function send_data_no_access_token($postData,$url,$phuongthuc){
+        $user_id = request()->cookie('user_id');
+        $postData = json_encode($postData);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $phuongthuc);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        // Thực hiện yêu cầu POST
+        $response = curl_exec($ch);
+        // Kiểm tra lỗi
+        if (curl_errno($ch)) {
+            $error = curl_error($ch);
+            dd($error);
+        }
+        // Đóng kết nối cURL
+        curl_close($ch);
+        return json_decode($response);
+    }
+
+
     public function getList()
     {
         // $data1 = DB::table('sanpham')
@@ -51,9 +106,10 @@ class SanphamController extends Controller
     	// return view('backend.sanpham.danhsach',compact('data'));
 
         $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/getAll?pageSize=9999';
-        $response = file_get_contents($api_url);
-        $data = json_decode($response);
-        // print_r($loaisp);
+
+        $postData = array();
+        $data = $this->send_data_no_access_token($postData,$api_url,"GET");
+
         return view('backend.sanpham.danhsach',compact('data'));
     }
 
@@ -71,15 +127,15 @@ class SanphamController extends Controller
 
         //========== category ============
         $api_url_category = 'https://pbl6shopfashion-production.up.railway.app/api/category';
-        $response_category = file_get_contents($api_url_category);
-        $data_category = json_decode($response_category);
+        $postData = array();
+        $data_category = $this->send_data_no_access_token($postData,$api_url_category,"GET");
         foreach ($data_category as $key => $val) {
             $category[] = ['id' => $val->id, 'name'=> $val->name];
         }
         //========== brand ============
         $api_url_brand = 'https://pbl6shopfashion-production.up.railway.app/api/brand';
-        $response_brand = file_get_contents($api_url_brand);
-        $data_brand = json_decode($response_brand);
+        $postData = array();
+        $data_brand = $this->send_data_no_access_token($postData,$api_url_brand,"GET");
         foreach ($data_brand as $key => $val) {
             $brand[] = ['id' => $val->id, 'name'=> $val->name];
         }
@@ -235,20 +291,20 @@ class SanphamController extends Controller
     {
         //========== data product ============
         $api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/product/product_detail?id='.$id;
-        $response_product = file_get_contents($api_url_product);
-        $data_product = json_decode($response_product);
+        $postData = array();
+        $data_product = $this->send_data_no_access_token($postData,$api_url_product,"GET");
 
         //========== category ============
         $api_url_category = 'https://pbl6shopfashion-production.up.railway.app/api/category';
-        $response_category = file_get_contents($api_url_category);
-        $data_category = json_decode($response_category);
+        $postData = array();
+        $data_category = $this->send_data_no_access_token($postData,$api_url_category,"GET");
         foreach ($data_category as $key => $val) {
             $category[] = ['id' => $val->id, 'name'=> $val->name];
         }
         //========== brand ============
         $api_url_brand = 'https://pbl6shopfashion-production.up.railway.app/api/brand';
-        $response_brand = file_get_contents($api_url_brand);
-        $data_brand = json_decode($response_brand);
+        $postData = array();
+        $data_brand = $this->send_data_no_access_token($postData,$api_url_brand,"GET");
         foreach ($data_brand as $key => $val) {
             $brand[] = ['id' => $val->id, 'name'=> $val->name];
         }
