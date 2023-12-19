@@ -43,7 +43,7 @@ class NhomController extends Controller
         // return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Thêm nhóm sản phẩm thành công!!!']);
 
         //=========================================================================
-        // $url = 'http://localhost:8080/api/category/add';
+        // $url = 'http://192.168.55.111:8080/api/category/add';
         // $data = array(
         //     'image' => $request->file('fImage'),
         //     'name' => $request->txtNName,
@@ -77,7 +77,7 @@ class NhomController extends Controller
         // }
 
 
-        $url = 'http://localhost:8080/api/category/add';
+        $url = 'http://192.168.55.111:8080/api/category/add';
         $file = $request->file('fImage');
 
         if ($file) {

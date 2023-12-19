@@ -49,7 +49,7 @@ class voucherController extends Controller
         // lấy dữ liệu
         $postData = array(
             );
-        $url = 'http://localhost:8080/api/vouchers';
+        $url = 'http://192.168.55.111:8080/api/vouchers';
         $data = $this->send_data_access_token($postData,$url,"GET");
         // $data = DB::table('voucher')->orderBy('id','DESC')->get();
     	return view('backend.voucher.danhsach',compact('data'));
@@ -75,7 +75,7 @@ class voucherController extends Controller
         // lấy dữ liệu
         $postData = array(
             );
-        $url = 'http://localhost:8080/api/vouchers/'.$id;
+        $url = 'http://192.168.55.111:8080/api/vouchers/'.$id;
         $data = $this->send_data_access_token($postData,$url,"DELETE");
         return redirect()->route('admin.voucher.list')->with(['flash_level'=>'success','flash_message'=>'Xóa voucher thành công!!!']);
     }
@@ -85,7 +85,7 @@ class voucherController extends Controller
         // lấy dữ liệu
         $postData = array(
             );
-        $url = 'http://localhost:8080/api/vouchers/'.$id;
+        $url = 'http://192.168.55.111:8080/api/vouchers/'.$id;
         $data = $this->send_data_access_token($postData,$url,"GET");
     	// $data = DB::table('voucher')->where('id',$id)->first();
         return view('backend.voucher.sua',compact('data'));

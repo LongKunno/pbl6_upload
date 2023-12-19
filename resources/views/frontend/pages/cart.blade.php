@@ -47,7 +47,7 @@
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}" />
                     @foreach ($data as $item)
                       <?php 
-                          $api_url = 'http://localhost:8080/api/product/detail/'.$item->productId;
+                          $api_url = 'http://192.168.55.111:8080/api/product/detail/'.$item->productId;
                           $response = file_get_contents($api_url);
                           $sanpham = json_decode($response);
                        ?>

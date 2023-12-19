@@ -127,7 +127,7 @@ class AuthController extends Controller
         //======================================
 
 
-        $url = 'http://localhost:8080/api/auth/authenticate';
+        $url = 'http://192.168.55.111:8080/api/auth/authenticate';
         $data = array(
             'username' => $request->username,
             'password' => $request->password,
