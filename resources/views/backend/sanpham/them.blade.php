@@ -183,7 +183,7 @@
         // Gửi yêu cầu Ajax
         $.ajax({
             method: "post",
-            url: "http://192.168.55.111:8080/api/product",
+            url: "http://192.168.216.17:8080/api/product",
             contentType: false,
             processData: false,
             data: formData,

@@ -3,7 +3,7 @@
     <ul class="nav navbar-nav">
       <li><a href="{!! url('/') !!}" style="font: 18px tahoma, sans-serif;">Trang chủ</a></li>
       <?php 
-        $api_url = 'http://192.168.55.111:8080/api/category/home';
+        $api_url = 'http://192.168.216.17:8080/api/category/home';
         $response = file_get_contents($api_url);
         $data = json_decode($response);
        ?>
