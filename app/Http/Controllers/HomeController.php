@@ -421,33 +421,10 @@ class HomeController extends Controller
     public function product($url_id)
     {
         $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$url_id;
-
         $postData = array();
         $data = $this->send_data_no_access_token($postData,$api_url,"GET");
 
-        // $hinhsanpham_url = $data->hinhsanpham_url;
-        // dd($hinhsanpham_url[0]->imageUrl);
-
-
-
-        // $idLSP = DB::table('sanpham')->select('id')->where('id',$url_id)->first();
-        // // $id = $idLSP->id;
-        // $id=17;
-        // $sanpham = DB::table('sanpham')
-        //     ->where('sanpham.id',$id)
-        //     ->join('lohang', 'sanpham.id', '=', 'lohang.sanpham_id')
-        //     ->join('donvitinh','sanpham.donvitinh_id', '=', 'donvitinh.id' )
-        //     ->join('loaisanpham','sanpham.loaisanpham_id' , '=', 'loaisanpham.id')
-        //     ->select(DB::raw('max(lohang.id) as lomoi'),'sanpham.id','sanpham.sanpham_ten','sanpham.sanpham_url','sanpham.sanpham_khuyenmai','sanpham.sanpham_anh', 'lohang.lohang_so_luong_nhap','lohang.lohang_so_luong_hien_tai','lohang.lohang_gia_ban_ra','donvitinh.donvitinh_ten','loaisanpham.loaisanpham_ten','sanpham.loaisanpham_id','sanpham.sanpham_anh','sanpham.sanpham_mo_ta')
-        //     ->groupBy('sanpham.id')
-        //     ->first();
-        
-        // $hinhsanpham = DB::table('hinhsanpham')->where('sanpham_id',$id)->get();
-        // $loaisanpham = DB::table('loaisanpham')->where('id',$sanpham->loaisanpham_id)->first();
-        // $nhom = DB::table('nhom')->where('id',$loaisanpham->nhom_id)->first();
-        // $binhluan = DB::table('binhluan')->where([['sanpham_id',$id],['binhluan_trang_thai',1],])->get();
-
-        return view('frontend.pages.detailpro',compact('sanpham','hinhsanpham','loaisanpham','nhom','binhluan','data'));
+        return view('frontend.pages.detailpro',compact('data'));
     }
 
     public function buyding(Request $request,$id)
