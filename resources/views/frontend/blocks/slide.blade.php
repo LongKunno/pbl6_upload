@@ -11,7 +11,7 @@
             @foreach ($data as $item)
             <li>
               <div class="seq-model">
-                <img data-seq src="{!! asset('resources/upload/quangcao/'.$item->quangcao_anh) !!}" alt="Men slide img" style="height: 300px;"/>
+                <img data-seq src="{!! asset('public/images/quangcao/'.$item->quangcao_anh) !!}" alt="Men slide img" style="height: 300px;"/>
               </div>
             </li>
             @endforeach              

@@ -39,7 +39,7 @@
             <div class="form-group">
                 <label>Hình ảnh</label>
                 <br>
-                <img src="{!! asset('resources/upload/nhom/'.$nhom->nhom_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <img src="{!! asset('public/images/nhom/'.$nhom->nhom_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
                 <input type="hidden" name="fImageCurrent" value="{!! $nhom->nhom_anh !!}">
                 <br>
                 <input type="file" name="fImage">

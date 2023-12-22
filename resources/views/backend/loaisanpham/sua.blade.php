@@ -54,7 +54,7 @@
             <div class="form-group">
                 <label>Hình ảnh</label>
                 <br>
-                <img src="{!! asset('resources/upload/loaisanpham/'.$loaisp->loaisanpham_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <img src="{!! asset('public/images/loaisanpham/'.$loaisp->loaisanpham_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
                 <input type="hidden" name="fImageCurrent" value="{!! $loaisp->loaisanpham_anh !!}">
                 <br>
                 <input type="file" name="fImage">

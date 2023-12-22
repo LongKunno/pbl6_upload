@@ -32,7 +32,7 @@
                 
                 <td>{!! $item->id !!}</td>
                 <td>
-                <img src="{!! asset('resources/upload/quangcao/'.$item->quangcao_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
+                <img src="{!! asset('public/images/quangcao/'.$item->quangcao_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
                 </td>
                 <td>{!! $item->quangcao_anh !!}</td>
                 <td align="center">

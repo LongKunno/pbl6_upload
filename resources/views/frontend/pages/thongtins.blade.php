@@ -31,7 +31,7 @@
                   <div class="col-md-4 col-sm-4">
                       <article class="aa-latest-blog-single">
                         <figure class="aa-blog-img">                    
-                          <a href="{!! url('thong-tin',$item->thongtin_url) !!}"><img src="{!! asset('resources/upload/thongtin/'.$item->thongtin_anh) !!}"  style="width: 450px; height: 220px;"></a>  
+                          <a href="{!! url('thong-tin',$item->thongtin_url) !!}"><img src="{!! asset('public/images/thongtin/'.$item->thongtin_anh) !!}"  style="width: 450px; height: 220px;"></a>  
                             <figcaption class="aa-blog-img-caption">
                             <span href="{!! url('thong-tin',$item->thongtin_url) !!}"><i class="fa fa-clock-o"></i>{!! $item->created_at !!}</span>
                           </figcaption>                          

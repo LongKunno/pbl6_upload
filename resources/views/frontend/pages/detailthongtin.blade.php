@@ -19,7 +19,7 @@
                       </div>
                     </div>
                     <figure class="aa-blog-img">
-                      <a href="#"><img src="{!! asset('resources/upload/thongtin/'.$thongtin->thongtin_anh) !!}"  style="width: 500px; height: 300px;"></a>
+                      <a href="#"><img src="{!! asset('public/images/thongtin/'.$thongtin->thongtin_anh) !!}"  style="width: 500px; height: 300px;"></a>
                     </figure>
                     <p>{!! $thongtin->thongtin_tom_tat !!}</p>
                     <p>{!! $thongtin->thongtin_noi_dung !!}</p>

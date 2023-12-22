@@ -30,7 +30,7 @@ class QuangcaoController extends Controller
         $imageName = $request->file('fImage')->getClientOriginalName();
 
         $request->file('fImage')->move(
-            base_path() . '/resources/upload/quangcao/', $imageName
+            base_path() . '/public/images/quangcao/', $imageName
         );
     	$quangcao->quangcao_trang_thai   = $request->txtNName;
         $quangcao->quangcao_anh = $imageName;
@@ -46,7 +46,7 @@ class QuangcaoController extends Controller
     public function postEdit(QuangcaoEditRequest $request, $id)
     {
         $fImage = $request->fImage;
-        $img_current = 'resources/upload/quangcao/'.$request->fImageCurrent;
+        $img_current = 'public/images/quangcao/'.$request->fImageCurrent;
         if (!empty($fImage )) {
              $filename=$fImage ->getClientOriginalName();
              DB::table('quangcao')->where('id',$id)
@@ -54,7 +54,7 @@ class QuangcaoController extends Controller
                                 'quangcao_trang_thai'   => $request->txtNName,
                                 'quangcao_anh' => $filename
                                 ]);
-             $fImage ->move(base_path() . '/resources/upload/quangcao/', $filename);
+             $fImage ->move(base_path() . '/public/images/quangcao/', $filename);
              File::delete($img_current);
         } else {
             DB::table('quangcao')->where('id',$id)
@@ -69,7 +69,7 @@ class QuangcaoController extends Controller
     public function getDelete($id)
 	{
         $quangcao = DB::table('quangcao')->where('id',$id)->first();
-        $img = 'resources/upload/quangcao/'.$quangcao->quangcao_anh;
+        $img = 'public/images/quangcao/'.$quangcao->quangcao_anh;
         File::delete($img);
 		DB::table('quangcao')->where('id',$id)->delete();
         return redirect()->route('admin.quangcao.list')->with(['flash_level'=>'success','flash_message'=>'Xóa thành công!!!']);

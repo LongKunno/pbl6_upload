@@ -32,7 +32,7 @@ class thongtinController extends Controller
         // $request->file('fImage')->getClientOriginalName();
         $filename=$request->file('fImage')->getClientOriginalName();
         $request->file('fImage')->move(
-            base_path() . '/resources/upload/thongtin/', $filename
+            base_path() . '/public/images/thongtin/', $filename
         );
     	$thongtin = new thongtin;
         $thongtin->thongtin_tieu_de   = $request->txtMNTittle;
@@ -58,7 +58,7 @@ class thongtinController extends Controller
     public function getDelete($id)
     {
         $thongtin = DB::table('thongtin')->where('id',$id)->first();
-        $img = 'resources/upload/thongtin/'.$thongtin->thongtin_anh;
+        $img = 'public/images/thongtin/'.$thongtin->thongtin_anh;
         File::delete($img);
     	DB::table('thongtin')->where('id',$id)->delete();
         return redirect()->route('admin.thongtin.list')->with(['flash_level'=>'success','flash_message'=>'Xóa thành công!!!']);

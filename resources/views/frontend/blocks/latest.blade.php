@@ -5,7 +5,7 @@
     <ul>
     @foreach ($thongtin as $item)
       <li>
-        <a href="{!! url('thong-tin',$item->thongtin_url) !!}"><img src="{!! asset('resources/upload/thongtin/'.$item->thongtin_anh) !!}" alt="img"  style="width: 100px; height: 100px;"></a>
+        <a href="{!! url('thong-tin',$item->thongtin_url) !!}"><img src="{!! asset('public/images/thongtin/'.$item->thongtin_anh) !!}" alt="img"  style="width: 100px; height: 100px;"></a>
         <div class="aa-cartbox-info">
           <h4><a href="{!! url('thong-tin',$item->thongtin_url) !!}">{!! $item->thongtin_tieu_de !!}</a></h4>
           <p>{{date("d-m-Y", strtotime("$item->created_at"))}}</p>

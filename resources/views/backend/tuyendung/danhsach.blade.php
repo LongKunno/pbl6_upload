@@ -30,7 +30,7 @@
            @foreach ($data as $item)
             <tr class="odd gradeX">
             <td>
-                <img src="{!! asset('resources/upload/tuyendung/'.$item->tuyendung_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
+                <img src="{!! asset('public/images/tuyendung/'.$item->tuyendung_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
                 </td>
                 <td class="col-lg-1">{!! $item->id !!}</td>
                 <td class="col-lg-1">{!! $item->tuyendung_tieu_de !!}</td>

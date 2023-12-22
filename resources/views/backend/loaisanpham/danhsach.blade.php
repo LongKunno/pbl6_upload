@@ -29,7 +29,7 @@
              @foreach ($data as $item)
             <tr class="odd gradeX">
                 <td>
-                <img src="{!! asset('resources/upload/loaisanpham/'.$item->loaisanpham_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
+                <img src="{!! asset('public/images/loaisanpham/'.$item->loaisanpham_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
                 </td>
                 <td>{!! $item->id !!}</td>
                 <td>{!! $item->loaisanpham_ten !!}</td>

@@ -53,7 +53,7 @@
             <div class="form-group">
                 <label>Ảnh</label>
                 <br>
-                <img src="{!! asset('resources/upload/quangcao/'.$quangcao->quangcao_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <img src="{!! asset('public/images/quangcao/'.$quangcao->quangcao_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
                 <br>
                 <input type="file" name="fImage">
                 <div>

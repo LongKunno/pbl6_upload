@@ -32,7 +32,7 @@ class NhomController extends Controller
         // $imageName = $request->file('fImage')->getClientOriginalName();
 
         // $request->file('fImage')->move(
-        //     base_path() . '/resources/upload/nhom/', $imageName
+        //     base_path() . '/public/images/nhom/', $imageName
         // );
     	// $nhom->nhom_ten   = $request->txtNName;
     	// $nhom->nhom_url   = Replace_TiengViet($request->txtNName);
@@ -131,7 +131,7 @@ class NhomController extends Controller
     public function postEdit(NhomEditRequest $request, $id)
     {
         $fImage = $request->fImage;
-        $img_current = 'resources/upload/nhom/'.$request->fImageCurrent;
+        $img_current = 'public/images/nhom/'.$request->fImageCurrent;
         if (!empty($fImage )) {
              $filename=$fImage ->getClientOriginalName();
              DB::table('nhom')->where('id',$id)
@@ -141,7 +141,7 @@ class NhomController extends Controller
                                 'nhom_mo_ta' => $request->txtNIntro,
                                 'nhom_anh' => $filename
                                 ]);
-             $fImage ->move(base_path() . '/resources/upload/nhom/', $filename);
+             $fImage ->move(base_path() . '/public/images/nhom/', $filename);
              File::delete($img_current);
         } else {
             DB::table('nhom')->where('id',$id)
@@ -158,7 +158,7 @@ class NhomController extends Controller
     public function getDelete($id)
 	{
         $nhom = DB::table('nhom')->where('id',$id)->first();
-        $img = 'resources/upload/nhom/'.$nhom->nhom_anh;
+        $img = 'public/images/nhom/'.$nhom->nhom_anh;
         File::delete($img);
 		DB::table('nhom')->where('id',$id)->delete();
         return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Xóa loại sản phẩm thành công!!!']);

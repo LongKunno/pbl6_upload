@@ -56,7 +56,7 @@
             <div class="form-group">
                 <label>Ảnh đại diện</label>
                 <br>
-                <img src="{!! asset('resources/upload/thongtin/'.$thongtin->thongtin_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <img src="{!! asset('public/images/thongtin/'.$thongtin->thongtin_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
                 <input type="hidden" name="fImageCurrent" value="{!! $thongtin->thongtin_anh !!}">
                 <br>
                 <input type="file" name="fImage" >

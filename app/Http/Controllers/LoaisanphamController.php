@@ -35,7 +35,7 @@ class LoaisanphamController extends Controller
 		$imageName = $request->file('fImage')->getClientOriginalName();
 
         $request->file('fImage')->move(
-            base_path() . '/resources/upload/loaisanpham/', $imageName
+            base_path() . '/public/images/loaisanpham/', $imageName
         );
 		$loaisanpham->loaisanpham_ten	= $request->txtLSPName;
 		$loaisanpham->nhom_id			= $request->txtLSPParent;
@@ -50,7 +50,7 @@ class LoaisanphamController extends Controller
 	public function getDelete($id)
 	{
 		$loaisanpham = DB::table('loaisanpham')->where('id',$id)->first();
-        $img = 'resources/upload/loaisanpham/'.$loaisanpham->loaisanpham_anh;
+        $img = 'public/images/loaisanpham/'.$loaisanpham->loaisanpham_anh;
         File::delete($img);
 		DB::table('loaisanpham')->where('id',$id)->delete();
         return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'success','flash_message'=>'Xóa loại sản phẩm thành công!!!']);
@@ -69,7 +69,7 @@ class LoaisanphamController extends Controller
 	public function postEdit(LoaisanphamEditRequest $request,$id)
 	{
 		$fImage = $request->fImage;
-        $img_current = 'resources/upload/loaisanpham/'.$request->fImageCurrent;
+        $img_current = 'public/images/loaisanpham/'.$request->fImageCurrent;
         if (!empty($fImage )) {
              $filename=$fImage ->getClientOriginalName();
              DB::table('loaisanpham')->where('id',$id)
@@ -80,7 +80,7 @@ class LoaisanphamController extends Controller
 								'loaisanpham_mo_ta'=>$request->txtLSPIntro,
                                 'loaisanpham_anh' => $filename
                                 ]);
-             $fImage ->move(base_path() . '/resources/upload/loaisanpham/', $filename);
+             $fImage ->move(base_path() . '/public/images/loaisanpham/', $filename);
              File::delete($img_current);
         } else {
             DB::table('loaisanpham')->where('id',$id)

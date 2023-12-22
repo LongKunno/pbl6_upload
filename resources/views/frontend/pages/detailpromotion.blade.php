@@ -27,7 +27,7 @@
                 <div class="aa-blog-content aa-blog-details">
                   <article class="aa-blog-content-single">
                     <figure class="aa-blog-img">
-                      <a href="#"><img src="{!! asset('resources/upload/khuyenmai/'.$khuyenmai->khuyenmai_anh) !!}"  style="width: 500px; height: 450px;"> </a>
+                      <a href="#"><img src="{!! asset('public/images/khuyenmai/'.$khuyenmai->khuyenmai_anh) !!}"  style="width: 500px; height: 450px;"> </a>
                     </figure>                        
                     <h2><a href="#">{!! $khuyenmai->khuyenmai_tieu_de !!}</a></h2>
                      <div class="aa-article-bottom">
@@ -48,7 +48,7 @@
                 <?php $sanpham = DB::table('sanpham')->where('id',$item->sanpham_id)->first(); ?>
                   <li>
                   <figure>
-                    <a class="aa-product-img" href="{!! url('san-pham',$sanpham->id,$sanpham->sanpham_url) !!}"><img src="{!! asset('resources/upload/sanpham/'.$sanpham->sanpham_anh) !!}" style="width: 250px; height: 300px;" alt="polo shirt img"></a>
+                    <a class="aa-product-img" href="{!! url('san-pham',$sanpham->id,$sanpham->sanpham_url) !!}"><img src="{!! asset('public/images/sanpham/'.$sanpham->sanpham_anh) !!}" style="width: 250px; height: 300px;" alt="polo shirt img"></a>
                     <a class="aa-add-card-btn" href="{!! url('mua-hang',[$item->id,$item->sanpham_url]) !!}"><span class="fa fa-shopping-cart"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
                      <figcaption>
                       <h4 class="aa-product-title"><a href="{!! url('san-pham',$sanpham->id,$sanpham->sanpham_url) !!}">{!! $sanpham->sanpham_ten !!}</a></h4>

@@ -54,7 +54,7 @@ class KhuyenmaiController extends Controller
         $request->file('fImage')->getClientOriginalName();
     	$filename=$request->file('fImage')->getClientOriginalName();
         $request->file('fImage')->move(
-            base_path() . '/resources/upload/khuyenmai/', $filename
+            base_path() . '/public/images/khuyenmai/', $filename
         );
         $khuyenmai = new Khuyenmai;
         $khuyenmai->khuyenmai_tieu_de   = $request->txtKMTittle;
@@ -86,7 +86,7 @@ class KhuyenmaiController extends Controller
     public function getDelete($id)
     {
         $khuyenmai = DB::table('khuyenmai')->where('id',$id)->first();
-        $img = 'resources/upload/khuyenmai/'.$khuyenmai->khuyenmai_anh;
+        $img = 'public/images/khuyenmai/'.$khuyenmai->khuyenmai_anh;
         File::delete($img);
     	DB::table('khuyenmai')->where('id',$id)->delete();
         return redirect()->route('admin.khuyenmai.list')->with(['flash_level'=>'success','flash_message'=>'Xóa thành công!!!']);
@@ -126,7 +126,7 @@ class KhuyenmaiController extends Controller
     {
 
     	$fImage = $request->fImage;
-        $img_current = '/resources/upload/khuyenmai/'.$request->fImageCurrent;
+        $img_current = '/public/images/khuyenmai/'.$request->fImageCurrent;
         if (!empty($fImage )) {
              $filename=$fImage ->getClientOriginalName();
              DB::table('khuyenmai')->where('id',$id)
@@ -139,7 +139,7 @@ class KhuyenmaiController extends Controller
                                 'khuyenmai_anh'=> $filename,
                                 'khuyenmai_tinh_trang'=>1
                                 ]);
-             $fImage ->move(base_path() . '/resources/upload/khuyenmai/', $filename);
+             $fImage ->move(base_path() . '/public/images/khuyenmai/', $filename);
              File::delete($img_current);
         } else {
             DB::table('khuyenmai')->where('id',$id)

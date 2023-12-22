@@ -62,7 +62,7 @@
             <div class="form-group">
                 <label>Hình ảnh</label>
                 <br>
-                <img src="{!! asset('resources/upload/tuyendung/'.$tuyendung->tuyendung_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <img src="{!! asset('public/images/tuyendung/'.$tuyendung->tuyendung_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
                 <input type="hidden" name="fImageCurrent" value="{!! $tuyendung->tuyendung_anh !!}">
                 <br>
                 <input type="file" name="fImage">

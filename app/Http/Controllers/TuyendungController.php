@@ -33,7 +33,7 @@ class TuyendungController extends Controller
     	$imageName = $request->file('fImage')->getClientOriginalName();
 
         $request->file('fImage')->move(
-            base_path() . '/resources/upload/tuyendung/', $imageName
+            base_path() . '/public/images/tuyendung/', $imageName
         );
 
         $tuyendung->tuyendung_tieu_de = $request->txtTDTittle;
@@ -50,7 +50,7 @@ class TuyendungController extends Controller
     public function getDelete($id)
     {
         $tuyendung = DB::table('tuyendung')->where('id',$id)->first();
-        $img = 'resources/upload/tuyendung/'.$tuyendung->tuyendung_anh;
+        $img = 'public/images/tuyendung/'.$tuyendung->tuyendung_anh;
         File::delete($img);
     	DB::table('tuyendung')->where('id',$id)->delete();
         return redirect()->route('admin.tuyendung.list')->with(['flash_level'=>'success','flash_message'=>'Del tin tuyển dụng thành công!!!']);
@@ -65,7 +65,7 @@ class TuyendungController extends Controller
     public function postEdit(TuyendungEditRequest $request, $id)
     {
     	$fImage = $request->fImage;
-        $img_current = 'resources/upload/tuyendung/'.$request->fImageCurrent;
+        $img_current = 'public/images/tuyendung/'.$request->fImageCurrent;
         if (!empty($fImage )) {
              $filename=$fImage ->getClientOriginalName();
              DB::table('tuyendung')->where('id',$id)
@@ -77,7 +77,7 @@ class TuyendungController extends Controller
                                 'tuyendung_lien_he' => $request->txtTDContact,
                                 'tuyendung_anh' => $filename
                                 ]);
-             $fImage ->move(base_path() . '/resources/upload/tuyendung/', $filename);
+             $fImage ->move(base_path() . '/public/images/tuyendung/', $filename);
              File::delete($img_current);
         } else {
             DB::table('tuyendung')->where('id',$id)

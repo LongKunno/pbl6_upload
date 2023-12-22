@@ -3,7 +3,7 @@
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
   @if (!is_null($khuyenmai))
-   <img src="{!! asset('resources/upload/khuyenmai/'.$khuyenmai->khuyenmai_anh) !!}" alt="fashion img" style="width: 1920px; height: 300px;" >
+   <img src="{!! asset('public/images/khuyenmai/'.$khuyenmai->khuyenmai_anh) !!}" alt="fashion img" style="width: 1920px; height: 300px;" >
    @else
    <img src="{!! url('public/images/promotionpanel.jpg') !!}" alt="fashion img" style="width: 1920px; height: 300px;" >
    @endif
@@ -84,7 +84,7 @@
                     ?>
           <li>
             <figure>
-              <a class="aa-product-img" href="{!! url('san-pham',$sanpham->sanpham_url) !!}"><img src="{!! asset('resources/upload/sanpham/'.$sanpham->sanpham_anh) !!}" style="width: 250px; height: 300px;" alt="polo shirt img"></a>
+              <a class="aa-product-img" href="{!! url('san-pham',$sanpham->sanpham_url) !!}"><img src="{!! asset('public/images/sanpham/'.$sanpham->sanpham_anh) !!}" style="width: 250px; height: 300px;" alt="polo shirt img"></a>
               
               <a class="aa-add-card-btn" href="{!! url('mua-hang',[$sanpham->id,$sanpham->sanpham_url]) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
               <figcaption>

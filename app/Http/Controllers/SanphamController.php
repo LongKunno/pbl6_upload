@@ -167,7 +167,7 @@ class SanphamController extends Controller
     // {
     //     // $filename=$request->file('txtSPImage')->getClientOriginalName();
     //     // $request->file('txtSPImage')->move(
-    //     //     base_path() . '/resources/upload/sanpham/', $filename
+    //     //     base_path() . '/public/images/sanpham/', $filename
     //     // );
     // 	// $sanpham = new Sanpham;
     //     // $sanpham->sanpham_ky_hieu   = $request->txtSPSignt;
@@ -253,7 +253,7 @@ class SanphamController extends Controller
     //     //     if(!empty($file)){
     //     //         $filename=$file->getClientOriginalName();
     //     //         $file->move(
-    //     //             base_path().'/resources/upload/chitietsanpham/', $filename
+    //     //             base_path().'/public/images/chitietsanpham/', $filename
     //     //         );
 
     //     //         $hinh = new Hinhsanpham; 
@@ -276,12 +276,12 @@ class SanphamController extends Controller
         DB::table('lohang')->where('sanpham_id',$id)->delete();
         $chitiet = DB::table('hinhsanpham')->where('sanpham_id',$id)->get();
         foreach ($chitiet as $val) {
-            $image = 'resources/upload/chitietsanpham/'.$val->hinhsanpham_ten;
+            $image = 'public/images/chitietsanpham/'.$val->hinhsanpham_ten;
             File::delete($image);
             DB::table('hinhsanpham')->where('sanpham_id',$id)->delete();
         }
     	$sanpham = DB::table('sanpham')->where('id',$id)->first();
-        $img = 'resources/upload/sanpham/'.$sanpham->sanpham_anh;
+        $img = 'public/images/sanpham/'.$sanpham->sanpham_anh;
         File::delete($img);
         DB::table('sanpham')->where('id',$id)->delete();
 
@@ -343,11 +343,11 @@ class SanphamController extends Controller
         $sanpham->loaisanpham_id    = Request::input('txtSPCate');
         $sanpham->donvitinh_id      = Request::input('txtSPUnit');
        
-        $img_current = 'resources/upload/sanpham/'.Request::input('fImageCurrent');
+        $img_current = 'public/images/sanpham/'.Request::input('fImageCurrent');
         if (!empty(Request::file('fImage'))) {
              $filename=Request::file('fImage')->getClientOriginalName();
              $sanpham->sanpham_anh = $filename;
-             Request::file('fImage')->move(base_path() . '/resources/upload/sanpham/', $filename);
+             Request::file('fImage')->move(base_path() . '/public/images/sanpham/', $filename);
              File::delete($img_current);
         } else {
             echo "File empty";
@@ -359,7 +359,7 @@ class SanphamController extends Controller
                 if (isset($file)) {
                     $detail_img->hinhsanpham_ten = $file->getClientOriginalName();
                     $detail_img->sanpham_id = $id;
-                    $file->move('resources/upload/chitietsanpham/', $file->getClientOriginalName());
+                    $file->move('public/images/chitietsanpham/', $file->getClientOriginalName());
                     $detail_img->save();
                 } 
           }
@@ -375,7 +375,7 @@ class SanphamController extends Controller
             $idHinh = (int)Request::get('idHinh');
             $image_detail = Hinhsanpham::find($idHinh);
             if(!empty($image_detail)) {
-                $img = 'resources/upload/chitietsanpham/'.$image_detail->hinhsanpham_ten;
+                $img = 'public/images/chitietsanpham/'.$image_detail->hinhsanpham_ten;
                 //print_r($img);
                 //if(File::isFile($img)) {
                     File::delete($img);

@@ -13,7 +13,7 @@
               <div class="col-md-4 col-sm-4">
                 <div class="aa-latest-blog-single">
                   <figure class="aa-blog-img">                    
-                    <a href="{!! url('thong-tin',$item->thongtin_url) !!}"><img src="{!! asset('resources/upload/thongtin/'.$item->thongtin_anh) !!}" alt="img"></a>  
+                    <a href="{!! url('thong-tin',$item->thongtin_url) !!}"><img src="{!! asset('public/images/thongtin/'.$item->thongtin_anh) !!}" alt="img"></a>  
                       <figcaption class="aa-blog-img-caption">
                       <a href="#"><i class="fa fa-comment-o"></i>20</a>
                       <br>
