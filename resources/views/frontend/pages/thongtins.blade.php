@@ -50,19 +50,19 @@
                 <div class="aa-blog-archive-pagination">
                   <nav>
                     <ul class="pagination">
-                    @if ($currentPage != 1)
+                    @if ($thongtin->currentPage() != 1)
                       <li>
-                        <a href="{!! str_replace('/?','?',$sanphamUrl[$currentPage - 1]) !!}" aria-label="Previous">
+                        <a href="{!! str_replace('/?','?',$thongtin->url($thongtin->currentPage() - 1)) !!}" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                         </a>
                       </li>
                     @endif
-                    @for ($i = 1; $i <=  $lastPage; $i++)
-                      <li class="{!! ($currentPage == $i)? 'active':'' !!}"><a href="{!! str_replace('/?','?',$sanphamUrl[$i]) !!}">{!! $i !!}</a></li>
+                    @for ($i = 1; $i <=  $thongtin->lastPage(); $i++)
+                      <li class="{!! ($thongtin->currentPage() == $i)? 'active':'' !!}"><a href="{!! str_replace('/?','?',$thongtin->url($i)) !!}">{!! $i !!}</a></li>
                     @endfor
-                    @if ($currentPage != $lastPage)
+                    @if ($thongtin->currentPage() != $thongtin->lastPage())
                       <li>
-                        <a href="{!! str_replace('/?','?',$sanphamUrl[$currentPage + 1]) !!}" aria-label="Next">
+                        <a href="{!! str_replace('/?','?',$thongtin->url($thongtin->currentPage() + 1)) !!}" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                         </a>
                       </li>

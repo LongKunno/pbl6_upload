@@ -354,7 +354,8 @@ class HomeController extends Controller
     public function thongtin()
     {
         $thongtin = DB::table('thongtin')->paginate(9);
-        return view ('frontend.pages.thongtins',compact('thongtin'));
+
+        return view('frontend.pages.thongtins',compact('thongtin'));
     }
 
     public function detailthongtin($url)
@@ -362,15 +363,14 @@ class HomeController extends Controller
         $thongtin = DB::table('thongtin')->where('thongtin_url',$url)->first();
         $id = DB::table('thongtin')->select('id')->where('thongtin_url',$url)->first();
         $id = $id->id;
-        // print_r($i);
-        $nglieu = DB::table('nguyenlieu')->where('thongtin_id',$id)->get();
-        // print_r($nglieu);
+        $nglieu = DB::table('nguyenlieu')->where('thongtin_id',$id)->get(); 
+
         return view ('frontend.pages.detailthongtin',compact('thongtin','nglieu'));
     }
 
     public function getContact()
     {
-        return view ('frontend.pages.contact');
+        return view('frontend.pages.contact');
     }
 
     public function postContact(Request $request)
