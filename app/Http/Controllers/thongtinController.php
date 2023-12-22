@@ -97,7 +97,7 @@ class thongtinController extends Controller
     public function postEdit(thongtinEditRequest $request,$id)
     {
     	$fImage = $request->fImage;
-        $img_current = '/resources/upload/thongtin/'.$request->fImageCurrent;
+        $img_current = '/public/images/thongtin/'.$request->fImageCurrent;
         if (!empty($fImage )) {
              $filename=$fImage ->getClientOriginalName();
              DB::table('thongtin')->where('id',$id)
@@ -108,7 +108,7 @@ class thongtinController extends Controller
                                 'thongtin_url'   => Replace_TiengViet($request->txtMNTittle),
                                 'thongtin_anh'=> $filename
                                 ]);
-             $fImage ->move(base_path() . '/resources/upload/thongtin/', $filename);
+             $fImage ->move(base_path() . '/public/images/thongtin/', $filename);
              File::delete($img_current);
         } else {
             DB::table('thongtin')->where('id',$id)
