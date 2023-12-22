@@ -50,7 +50,7 @@
                     </div>                  
                      
                     <div class="form-group">                        
-                      <textarea class="form-control" name="txtContent" rows="3" placeholder="Message"></textarea>
+                      <textarea class="form-control" name="txtContent" rows="3" placeholder="Message" style="width: 100%;"></textarea>
                     </div>
                     <button class="aa-secondary-btn">Gửi</button>
                   </form>

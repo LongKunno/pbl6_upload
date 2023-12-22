@@ -17,7 +17,7 @@
             </div>
             </div>
             <div class="panel-body">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Cập nhật bài viết</h3>
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="form-group">
                 <label>Tóm tắt</label>
                 <textarea class="form-control" rows="2" name="txtMNResum" placeholder="Mô tả...">{!! $thongtin->thongtin_tom_tat !!}</textarea>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="form-group">
                 <label>Nội dung</label>
                 <textarea class="form-control" rows="3" name="txtMNContent" placeholder="Mô tả...">{!! $thongtin->thongtin_noi_dung !!}</textarea>
@@ -61,47 +61,6 @@
                 <br>
                 <input type="file" name="fImage" >
             </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="col-lg-6">
-        <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Cập nhật sản phẩm</h3>
-                </div>
-            <div class="panel-body">
-            <div class="dataTable_wrapper">
-            <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th class="col-lg-12">Sản phẩm</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($sanpham1 as $item)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="products[{!! $item->id !!}]" id="{!! $item->id !!}" value="{!! $item->id !!}" checked="true">
-                        </td>
-                        <td>
-                            {!! $item->sanpham_ten !!}
-                        </td>
-                    </tr>
-                    @endforeach
-                    @foreach ($sanpham2 as $item)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="products[{!! $item->id !!}]" id="{!! $item->id !!}" value="{!! $item->id !!}">
-                        </td>
-                        <td>
-                            {!! $item->sanpham_ten !!}
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
         </div>
         </div>

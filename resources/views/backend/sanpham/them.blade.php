@@ -138,9 +138,10 @@
 </form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+$(document).ready(function() {
     $("#FormAddSanPham").submit(function(e) {
         e.preventDefault();
-        console.log("submit!!!")
+        $('#loading').show();
 
         // Tạo biểu mẫu gửi dữ liệu
         var formData = new FormData();
@@ -155,15 +156,6 @@
             productSizes.push($(this).val()+":"+$("#size_soluong_"+$(this).data("id")).val());
         });
         var promotionId = $("#select_promotion").val()
-
-        console.log("name: ",name)
-        console.log("price: ",price)
-        console.log("desc: ",desc)
-        console.log("categoryId: ",categoryId)
-        console.log("brandId: ",brandId)
-        console.log("unit: ",unit)
-        console.log("productSizes: ",productSizes)
-        console.log("promotionId: ",promotionId)
 
         formData.append("name", name);
         formData.append("price", price);
@@ -189,14 +181,16 @@
             data: formData,
             dataType: "html",
             success: function(response){
-                response =JSON.parse(response);
-                console.log("response",response);
+                $('#loading').hide();
+                alert("Thêm sản phẩm thành công!");
             },
             error: function(){
-                console.log("error!!!")
+                $('#loading').hide();
+                alert("Thêm sản phẩm thất bại!");
             }
         })     
     });
+})
 </script>
 
 @stop

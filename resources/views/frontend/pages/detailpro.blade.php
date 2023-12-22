@@ -41,8 +41,8 @@ $comments = $data ->comments;
           <div class="row">
           <!-- Modal view slider -->
           <div class="col-md-5 col-sm-5 col-xs-12">
-            <div class="aa-product-view-slider">
-            <a href="{!! $imageUrl !!}" class="MagicZoom" id="jeans" data-options="selectorTrigger: hover; transitionEffect: false;">
+            <div class="aa-product-view-slider" >
+            <a href="{!! $imageUrl !!}" class="MagicZoom" style="width: 300px;height: 400px;" id="jeans" data-options="selectorTrigger: hover; transitionEffect: false;">
             <img src="{!! $imageUrl !!}" style="width: 250px; height: 300px;"></a> 
              @foreach ($hinhsanpham_url as $hinh)
                 <a data-zoom-id="jeans" href="{!! $hinh->imageUrl !!}" data-image="{!! $hinh->imageUrl !!}">
@@ -68,7 +68,8 @@ $comments = $data ->comments;
               </p>
             </div>
             <div class="aa-prod-view-bottom">
-              <a class="aa-add-to-cart-btn" href="{!! url('mua-hang',[$sanpham_id,$sanpham_id]) !!}"><span class="fa fa-shopping-cart">Mua hàng</a>
+              <a class="aa-add-to-cart-btn" href="{!! url('mua-hang',[$sanpham_id,$sanpham_id]) !!}" style="background-color: #28a54b;">
+                <span class="fa fa-shopping-cart" style="color: white !important;font-size: 15px;">Mua hàng</a>
             </div>
             </div>
           </div>

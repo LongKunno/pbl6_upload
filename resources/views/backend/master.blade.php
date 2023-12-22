@@ -174,7 +174,29 @@
     
     <!-- My JavaScript -->
     <script src="{{ url('public/backend/js/myscript.js') }}"></script>
+    <style>
+        #loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        }
 
+        #loading img {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        }
+    </style>
+    <div id="loading" style="display: none;">
+        <img src="https://i.gifer.com/XOsX.gif" style="width:100px;height:100px;" alt="Loading">
+    </div>
 
 </body>
 

@@ -17,7 +17,7 @@
             </div>
             </div>
             <div class="panel-body">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Thêm bài viết</h3>
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="form-group">
                 <label>Tóm tắt</label>
                 <textarea class="form-control" rows="2" name="txtMNResum" placeholder="Mô tả...">{!! old('txtMNResum') !!}</textarea>
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="form-group">
                 <label>Nội dung</label>
                 <textarea class="form-control" rows="2" name="txtMNContent" placeholder="Mô tả...">{!! old('txtMNContent') !!}</textarea>
@@ -64,36 +64,6 @@
         </div>
         </div>
         </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Sản phẩm</h3>
-                </div>
-            <div class="panel-body">
-            <div class="dataTable_wrapper">
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example" >
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Sản phẩm</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $item)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="products[{!! $item->id !!}]" id="{!! $item->id !!}" value="{!! $item->id !!}">
-                        </td>
-                        <td>
-                            {!! $item->sanpham_ten !!}
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                </table>
-            </div>
-            </div>
         </div>
     </div>
    </div>

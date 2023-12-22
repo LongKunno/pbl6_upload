@@ -161,18 +161,20 @@ class HomeController extends Controller
                 $cookie_fullName = cookie('fullName', $data->fullName, 60);
                 $cookie_user_id = cookie('user_id', $data->id, 60);
                 $cookie_refresh_token = cookie('refresh_token', $data->refreshToken, 60);
-                    return redirect()->to('/')
-                    ->withCookie($cookie_access_token)
-                    ->withCookie($cookie_user_id)
-                    ->withCookie($cookie_refresh_token)
-                    ->withCookie($cookie_fullName);
+                return redirect()->to('/')
+                ->withCookie($cookie_access_token)
+                ->withCookie($cookie_user_id)
+                ->withCookie($cookie_refresh_token)
+                ->withCookie($cookie_fullName);
             }
             else{
-                dd("error: Tài khoản hoặc mặt khẩu không đúng!");
+                echo "<script>alert('Tài khoản hoặc mặt khẩu không đúng!');</script>";
+                return view('auth.login');
             }
             
         } else {
-            dd("error: postLogin!");
+            echo "<script>alert('Không nhận được phản hổi từ máy chủ!');</script>";
+            return view('auth.login');
         }
     }
 

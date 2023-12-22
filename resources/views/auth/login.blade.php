@@ -12,7 +12,7 @@
                         {!! csrf_field() !!}
                          <input type="hidden" name="_token" value="{!! csrf_token() !!}" />
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Username</label><span>*</span></label>
+                            <label class="col-md-4 control-label">Username</label></label>
 
                             <div class="col-md-6">
                                 <input type="username" class="form-control" name="username" value="">
@@ -20,7 +20,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Password<span>*</span></label>
+                            <label class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
                                 <input type="password" class="form-control" name="password">

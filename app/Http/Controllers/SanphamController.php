@@ -163,107 +163,108 @@ class SanphamController extends Controller
     	return view('backend.sanpham.them',compact('category','brand','unit','size','promotion'));
     }
 
-    public function postAdd(SanphamAddRequest $request)
-    {
-        // $filename=$request->file('txtSPImage')->getClientOriginalName();
-        // $request->file('txtSPImage')->move(
-        //     base_path() . '/resources/upload/sanpham/', $filename
-        // );
-    	// $sanpham = new Sanpham;
-        // $sanpham->sanpham_ky_hieu   = $request->txtSPSignt;
-        // $sanpham->sanpham_ten           = $request->txtSPName;
-        // $sanpham->sanpham_url           = Replace_TiengViet($request->txtSPName);
-        // $sanpham->sanpham_mo_ta = $request->txtSPIntro;
-        // $sanpham->sanpham_anh = $filename;
-        // $sanpham->loaisanpham_id = $request->txtSPCate;
-        // $sanpham->donvitinh_id = $request->txtSPUnit;
+    // public function postAdd(SanphamAddRequest $request)
+    // {
+    //     // $filename=$request->file('txtSPImage')->getClientOriginalName();
+    //     // $request->file('txtSPImage')->move(
+    //     //     base_path() . '/resources/upload/sanpham/', $filename
+    //     // );
+    // 	// $sanpham = new Sanpham;
+    //     // $sanpham->sanpham_ky_hieu   = $request->txtSPSignt;
+    //     // $sanpham->sanpham_ten           = $request->txtSPName;
+    //     // $sanpham->sanpham_url           = Replace_TiengViet($request->txtSPName);
+    //     // $sanpham->sanpham_mo_ta = $request->txtSPIntro;
+    //     // $sanpham->sanpham_anh = $filename;
+    //     // $sanpham->loaisanpham_id = $request->txtSPCate;
+    //     // $sanpham->donvitinh_id = $request->txtSPUnit;
        
-        // $sanpham->sanpham_khuyenmai = 0;
-        // $sanpham->save();
+    //     // $sanpham->sanpham_khuyenmai = 0;
+    //     // $sanpham->save();
             
-        $files =[];
-        if ($request->file('txtSPImage1')) {
-            $files[] = $request->file('txtSPImage1');
-        }
-        if ($request->file('txtSPImage2')) {
-            $files[] = $request->file('txtSPImage2');
-        } 
-        if ($request->file(' txtSPImage3')) {
-            $files[] = $request->file('txtSPImage3');
-        }
-        if ($request->file('txtSPImage4')) {
-            $files[] = $request->file('txtSPImage4');
-        } 
-        if ($request->file('txtSPImage5')) {
-            $files[] = $request->file('txtSPImage5');
-        }
+    //     $files =[];
+    //     if ($request->file('txtSPImage1')) {
+    //         $files[] = $request->file('txtSPImage1');
+    //     }
+    //     if ($request->file('txtSPImage2')) {
+    //         $files[] = $request->file('txtSPImage2');
+    //     } 
+    //     if ($request->file(' txtSPImage3')) {
+    //         $files[] = $request->file('txtSPImage3');
+    //     }
+    //     if ($request->file('txtSPImage4')) {
+    //         $files[] = $request->file('txtSPImage4');
+    //     } 
+    //     if ($request->file('txtSPImage5')) {
+    //         $files[] = $request->file('txtSPImage5');
+    //     }
 
 
-        $url = 'https://pbl6shopfashion-production.up.railway.app/api/product';
+    //     $url = 'https://pbl6shopfashion-production.up.railway.app/api/product';
 
-        if (count($files) != 0) {
-            $data = array(
-                'name' => $request->txtSPName,
-                'desc' => $request->txtSPIntro,
-            );
-            $image_list = [];
-            foreach ($files as $file) {
-                $image_list[] = new CURLFile($file->getPathname(), 'image/jpeg', $file->getClientOriginalName());
-            }
-            dd($image_list);
+    //     if (count($files) != 0) {
+    //         $data = array(
+    //             'name' => $request->txtSPName,
+    //             'desc' => $request->txtSPIntro,
+    //         );
+    //         $image_list = [];
+    //         foreach ($files as $file) {
+    //             $image_list[] = new CURLFile($file->getPathname(), 'image/jpeg', $file->getClientOriginalName());
+    //         }
+    //         dd($image_list);
 
 
-            // Tạo một yêu cầu POST mới
-            $postData = array(
-                'images' => http_build_query($image_list),
-                'name' => $data['name'],
-                'desc' => $data['desc']
-            );
+    //         // Tạo một yêu cầu POST mới
+    //         $postData = array(
+    //             'images' => http_build_query($image_list),
+    //             'name' => $data['name'],
+    //             'desc' => $data['desc']
+    //         );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //         $ch = curl_init();
+    //         curl_setopt($ch, CURLOPT_URL, $url);
+    //         curl_setopt($ch, CURLOPT_POST, true);
+    //         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    //         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            // Thực hiện yêu cầu POST
-            $response = curl_exec($ch);
+    //         // Thực hiện yêu cầu POST
+    //         $response = curl_exec($ch);
 
-            // Kiểm tra lỗi
-            if (curl_errno($ch)) {
-                $error = curl_error($ch);
-                dd($error);
-            }
+    //         // Kiểm tra lỗi
+    //         if (curl_errno($ch)) {
+    //             $error = curl_error($ch);
+    //             dd($error);
+    //         }
 
-            // Xử lý kết quả từ server Java (response)
-            dd($response);
+    //         // Xử lý kết quả từ server Java (response)
+    //         echo("<script>alert('Thêm sản phẩm thành công');</script>");
+    //         dd("ok");
 
-            // Đóng kết nối cURL
-            curl_close($ch);
-        } else {
-            dd("Không tìm thấy file ảnh");
-        }
-        dd("Không tìm thấy file ảnh2");
-    return view('backend.nhom.them');
+    //         // Đóng kết nối cURL
+    //         curl_close($ch);
+    //     } else {
+    //         dd("Không tìm thấy file ảnh");
+    //     }
+    //     dd("Không tìm thấy file ảnh2");
+    // return view('backend.nhom.them');
 
-        // $names =[];   
+    //     // $names =[];   
 
-        // foreach ($files as $file) {
-        //     if(!empty($file)){
-        //         $filename=$file->getClientOriginalName();
-        //         $file->move(
-        //             base_path().'/resources/upload/chitietsanpham/', $filename
-        //         );
+    //     // foreach ($files as $file) {
+    //     //     if(!empty($file)){
+    //     //         $filename=$file->getClientOriginalName();
+    //     //         $file->move(
+    //     //             base_path().'/resources/upload/chitietsanpham/', $filename
+    //     //         );
 
-        //         $hinh = new Hinhsanpham; 
-        //         $hinh->hinhsanpham_ten = $filename;
-        //         $hinh->sanpham_id = $sanpham->id;
-        //         $hinh->save();
-        //     }
-        // }
+    //     //         $hinh = new Hinhsanpham; 
+    //     //         $hinh->hinhsanpham_ten = $filename;
+    //     //         $hinh->sanpham_id = $sanpham->id;
+    //     //         $hinh->save();
+    //     //     }
+    //     // }
 
-        return redirect()->route('admin.sanpham.list')->with(['flash_level'=>'success','flash_message'=>'Thêm loại sản phẩm thành công!!!']);
-    }
+    //     return redirect()->route('admin.sanpham.list')->with(['flash_level'=>'success','flash_message'=>'Thêm loại sản phẩm thành công!!!']);
+    // }
 
     public function getDelete($id)
     {   
