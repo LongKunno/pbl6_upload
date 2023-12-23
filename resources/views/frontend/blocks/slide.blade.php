@@ -10,7 +10,7 @@
             ?>
             @if (count($data)==0)
             <li>
-              <div class="seq-model">
+              <div>
                 <img data-seq src="{!! asset('public/images/promotionpanel.jpg') !!}" alt="Men slide img" style="height: 300px;"/>
               </div>
             </li>
