@@ -392,15 +392,31 @@ class HomeController extends Controller
 
     public function promotions()
     {
-        $khuyenmai = DB::table('khuyenmai')->where('khuyenmai_tinh_trang',1)->first();
-        if (!is_null($khuyenmai)) {
-            $spham = DB::table('sanphamkhuyenmai')
-            ->where('khuyenmai_id',$khuyenmai->id)
-            ->get();
-        } else {
-            $spham = Null;
+        // $khuyenmai = DB::table('khuyenmai')->where('khuyenmai_tinh_trang',1)->first();
+        // if (!is_null($khuyenmai)) {
+        //     $spham = DB::table('sanphamkhuyenmai')
+        //     ->where('khuyenmai_id',$khuyenmai->id)
+        //     ->get();
+        // } else {
+        //     $spham = Null;
+        // }
+
+        $list_khuyen_mai = [];
+
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/promotion';
+        $postData = array();
+        $khuyenmai = $this->send_data_no_access_token($postData,$api_url,"GET");
+
+        foreach($khuyenmai as $km){
+            $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/promotion/detail/'.$km->id;
+            $postData = array();
+            $spham = $this->send_data_no_access_token($postData,$api_url,"GET");
+            $list_khuyen_mai[] = $spham;
+
         }
-        return view ('frontend.pages.promotion',compact('khuyenmai','spham'));
+
+
+        return view('frontend.pages.promotion',compact('list_khuyen_mai'));
     }
 
     public function detailpromotions($url)

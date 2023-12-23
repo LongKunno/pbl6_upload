@@ -8,13 +8,21 @@
             <?php 
             $data = DB::table('quangcao')->where('quangcao_trang_thai',1)->get();
             ?>
-            @foreach ($data as $item)
+            @if (count($data)==0)
             <li>
               <div class="seq-model">
-                <img data-seq src="{!! asset('public/images/quangcao/'.$item->quangcao_anh) !!}" alt="Men slide img" style="height: 300px;"/>
+                <img data-seq src="{!! asset('public/images/promotionpanel.jpg') !!}" alt="Men slide img" style="height: 300px;"/>
               </div>
             </li>
-            @endforeach              
+            @else
+              @foreach ($data as $item)
+              <li>
+                <div class="seq-model">
+                  <img data-seq src="{!! asset('public/images/quangcao/'.$item->quangcao_anh) !!}" alt="Men slide img" style="height: 300px;"/>
+                </div>
+              </li>
+              @endforeach   
+            @endif           
           </ul>
         </div>
         <!-- slider navigation btn -->

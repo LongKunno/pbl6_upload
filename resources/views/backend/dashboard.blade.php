@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <a  style="display:none" href="{!! URL::route('admin.binhluan.list') !!}">
+            <a  href="{!! URL::route('admin.binhluan.list') !!}">
                 <div class="panel-footer">
                     <span class="pull-left">Xem chi tiết</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <a  style="display:none" href="{!! URL::route('admin.khachhang.list') !!}">
+            <a  href="{!! URL::route('admin.khachhang.list') !!}">
                 <div class="panel-footer">
                     <span class="pull-left">Xem chi tiết</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <a  style="display:none" href="{!! URL::route('admin.donhang.list') !!}">
+            <a  href="{!! URL::route('admin.donhang.list') !!}">
                 <div class="panel-footer">
                     <span class="pull-left">Xem chi tiết</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <a  style="display:none" href="{!! URL::route('admin.sanpham.list') !!}">
+            <a  href="{!! URL::route('admin.sanpham.list') !!}">
                 <div class="panel-footer">
                     <span class="pull-left">Xem chi tiết</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

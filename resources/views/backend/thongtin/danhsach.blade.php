@@ -16,8 +16,8 @@
     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
         <thead>
             <tr class="odd gradeX" align="center">
-                <th>Ảnh</th>
                 <th>ID</th>
+                <th>Ảnh</th>
                 <th>Tiêu đề</th>
                 <th>Ngày đăng</th>
                 <th>Xóa</th>
@@ -27,10 +27,10 @@
         <tbody>
             @foreach ($data as $item)
            <tr class="odd gradeX">
+                <td>{!! $item->id !!}</td>
                 <td>
                 <img src="{!! asset('public/images/thongtin/'.$item->thongtin_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
                 </td>
-                <td>{!! $item->id !!}</td>
                 <td>{!! $item->thongtin_tieu_de !!}</td>
                 <td>{!! date("d-m-Y",strtotime($item->created_at)) !!}</td>
                 <td class="center">

@@ -29,10 +29,10 @@
              @foreach ($data as $item)
             <tr class="odd gradeX">
                 <td>{!! $item->id !!}</td>
-                <td>{!! $item->khachhang_ten !!}</td>
-                <td>{!! $item->khachhang_sdt !!}</td>
-                <td>{!! $item->khachhang_email !!}</td>
-                <td>{!! $item->khachhang_dia_chi !!}</td>
+                <td>{!! $item->name !!}</td>
+                <td>{!! $item->phoneNumber !!}</td>
+                <td>{!! $item->gmail !!}</td>
+                <td>{!! $item->address !!}</td>
                 <td class="center">
                 <a onclick="return confirmDel('Bạn có chắc muốn xóa dữ liệu này?')" href="{!! URL::route('admin.khachhang.getDelete', $item->id ) !!}" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Xóa"><i class="fa fa-trash-o  fa-fw"></i></a></td>
                 <td class="center"><a href="{!! URL::route('admin.khachhang.getHistory', $item->id ) !!}" type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="left" title="Xem lịch sử mua hàng"><i class="fa fa-history"></i></a>

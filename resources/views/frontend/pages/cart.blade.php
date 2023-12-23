@@ -47,30 +47,26 @@
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}" />
                     @foreach ($data as $item)
                       <?php 
-                          function send_data_no_access_token($postData,$url,$phuongthuc){
-                              $user_id = request()->cookie('user_id');
-                              $postData = json_encode($postData);
-                              $ch = curl_init();
-                              curl_setopt($ch, CURLOPT_URL, $url);
-                              curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $phuongthuc);
-                              curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-                              curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                              curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                              curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-                              // Thực hiện yêu cầu POST
-                              $response = curl_exec($ch);
-                              // Kiểm tra lỗi
-                              if (curl_errno($ch)) {
-                                  $error = curl_error($ch);
-                                  dd($error);
-                              }
-                              // Đóng kết nối cURL
-                              curl_close($ch);
-                              return json_decode($response);
-                          }
-                          $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$item->productId;
+                          $url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$item->productId;
                           $postData = array();
-                          $sanpham = send_data_no_access_token($postData,$api_url,"GET");
+                          $postData = json_encode($postData);
+                          $ch = curl_init();
+                          curl_setopt($ch, CURLOPT_URL, $url);
+                          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                          curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                          // Thực hiện yêu cầu POST
+                          $response = curl_exec($ch);
+                          // Kiểm tra lỗi
+                          if (curl_errno($ch)) {
+                              $error = curl_error($ch);
+                              dd($error);
+                          }
+                          // Đóng kết nối cURL
+                          curl_close($ch);
+                          $sanpham = json_decode($response);
                        ?>
                       <tr>
                         <td><a class="updatecart edit" id="{!! $item->id !!}" href='#'><fa class=" fa fa-edit"></fa></a></td>

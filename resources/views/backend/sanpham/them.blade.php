@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label>Mô tả</label>
                     <textarea class="form-control" rows="3" id="sp_intro" name="txtSPIntro" placeholder="Mô tả..."> {!! old('txtSPIntro') !!}</textarea>
-                    <script type="text/javascript">CKEDITOR.replace('txtSPIntro'); </script>
+                    {{-- <script type="text/javascript">CKEDITOR.replace('txtSPIntro'); </script> --}}
                     <div>
                         {!! $errors->first('txtSPIntro') !!}
                     </div>
@@ -136,12 +136,13 @@
 </div>   
 </div>
 </form>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
 $(document).ready(function() {
     $("#FormAddSanPham").submit(function(e) {
         e.preventDefault();
         $('#loading').show();
+        
 
         // Tạo biểu mẫu gửi dữ liệu
         var formData = new FormData();
@@ -156,6 +157,8 @@ $(document).ready(function() {
             productSizes.push($(this).val()+":"+$("#size_soluong_"+$(this).data("id")).val());
         });
         var promotionId = $("#select_promotion").val()
+
+        console.log(desc);
 
         formData.append("name", name);
         formData.append("price", price);
