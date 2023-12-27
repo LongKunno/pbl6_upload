@@ -140,13 +140,13 @@ Route::group(['prefix' => 'admin'], function() {
     });
 
     Route::group(['prefix' => 'voucher'], function() {
-    	Route::get('danhsach',['as'=>'admin.voucher.list','uses'=>'voucherController@getList']);
-        Route::get('them',['as'=>'admin.voucher.getAdd','uses'=>'voucherController@getAdd']);
-        Route::post('them',['as'=>'admin.voucher.postAdd','uses'=>'voucherController@postAdd']);
-        Route::get('xoa/{id}',['as'=>'admin.voucher.getDelete','uses'=>'voucherController@getDelete']);
-        Route::post('xoa/{id}',['as'=>'admin.voucher.postDelete','uses'=>'voucherController@postDelete']);
-        Route::get('sua/{id}',['as'=>'admin.voucher.getEdit','uses'=>'voucherController@getEdit']);
-        Route::post('sua/{id}',['as'=>'admin.voucher.postEdit','uses'=>'voucherController@postEdit']);
+    	Route::get('danhsach',['as'=>'admin.voucher.list','uses'=>'voucherController2@getList']);
+        Route::get('them',['as'=>'admin.voucher.getAdd','uses'=>'voucherController2@getAdd']);
+        Route::post('them',['as'=>'admin.voucher.postAdd','uses'=>'voucherController2@postAdd']);
+        Route::get('xoa/{id}',['as'=>'admin.voucher.getDelete','uses'=>'voucherController2@getDelete']);
+        Route::post('xoa/{id}',['as'=>'admin.voucher.postDelete','uses'=>'voucherController2@postDelete']);
+        Route::get('sua/{id}',['as'=>'admin.voucher.getEdit','uses'=>'voucherController2@getEdit']);
+        Route::post('sua/{id}',['as'=>'admin.voucher.postEdit','uses'=>'voucherController2@postEdit']);
     });
 
     Route::group(['prefix' => 'tuyendung'], function() {
