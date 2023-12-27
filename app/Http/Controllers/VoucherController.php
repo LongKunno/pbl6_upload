@@ -29,6 +29,8 @@ class voucherController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             // Thực hiện yêu cầu POST
             $response = curl_exec($ch);
             // Kiểm tra lỗi
@@ -40,7 +42,7 @@ class voucherController extends Controller
             curl_close($ch);
             return json_decode($response);
         } else {
-            dd("Vui lòng đăng nhập");
+            return view('auth.login'); 
         }
     }
 

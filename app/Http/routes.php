@@ -51,7 +51,7 @@ Route::post('forgot-password-otp', 'HomeController@post_forgot_password_otp');
 
 Route::get('update-imformation', 'HomeController@get_update_imformation');
 
-Route::post('update-imformation', 'HomeController@post_update_imformation');
+Route::post('post-update-imformation', 'HomeController@post_update_imformation');
 
 Route::get('hien-san-pham/{id}','HomeController@hiensanpham');
 
@@ -77,7 +77,9 @@ Route::get('thong-tin/{url}', 'HomeController@detailthongtin');
 
 Route::get('san-pham/{url_id}', 'HomeController@product');
 
-Route::get('mua-hang/{id}/{ten}',['as'=>'muahang','uses'=>'HomeController@buyding']);
+Route::get('mua-hang/{id}/{size}',['as'=>'muahang','uses'=>'HomeController@buyding']);
+
+Route::get('order',['as'=>'order','uses'=>'HomeController@orderpage']);
 
 Route::get('gio-hang',['as'=>'giohang','uses'=>'HomeController@cart']);
 

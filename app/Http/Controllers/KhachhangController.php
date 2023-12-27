@@ -28,17 +28,22 @@ class KhachhangController extends Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             // Thực hiện yêu cầu POST
-            $response = curl_exec($ch);
+            $response = json_decode(curl_exec($ch));
             // Kiểm tra lỗi
             if (curl_errno($ch)) {
                 $error = curl_error($ch);
                 dd($error);
             }
+            if(isset($response->status)){
+                if($response->status!=200){
+                    dd($response->error);
+                }
+            }
             // Đóng kết nối cURL
             curl_close($ch);
-            return json_decode($response);
+            return $response;
         } else {
-            dd("Vui lòng đăng nhập");
+            return view('auth.login'); 
         }
     }
 
@@ -87,13 +92,20 @@ class KhachhangController extends Controller
 
     public function getDelete($id)
     {
-    	$id_user = DB::table('khachhang')
-            ->select('user_id')
-            ->where('id',$id)
-            ->first();
-        DB::table('khachhang')->where('id',$id)->delete();
-        DB::table('users')->where('id',$id_user->user_id)->delete();
-        return redirect()->route('admin.khachhang.list')->with(['flash_level'=>'success','flash_message'=>'Xóa khách hàng thành công!!!']);
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$id;
+        $postData = array();
+        $data_init = $this->send_data_access_token($postData,$api_url,"GET");
+        if($data_init->role=="ADMIN")
+            return redirect()->route('admin.khachhang.list')->with(['flash_level'=>'danger','flash_message'=>'Không thể khoá tài khoản Admin!!!']);
+
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/users/lock-user/'.$id;
+        $postData = array();
+        $data_init = $this->send_data_access_token($postData,$api_url,"PUT");
+        if($data_init){
+            return redirect()->route('admin.khachhang.list')->with(['flash_level'=>'success','flash_message'=>'Khoá tài khoản thành công!!!']);
+        }else{
+            return redirect()->route('admin.khachhang.list')->with(['flash_level'=>'warning','flash_message'=>'Mở khoá tài khoản thành công!!!']);
+        }
     }
 
     public function getEdit()

@@ -17,12 +17,12 @@
     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
         <thead>
             <tr align="center">
-                <th>Ảnh</th>
-                <th>Status</th>
                 <th>ID</th>
+                <th>Status</th>
                 <th>Chủ đề</th>
                 <th>Tỷ lệ</th>
-                <th>Thời gian</th>
+                <th>Bắt đầu</th>
+                <th>Kết thúc</th>
                 <th>Xóa</th>
                 <th>Sửa</th>
             </tr>
@@ -30,12 +30,10 @@
         <tbody>
             @foreach ($data as $item)
            <tr class="odd gradeX">
-                <td>
-                <img src="{!! asset('public/images/khuyenmai/'.$item->khuyenmai_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 70px; height: 40px;">
-                </td>
+                <td>{!! $item->id !!}</td>
                 <td>
                     <?php 
-                        if ( $item->khuyenmai_tinh_trang == 1 )
+                        if ( $item->active )
                         {
                             print_r('Còn KM');
                         } else{
@@ -43,10 +41,10 @@
                         }   
                      ?> 
                 </td>
-                <td>{!! $item->id !!}</td>
-                <td>{!! $item->khuyenmai_tieu_de !!}</td>
-                <td>{!! $item->khuyenmai_phan_tram !!}%</td>
-                <td>{!! $item->khuyenmai_thoi_gian !!}ngày</td>
+                <td>{!! $item->name !!}</td>
+                <td>{!! $item->discountValue !!}%</td>
+                <td>{!! $item->startAt !!}</td>
+                <td>{!! $item->endAt !!}</td>
                 <td>
                 <a onclick="return confirmDel('Bạn có chắc muốn xóa dữ liệu này?')" href="{!! URL::route('admin.khuyenmai.getDelete', $item->id ) !!}" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Xóa"><i class="fa fa-trash-o  fa-fw"></i></a>
                 </td>
@@ -54,33 +52,6 @@
                 </td>
 
             </tr>
-<?php 
-        // print_r($item->khuyenmai_tinh_trang);
-        if ($item->khuyenmai_tinh_trang == 0 )
-        {
-            $ids = DB::table('sanphamkhuyenmai')->select('sanpham_id')->where('khuyenmai_id',$item->id)->get();
-            // print_r($ids);
-            foreach ($ids as $key => $val) {
-                    // DB::table('sanpham')
-                    //     ->where('id',$val->sanpham_id)
-                    //     ->update([
-                    //             'sanpham_khuyenmai'=> 0,
-                    //         ]);
-                }
-        }else {
-            $ids = DB::table('sanphamkhuyenmai')->select('sanpham_id')->where('khuyenmai_id',$item->id)->get();
-            // print_r($ids);
-            foreach ($ids as $key => $val) {
-                    // DB::table('sanpham')
-                    //     ->where('id',$val->sanpham_id)
-                    //     ->update([
-                    //             'sanpham_khuyenmai'=> 1,
-                    //         ]);
-                }
-                
-        }
-// print_r($u);
-    ?>
            @endforeach
         </tbody>
     </table>

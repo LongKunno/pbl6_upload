@@ -23,9 +23,11 @@
    <div class="container">
      <div class="row">
        <div class="col-md-12">
-        <div class="aa-myaccount-area">         
+        <div class="aa-myaccount-area" style="
+    padding-top: 10px;
+">         
             <div class="row">
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/post_update_imformation') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/post-update-imformation') }}">
                         {!! csrf_field() !!}
                 <div class="col-md-12">
                 <div class="aa-myaccount-login">
@@ -38,67 +40,81 @@
                         @endif
                         
                     </center>
-                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+
+
+<center>
+   <div style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+      <img href="{{ url('/update-imformation') }}" src="{!! asset('public/images/avatar.jpg') !!}" alt="fashion img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #ccc;">
+   </div>
+   <div style="margin-bottom: 30px; font-weight: bold;"><label>Ảnh đại diện</label></div>
+</center>
+
+
+
+
+
+                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Tài khoản</label>
-
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-
-                                    @if ($errors->has('name'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('name') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="text" class="form-control" name="info_username" value="{{ $user_info->username }}">
                                 </div>
                             </div>
 
                             <div class="form-group{{ $errors->has('txtname') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Tên khách hàng</label>
-
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="txtname" value="{{ old('txtname') }}">
-
-                                    @if ($errors->has('txtname'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('txtname') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="text" class="form-control" name="info_name" value="{{ $user_info->name }}">
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Mật khẩu</label>
-
+                            <div class="form-group{{ $errors->has('txtname') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Gmail</label>
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password">
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="text" class="form-control" name="info_gmail" value="{{ $user_info->gmail }}" pattern="[a-zA-Z0-9._%+-]+@gmail.com" title="Vui lòng nhập địa chỉ Gmail hợp lệ">
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Xác nhận mật khẩu</label>
-
+                            <div class="form-group{{ $errors->has('txtname') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Địa chỉ</label>
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password_confirmation">
-
-                                    @if ($errors->has('password_confirmation'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                        </span>
-                                    @endif
+                                    <input type="text" class="form-control" name="info_address" value="{{ $user_info->address }}">
                                 </div>
                             </div>
+
+                            <div class="form-group{{ $errors->has('txtname') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Giới tính</label>
+                            <div class="col-md-6">
+                                <select class="form-control" name="info_gender">
+                                    <option value="MALE" {{ $user_info->gender == 'MALE' ? 'selected' : '' }}>Male</option>
+                                    <option value="FEMALE" {{ $user_info->gender == 'FEMALE' ? 'selected' : '' }}>Female</option>
+                                </select>
+                            </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('txtname') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Ngày sinh</label>
+                            @php
+                                $newDate = date("Y-m-d", strtotime($user_info->birthday));
+                            @endphp
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="info_birthday" value={{ $newDate }} placeholder="YYYY-MM-DD">
+                            </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('txtname') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Số điện thoại</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="info_phoneNumber" value="{{ $user_info->phoneNumber }}" pattern="[0-9]+" title="Vui lòng chỉ nhập số">
+                                </div>
+                            </div>
+
+
                         </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="aa-browse-btn" style="margin-left: 25%;">
-                            <i class="fa fa-btn fa-user"></i>Đăng kí
+                            <i class="fa fa-btn fa-user"></i>Cập nhật
                         </button>
                     </div>
                 </div>

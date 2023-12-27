@@ -59,7 +59,7 @@ class AdminController extends Controller
             // print_r($nhapnhieu);
             return view('backend.dashboard',compact('donhang','binhluan','khachhang','sanpham','luotbinhluan','bannhieu','nhapnhieu','muanhieu'));
         } else {
-            dd("Không có quyền truy cập");
+            return view('auth.login'); 
         }
     	// $donhang = DB::table('donhang')->where('tinhtranghd_id',1)->count();
     	// $luotbinhluan = DB::table('binhluan')->where('binhluan_trang_thai',0)->count();

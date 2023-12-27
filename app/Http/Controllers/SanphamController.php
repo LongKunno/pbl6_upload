@@ -45,7 +45,7 @@ class SanphamController extends Controller
             curl_close($ch);
             return json_decode($response);
         } else {
-            dd("Vui lòng đăng nhập");
+            return view('auth.login'); 
         }
     }
 
@@ -90,6 +90,7 @@ class SanphamController extends Controller
         $api_url_category = 'https://pbl6shopfashion-production.up.railway.app/api/category';
         $postData = array();
         $data_category = $this->send_data_no_access_token($postData,$api_url_category,"GET");
+        $category=[];
         foreach ($data_category as $key => $val) {
             $category[] = ['id' => $val->id, 'name'=> $val->name];
         }
@@ -97,6 +98,7 @@ class SanphamController extends Controller
         $api_url_brand = 'https://pbl6shopfashion-production.up.railway.app/api/brand';
         $postData = array();
         $data_brand = $this->send_data_no_access_token($postData,$api_url_brand,"GET");
+        $brand=[];
         foreach ($data_brand as $key => $val) {
             $brand[] = ['id' => $val->id, 'name'=> $val->name];
         }
@@ -104,6 +106,7 @@ class SanphamController extends Controller
         $api_url_promotion = 'https://pbl6shopfashion-production.up.railway.app/api/promotion';
         $postData = array();
         $data_promotion = $this->send_data_no_access_token($postData,$api_url_promotion,"GET");
+        $promotion=[];
         foreach ($data_promotion as $key => $val) {
             $promotion[] = ['id' => $val->id, 'name'=> $val->name];
         }
@@ -159,6 +162,7 @@ class SanphamController extends Controller
         $api_url_category = 'https://pbl6shopfashion-production.up.railway.app/api/category';
         $postData = array();
         $data_category = $this->send_data_no_access_token($postData,$api_url_category,"GET");
+        $category=[];
         foreach ($data_category as $key => $val) {
             $category[] = ['id' => $val->id, 'name'=> $val->name];
         }
@@ -166,6 +170,7 @@ class SanphamController extends Controller
         $api_url_brand = 'https://pbl6shopfashion-production.up.railway.app/api/brand';
         $postData = array();
         $data_brand = $this->send_data_no_access_token($postData,$api_url_brand,"GET");
+        $brand=[];
         foreach ($data_brand as $key => $val) {
             $brand[] = ['id' => $val->id, 'name'=> $val->name];
         }
@@ -187,6 +192,7 @@ class SanphamController extends Controller
         $api_url_promotion = 'https://pbl6shopfashion-production.up.railway.app/api/promotion';
         $postData = array();
         $data_promotion = $this->send_data_no_access_token($postData,$api_url_promotion,"GET");
+        $promotion=[];
         foreach ($data_promotion as $key => $val) {
             $promotion[] = ['id' => $val->id, 'name'=> $val->name];
         }

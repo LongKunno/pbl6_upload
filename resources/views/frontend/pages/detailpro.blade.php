@@ -68,11 +68,24 @@ $comments = $data ->comments;
               </p>
             </div>
             <div class="aa-prod-view-bottom">
-              <a class="aa-add-to-cart-btn" href="{!! url('mua-hang',[$sanpham_id,$sanpham_id]) !!}" style="background-color: #28a54b;">
+              <div style="width:16%">
+                <select id="select_size" class="form-control" >
+                    <?php Select_Function($size); ?>
+                </select>
+              </div>
+              <a id="buy-btn" class="aa-add-to-cart-btn" href="{!! url('mua-hang',[$sanpham_id,$sanpham_id]) !!}" style="background-color: #28a54b;">
                 <span class="fa fa-shopping-cart" style="color: white !important;font-size: 15px;">Mua hàng</a>
             </div>
             </div>
           </div>
+          <script>
+            var selectedSize = $("#select_size").find(":selected").text();
+            $("#buy-btn").attr("href", "{!! url('mua-hang', [$sanpham_id, $sanpham_id]) !!}" + "?size=" + selectedSize);
+            $("#select_size").change(function() {
+              var selectedSize = $("#select_size").find(":selected").text();
+              $("#buy-btn").attr("href", "{!! url('mua-hang', [$sanpham_id, $sanpham_id]) !!}" + "?size=" + selectedSize);
+            });
+          </script>
           
         </div>
         <div class="aa-product-details-bottom">

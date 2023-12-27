@@ -25,7 +25,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td width="120px"><strong>Điện tdoại:</strong></td> <td> {!!$customer->phone_number!!}</td>
+				<td width="120px"><strong>Điện thoại:</strong></td> <td> {!!$customer->phone_number!!}</td>
 				<td></td>
 			</tr>
 			<tr>

@@ -49,7 +49,14 @@
                 <div class="form-group">
                     <label>Mô tả</label>
                     <textarea class="form-control" rows="3" id="sp_intro" name="update_txtSPIntro" placeholder="Mô tả..."> {!! $data_product->decription !!}</textarea>
-                    {{-- <script type="text/javascript">CKEDITOR.replace('update_txtSPIntro'); </script> --}}
+                    <script type="text/javascript">CKEDITOR.replace('update_txtSPIntro'); </script>
+                    {{-- <script type="text/javascript">
+                        CKEDITOR.replace('sp_intro');
+                        CKEDITOR.on('instanceReady', function(evt) {
+                            var editor = evt.editor;
+                            editor.setData('{!! $data_product->decription !!}');
+                        });
+                    </script> --}}
                     <div>
                         {!! $errors->first('update_txtSPIntro') !!}
                     </div>

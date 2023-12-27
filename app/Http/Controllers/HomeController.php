@@ -35,8 +35,34 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     public function send_data_address_token($postData,$url,$phuongthuc){
+        // Tạo một yêu cầu mới
+            $headers = array(
+            'Token: c61b8d62-a18d-11ee-a6e6-e60958111f48',
+            'Content-Type: application/json'
+        );
+        $postData = json_encode($postData);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $phuongthuc);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        // Thực hiện yêu cầu POST
+        $response = curl_exec($ch);
+        // Kiểm tra lỗi
+        if (curl_errno($ch)) {
+            $error = curl_error($ch);
+            dd($error);
+        }
+        // Đóng kết nối cURL
+        curl_close($ch);
+        return json_decode($response);
+    }
+
     public function send_data_access_token($postData,$url,$phuongthuc){
-        $user_id = request()->cookie('user_id');
         if (request()->hasCookie('access_token')) {
             // Tạo một yêu cầu mới
              $headers = array(
@@ -63,12 +89,11 @@ class HomeController extends Controller
             curl_close($ch);
             return json_decode($response);
         } else {
-            dd("Vui lòng đăng nhập");
+            dd("vui lòng đăng nhập");
         }
     }
 
     public function send_data_no_access_token($postData,$url,$phuongthuc){
-        $user_id = request()->cookie('user_id');
         $postData = json_encode($postData);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -151,6 +176,8 @@ class HomeController extends Controller
         );
         $curl = curl_init();
         curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $response = curl_exec($curl);
         curl_close($curl);
         // Xử lý phản hồi từ máy chủ
@@ -233,10 +260,12 @@ class HomeController extends Controller
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen(json_encode($data))
             ),
-            CURLOPT_RETURNTRANSFER => true
+            CURLOPT_RETURNTRANSFER => true,
         );
         $curl = curl_init();
         curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $response = curl_exec($curl);
         curl_close($curl);
         // Xử lý phản hồi từ máy chủ
@@ -248,6 +277,7 @@ class HomeController extends Controller
                 $cookie_fullName = cookie('fullName', $data->fullName, 60);
                 $cookie_user_id = cookie('user_id', $data->id, 60);
                 $cookie_refresh_token = cookie('refresh_token', $data->refreshToken, 60);
+                echo "<script>alert('Đăng kí tài khoản thành công!');</script>";
                     return redirect()->to('/')
                     ->withCookie($cookie_access_token)
                     ->withCookie($cookie_user_id)
@@ -255,11 +285,13 @@ class HomeController extends Controller
                     ->withCookie($cookie_fullName);
             }
             else{
-                dd("error: Đăng kí không thành công!");
+                echo "<script>alert('".$data->error->message."!');</script>";
+                return view('auth.register');
             }
             
         } else {
-            dd("error: post Register!");
+            echo "<script>alert('Không nhận được phản hồi từ server!');</script>";
+                return view('auth.register');
         }
     }
 
@@ -308,6 +340,34 @@ class HomeController extends Controller
 
     public function forgot_password_otp(){
         return view('forgot-password-otp');
+    }
+
+    public function get_update_imformation(){
+        $user_id=request()->cookie('user_id');
+        $postData = array(
+            );
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id;
+        $user_info = $this->send_data_access_token($postData,$url,"GET");
+        return view('auth.imformation',compact('user_info'));
+    }
+
+    public function post_update_imformation(Request $request){
+        $user_id=request()->cookie('user_id');
+        $postData = array(
+            'user_id' => $user_id,
+            'username' => Request::input("info_username"),
+            'name' => Request::input("info_name"),
+            'urlImage' => Request::input("info_urlImage"),
+            'address' => Request::input("info_address"),
+            'gender' => Request::input("info_gender"),
+            'birthday' => Request::input("info_birthday"),
+            'phoneNumber' => Request::input("info_phoneNumber"),
+            'gmail' => Request::input("info_gmail"),
+            );
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id;
+        $user_info = $this->send_data_access_token($postData,$url,"PUT");
+        echo "<script>alert('Cập nhật thông tin thành công!');</script>";
+        return view('auth.imformation',compact('user_info'));
     }
 
     public function index()
@@ -441,23 +501,46 @@ class HomeController extends Controller
         $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$url_id;
         $postData = array();
         $data = $this->send_data_no_access_token($postData,$api_url,"GET");
+        
+        //========== size ============
+        $size = [
+                    ['id' => 1, 'name' => 'S'],
+                    ['id' => 2, 'name' => 'M'],
+                    ['id' => 3, 'name' => 'L'],
+                    ['id' => 4, 'name' => 'XL'],
+                    ['id' => 5, 'name' => 'XXL']
+                ];
 
-        return view('frontend.pages.detailpro',compact('data'));
+        return view('frontend.pages.detailpro',compact('data',"size"));
     }
 
-    public function buyding(Request $request,$id)
+    public function orderpage(Request $request){
+        $state = Request::get('state');
+        if($state==1){
+            return view('frontend.pages.success');
+        }else{
+            return view('frontend.pages.fail');
+        }
+        
+    }
+
+    public function buyding(Request $request,$id,$size)
     {
         $user_id=request()->cookie('user_id');
         // Xoá sản hết phẩm
         // $postData = array("userId"=> $user_id);
         // $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id."/clean";
         // $data = $this->send_data_access_token($postData,$url,"DELETE");
+        $size="S";
+        if(!is_null(Request::input("size"))){
+            $size = Request::input("size");
+        }
 
         // add sản phẩm vào giỏ hàng
         $postData = array(
                 "quantity"=> 1,
                 "productId"=> $id,
-                "size"=> "S"
+                "size"=> $size,
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $data = $this->send_data_access_token($postData,$url,"POST");
@@ -476,7 +559,7 @@ class HomeController extends Controller
         $data = $this->send_data_access_token($postData,$url,"GET");
 
         // data test
-        $total = 999999;
+        $total = 0;
                 //========== size ============
         $size = [
                     ['id' => 1, 'name' => 'S'],
@@ -529,74 +612,89 @@ class HomeController extends Controller
 
     public function getCheckin()
     {
-        $content = Cart::content();
-        $total = Cart::total();
-        // echo "string";
-        // print_r($total);
-        return view('frontend.pages.checkin',compact('content','total'));
+        $user_id=request()->cookie('user_id');
+        $postData = array(
+            );
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id;
+        $khachhang = $this->send_data_access_token($postData,$url,"GET");
+
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
+        $sanpham = $this->send_data_access_token($postData,$url,"GET");
+
+        $url = 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province';
+        $response = $this->send_data_address_token($postData,$url,"POST");
+        $thanhpho = $response->data;
+        foreach ($thanhpho as $key => $val) {
+            $list_thanhpho[] = ['id' => $val->ProvinceID, 'name'=> $val->ProvinceName];
+        }
+
+        $list_quan=[];
+        $list_phuong=[];
+
+        $total = 0;
+
+
+        return view('frontend.pages.checkin',compact('khachhang','sanpham','total','list_thanhpho','list_quan','list_phuong'));
     }
 
-    public function postCheckin(ThanhtoanRequest $request)
+    public function postCheckin(Request $request)
     {
-        $content = Cart::content();
-        $total = Cart::total();
+        $user_id=request()->cookie('user_id');
+        $orderStatus = "UNCONFIRMED";
+        $paymentMethod = Request::get('paymentMethod');
+        $shippingAddress = Request::get('shippingAddress');
+        $phoneNumber = Request::get('phoneNumber');
+        $note = Request::get('note');
+        $name = Request::get('name');
+        $totalPayment = Request::get('totalPayment');
+        $totalProductAmount = Request::get('totalProductAmount');
+        $shippingFee = Request::get('shippingFee');
+        $discountAmount = Request::get('discountAmount');
+        $discountShippingFee = Request::get('discountShippingFee');
 
-        $donhang = new Donhang;
-        $donhang->donhang_nguoi_nhan = $request->txtNNName;
-        $donhang->donhang_nguoi_nhan_email = $request->txtNNEmail;
-        $donhang->donhang_nguoi_nhan_sdt = $request->txtNNPhone;
-        $donhang->donhang_nguoi_nhan_dia_chi = $request->txtNNAddr;
-        $donhang->donhang_ghi_chu = $request->txtNNNote;
-        $donhang->donhang_tong_tien = $total;
-        $donhang->khachhang_id = $request->txtKHID;
-        $donhang->tinhtranghd_id = 1;
-        $donhang->save();
 
-        foreach ($content as $item) {
-            $detail = new Chitietdonhang;
-            $detail->sanpham_id = $item->id;
-            $detail->donhang_id = $donhang->id;
-            $detail->chitietdonhang_so_luong = $item->qty;
-            $detail->chitietdonhang_thanh_tien = $item->price*$item->qty;
-            $detail->save();
-        }
-        $kh = DB::table('khachhang')->where('id', $request->txtKHID)->first();
-        // print_r($kh);
-        $donhang = [
-            'id'=> $donhang->id,
-            'donhang_nguoi_nhan'=> $request->txtNNName,
-            'donhang_nguoi_nhan_email' => $request->txtNNEmail,
-            'donhang_nguoi_nhan_sdt' => $request->txtNNPhone,
-            'donhang_nguoi_nhan_dia_chi' => $request->txtNNAddr,
-            'donhang_ghi_chu' => $request->txtNNNote,
-            'donhang_tong_tien' => $total,
-            'khachhang_id' => $request->txtKHID,
-            'khachhang_email'=>$kh->khachhang_email,
-            ];
-        // print_r($donhang);
-        // Mail::send('auth.emails.hoadon', $donhang, function ($message) use ($donhang) {
-        //     $message->from('long@gmail.com', 'ADMIN');
-        
-        //     $message->to($donhang['khachhang_email'], 'a');
-        
-        //     $message->subject('Hóa đơn mua hàng tại Shop Giày Đà Nẵng!!!');
-        // });
+        $idsVoucher = Request::get('idsVoucher');
 
-        // Mail::send('auth.emails.hoadon', $donhang, function ($message) use ($donhang) {
-        //     $message->from('long@gmail.com', 'ADMIN');
-        
-        //     $message->to('long@gmail.com', 'KHÁCH HÀNG');
-        
-        //     $message->subject('Hóa đơn mua hàng tại Shop Giày Đà Nẵng!!!');
-        // });
 
-        Cart::destroy();
+        $orderItems = Request::get('orderItems');
+
+
+        $wardCode = Request::get('wardCode');
+        $districtId = Request::get('districtId');
+
+
+
+        $postData = array(
+            "orderStatus" => $orderStatus,
+            "paymentMethod"=> $paymentMethod,
+            "name"=> $name,
+            "shippingAddress"=> $shippingAddress,
+            "phoneNumber"=> $phoneNumber,
+            "note"=> $note,
+            "totalPayment"=> $totalPayment,
+            "totalProductAmount"=> $totalProductAmount,
+            "shippingFee"=> $shippingFee,
+            "discountAmount"=> $discountAmount,
+            "discountShippingFee"=> $discountShippingFee,
+            "idsVoucher"=> $idsVoucher,
+            "orderItems"=> $orderItems,
+            "userId"=> $user_id,
+            "wardCode"=> $wardCode,
+            "districtId"=> $districtId,
+
+        );
+        dd($postData);
+
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/';
+        $khachhang = $this->send_data_access_token($postData,$url,"POST");
+        
+        
         echo "<script>
           alert('Bạn đã đặt mua sản phẩm thành công!');
           window.location = '".url('/')."';</script>";
     }
 
-    public function postComment(BinhluanRequest $request)
+    public function postComment(Request $request)
     {
         
         $user_id=request()->cookie('user_id');
@@ -628,6 +726,7 @@ class HomeController extends Controller
 
     public function postFind()
     {
+        $keyword = Request::input('txtSeach');
         // $keyword = Request::input('txtSeach');
         // $sanpham = DB::table('sanpham')
         //     ->where('sanpham_ten','like','%'.$keyword.'%')
@@ -637,12 +736,12 @@ class HomeController extends Controller
         //         ->groupBy('sanpham.id')
         //     ->paginate(5);
 
-        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/getByCategory';
-        $api_url = $api_url."?category_id=".$url_id."&page=1"."&pageSize=9";
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/searchAll';
+        $api_url = $api_url."?keyword=".$keyword."&page=1"."&maxprice=999999999"."&minprice=0"."&pageSize=999";
         $postData = array();
-        $sanpham = $this->send_data_no_access_token($postData,$api_url,"GET");
+        $data = $this->send_data_access_token($postData,$api_url,"GET");
 
-        return view('frontend.pages.product',compact('sanpham'));
+        return view('frontend.pages.product',compact('data'));
     }
  
     // ===========================================================================================================================================================================

@@ -44,7 +44,7 @@ class NhomController extends Controller
             curl_close($ch);
             return json_decode($response);
         } else {
-            dd("Vui lòng đăng nhập");
+            return view('auth.login'); 
         }
     }
 

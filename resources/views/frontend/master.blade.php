@@ -27,6 +27,8 @@
     <!-- Main style sheet -->
     <link href="{{ url('public/frontend/css/style.css') }}" rel="stylesheet">    
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
@@ -72,7 +74,8 @@
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
                   @if (request()->hasCookie('access_token'))
-                    <li class="hidden-xs">{{ request()->cookie('fullName') }}</li>
+                    <img href="{{ url('/update-imformation') }}" src="{!! asset('public/images/avatar.jpg') !!}" alt="fashion img" style="border-radius: 50%;width: 22px;height: 22px;">
+                    <li class="hidden-xs"><a href="{{ url('/update-imformation') }}">{{ request()->cookie('fullName') }}</a></li>
                     <li class="hidden-xs"><a href="{{ url('/logout') }}">Thoát</a></li>
                   @else
                     <li class="hidden-xs"><a href="{{ url('/getregister') }}">Đăng kí</a></li>

@@ -67,6 +67,7 @@
                           // Đóng kết nối cURL
                           curl_close($ch);
                           $sanpham = json_decode($response);
+                          
                        ?>
                       <tr>
                         <td><a class="updatecart edit" id="{!! $item->id !!}" href='#'><fa class=" fa fa-edit"></fa></a></td>
@@ -74,15 +75,29 @@
                         <td><a href="{!! url('san-pham',$sanpham->sanpham_id) !!}"><img src="{!! $sanpham->hinhsanpham_url[0]->imageUrl !!}"  style="width: 45px; height: 50px;"></a></td>
                         <td><a class="aa-cart-title" href="{!! url('san-pham',$sanpham->sanpham_id) !!}">{!!  $sanpham->sanpham_ten !!}</a></td>
                         <td>
-                          <div >
-                            <select id="select_size" class="form-control" >
-                                <?php Select_Function($size); ?>
+                          <div>
+                            <select id="select_size" class="form-control" style="width: 70px;">
+                                <?php
+                                  foreach ($size as $option) {
+                                      if ($option["name"] == $item->size) {
+                                        
+                                          echo '<option value="' . $option["id"] . '" selected>' . $option["name"] . '</option>';
+                                          
+                                      } else {
+                                          echo '<option value="' . $option["id"] . '">' . $option["name"] . '</option>';
+                                      }
+                                  }
+                                ?>
                             </select>
                           </div>
+
                         </td>
                         <td>{!! number_format("$sanpham->lohang_gia_ban_ra",0,",",".") !!}vnđ</td>
                         <td><input class="qty aa-cart-quantity" id="quantity" name="quantity" type="number" value="{!!  $item->quantity !!}"></td>
                         <td>{!! number_format($sanpham->lohang_gia_ban_ra*$item->quantity,0,",",".") !!}vnđ</td>
+                        @php
+                            $total += $sanpham->lohang_gia_ban_ra*$item->quantity;
+                        @endphp
                       </tr>
                     @endforeach
                     </form>
@@ -102,7 +117,7 @@
                    </tr>
                  </tbody>
                </table>
-               @if (Auth::check())
+               @if (request()->hasCookie('access_token'))
                   <a href="{!! url('/') !!}" class="aa-cart-view-btn"> Mua tiếp</a>
                   <a href="{!! URL::route('getThanhtoan') !!}" class="aa-cart-view-btn">Thanh Toán</a>
                   
