@@ -60,7 +60,7 @@
                 <!-- start language -->
                 
                 <div class="cellphone hidden-xs">
-                  <p>Sơn Trà - Đà Nẵng</p>
+                  <p>Sơn Trà - Đà Nẵngg</p>
                 </div>
                 <!-- / language -->
 
