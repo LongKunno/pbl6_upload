@@ -62,13 +62,24 @@ class voucherController2 extends Controller
     	return view('backend.voucher.them');
     }
 
-    public function postAdd(voucherAddRequest $request)
+    public function postAdd(Request $request)
     {
-    	$voucher = new voucher;
-        $voucher->voucher_ten = $request->txtNCCName;
-        $voucher->voucher_dia_chi = $request->txtNCCAdress;
-        $voucher->voucher_sdt = $request->txtNCCPhone;
-        $voucher->save();
+        // lấy dữ liệu
+        $postData = array(
+            "code"=> $request->voucher_them_code,
+            "expiryDate"=> $request->voucher_them_expiryDate,
+            "description"=> $request->voucher_them_description,
+            "discountType"=> $request->voucher_them_discountType,
+            "voucherType"=> $request->voucher_them_voucherType,
+            "discountValue"=> $request->voucher_them_discountValue,
+            "maxDiscountValue"=> $request->voucher_them_maxDiscountValue,
+            "minimumPurchaseAmount"=> $request->voucher_them_minimumPurchaseAmount,
+            "usageLimit"=> $request->voucher_them_usageLimit,
+            "active"=> true
+            );
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/vouchers';
+        $data = $this->send_data_access_token($postData,$url,"POST");
+
         return redirect()->route('admin.voucher.list')->with(['flash_level'=>'success','flash_message'=>'Thêm voucher thành công!!!']);
     }
 
@@ -89,17 +100,28 @@ class voucherController2 extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/vouchers/'.$id;
         $data = $this->send_data_access_token($postData,$url,"GET");
-    	// $data = DB::table('voucher')->where('id',$id)->first();
+        
         return view('backend.voucher.sua',compact('data'));
     }
 
-    public function postEdit(voucherEditRequest $request, $id)
+    public function postEdit(Request $request, $id)
     {
-        $voucher = DB::table('voucher')->where('id',$id)->update([
-            'voucher_ten'=> $request->txtNCCName,
-            'voucher_dia_chi' => $request->txtNCCAdress,
-            'voucher_sdt' => $request->txtNCCPhone
-            ]);
+        // lấy dữ liệu
+        $postData = array(
+            "code"=> $request->voucher_sua_code,
+            "expiryDate"=> $request->voucher_sua_expiryDate,
+            "description"=> $request->voucher_sua_description,
+            "discountType"=> $request->voucher_sua_discountType,
+            "voucherType"=> $request->voucher_sua_voucherType,
+            "discountValue"=> $request->voucher_sua_discountValue,
+            "maxDiscountValue"=> $request->voucher_sua_maxDiscountValue,
+            "minimumPurchaseAmount"=> $request->voucher_sua_minimumPurchaseAmount,
+            "usageLimit"=> $request->voucher_sua_usageLimit,
+            "active"=> $request->voucher_sua_active,
+            );
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/vouchers/'.$id;
+        $data = $this->send_data_access_token($postData,$url,"PUT");
+
         return redirect()->route('admin.voucher.list')->with(['flash_level'=>'success','flash_message'=>'Chỉnh sửa voucher thành công!!!']);
     }
 }

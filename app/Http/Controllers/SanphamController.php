@@ -131,22 +131,9 @@ class SanphamController extends Controller
 
     public function getDelete($id)
     {   
-        $binhluan = DB::table('binhluan')->where('sanpham_id',$id)->get();
-        foreach ($binhluan as $val) {
-            
-            DB::table('binhluan')->where('sanpham_id',$id)->delete();
-        }
-        DB::table('lohang')->where('sanpham_id',$id)->delete();
-        $chitiet = DB::table('hinhsanpham')->where('sanpham_id',$id)->get();
-        foreach ($chitiet as $val) {
-            $image = 'public/images/chitietsanpham/'.$val->hinhsanpham_ten;
-            File::delete($image);
-            DB::table('hinhsanpham')->where('sanpham_id',$id)->delete();
-        }
-    	$sanpham = DB::table('sanpham')->where('id',$id)->first();
-        $img = 'public/images/sanpham/'.$sanpham->sanpham_anh;
-        File::delete($img);
-        DB::table('sanpham')->where('id',$id)->delete();
+        $api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/product/'.$id;
+        $postData = array();
+        $data_product = $this->send_data_no_access_token($postData,$api_url_product,"DELETE");
 
         return redirect()->route('admin.sanpham.list')->with(['flash_level'=>'success','flash_message'=>'Xóa loại sản phẩm thành công!!!']);
     }

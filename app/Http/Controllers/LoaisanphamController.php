@@ -11,7 +11,7 @@ use App\Http\Requests\LoaisanphamEditRequest;
 
 use App\Loaisanpham;
 use DB;
-
+use CURLFile;
 use Input,File;
 
 class LoaisanphamController extends Controller
@@ -82,73 +82,106 @@ class LoaisanphamController extends Controller
 	}
 
 	public function getAdd() {
-		$data = DB::table('nhom')->get();
-		foreach ($data as $key => $val) {
-			$nhom[] = ['id' => $val->id, 'name'=> $val->nhom_ten];
-		}
-		return view('backend.loaisanpham.them',compact('nhom'));
+		return view('backend.loaisanpham.them');
 	}
 
-	public function postAdd(LoaisanphamAddRequest $request) {
-		$loaisanpham = new Loaisanpham;
-		$imageName = $request->file('fImage')->getClientOriginalName();
+	public function postAdd(Request $request) {
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/category/add';
+        $file = $request->file('fImage');
 
-        $request->file('fImage')->move(
-            base_path() . '/public/images/loaisanpham/', $imageName
-        );
-		$loaisanpham->loaisanpham_ten	= $request->txtLSPName;
-		$loaisanpham->nhom_id			= $request->txtLSPParent;
-		$loaisanpham->loaisanpham_mo_ta	= $request->txtLSPIntro;
-		$loaisanpham->loaisanpham_anh	= $imageName;
-		$loaisanpham->loaisanpham_url	= Replace_TiengViet($request->txtLSPName);
-		
-		$loaisanpham->save();
+        if ($file) {
+
+            // Tạo một yêu cầu POST mới
+            $postData = array(
+                'image' => new CURLFile($file->getPathname(), 'image/jpeg', $file->getClientOriginalName()),
+                'name' => $request->txtLSPName,
+                'desc' => $request->txtLSPIntro
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+            // Thực hiện yêu cầu POST
+            $response = curl_exec($ch);
+
+            // Kiểm tra lỗi
+            if (curl_errno($ch)) {
+                $error = curl_error($ch);
+                dd($error);
+            }
+
+            // Xử lý kết quả từ server Java (response)
+            // dd($response);
+
+            // Đóng kết nối cURL
+            curl_close($ch);
+        } else {
+            return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'danger','flash_message'=>'Vui lòng chọn ảnh!!!']);
+        }
 		return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'success','flash_message'=>'Thêm loại sản phẩm thành công!!!']);
 	}
 
 	public function getDelete($id)
 	{
-		$loaisanpham = DB::table('loaisanpham')->where('id',$id)->first();
-        $img = 'public/images/loaisanpham/'.$loaisanpham->loaisanpham_anh;
-        File::delete($img);
-		DB::table('loaisanpham')->where('id',$id)->delete();
+		$api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/category/'.$id;
+        $postData = array();
+        $data_product = $this->send_data_access_token($postData,$api_url_product,"DELETE");
+
         return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'success','flash_message'=>'Xóa loại sản phẩm thành công!!!']);
 	}
 
 	public function getEdit($id)
 	{
-		$loaisp = DB::table('loaisanpham')->where('id',$id)->first();
-		$data = DB::table('nhom')->get();
-		foreach ($data as $key => $val) {
-			$nhom[] = ['id' => $val->id, 'name'=> $val->nhom_ten];
-		}
-		return view('backend.loaisanpham.sua',compact('nhom','loaisp','id'));
+        $api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/category/getCategoryById?id='.$id;
+        $postData = array();
+        $category = $this->send_data_access_token($postData,$api_url_product,"GET");
+
+		return view('backend.loaisanpham.sua',compact('category'));
 	}
 
-	public function postEdit(LoaisanphamEditRequest $request,$id)
+	public function postEdit(Request $request,$id)
 	{
-		$fImage = $request->fImage;
-        $img_current = 'public/images/loaisanpham/'.$request->fImageCurrent;
-        if (!empty($fImage )) {
-             $filename=$fImage ->getClientOriginalName();
-             DB::table('loaisanpham')->where('id',$id)
-                            ->update([
-                                'loaisanpham_ten' => $request->txtLSPName,
-								'loaisanpham_url' => Replace_TiengViet($request->txtLSPName),
-								'nhom_id'=>$request->txtLSPParent,
-								'loaisanpham_mo_ta'=>$request->txtLSPIntro,
-                                'loaisanpham_anh' => $filename
-                                ]);
-             $fImage ->move(base_path() . '/public/images/loaisanpham/', $filename);
-             File::delete($img_current);
+
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/category/update/'.$id;
+        $file = $request->file('fImage');
+
+        if ($file) {
+
+            // Tạo một yêu cầu POST mới
+            $postData = array(
+                'image' => new CURLFile($file->getPathname(), 'image/jpeg', $file->getClientOriginalName()),
+                "id" => $id,
+                "name" => $request->txtLSPName,
+                "desc" => $request->txtLSPIntro,
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+            // Thực hiện yêu cầu POST
+            $response = curl_exec($ch);
+
+            // Kiểm tra lỗi
+            if (curl_errno($ch)) {
+                $error = curl_error($ch);
+                dd($error);
+            }
+
+            // Đóng kết nối cURL
+            curl_close($ch);
         } else {
-            DB::table('loaisanpham')->where('id',$id)
-                            ->update([
-                                'loaisanpham_ten' => $request->txtLSPName,
-								'loaisanpham_url' => Replace_TiengViet($request->txtLSPName),
-								'nhom_id'=>$request->txtLSPParent,
-								'loaisanpham_mo_ta'=>$request->txtLSPIntro
-                                ]);
+            return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'danger','flash_message'=>'Vui lòng chọn ảnh!!!']);
         }
 		
 		return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'success','flash_message'=>'Chỉnh sửa loại sản phẩm thành công!!!']);

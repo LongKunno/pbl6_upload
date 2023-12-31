@@ -186,7 +186,10 @@
             formData.append("brandId", brandId);
             formData.append("unit", unit);
             formData.append("productSizes", productSizes);
-            formData.append("promotionId", promotionId);
+            if(promotionId!=null){
+                formData.append("promotionId", promotionId);
+            }
+            
 
             
             // Thêm thông tin hình ảnh vào biểu mẫu gửi dữ liệu
@@ -196,7 +199,7 @@
             }
             // Gửi yêu cầu Ajax
             $.ajax({
-                method: "patch",
+                method: "put",
                 url: "https://pbl6shopfashion-production.up.railway.app/api/product/{!! $data_product->productId !!}",
                 contentType: false,
                 processData: false,

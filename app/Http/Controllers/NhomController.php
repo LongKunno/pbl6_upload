@@ -89,69 +89,16 @@ class NhomController extends Controller
 
     public function postAdd(NhomAddRequest $request)
     {
-    	// $nhom = new Nhom;
-        // $imageName = $request->file('fImage')->getClientOriginalName();
-
-        // $request->file('fImage')->move(
-        //     base_path() . '/public/images/nhom/', $imageName
-        // );
-    	// $nhom->nhom_ten   = $request->txtNName;
-    	// $nhom->nhom_url   = Replace_TiengViet($request->txtNName);
-    	// $nhom->nhom_mo_ta = $request->txtNIntro;
-        // $nhom->nhom_anh = $request->imageName;
-    	// $nhom->save();
-
-        // return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Thêm nhóm sản phẩm thành công!!!']);
-
-        //=========================================================================
-        // $url = 'https://pbl6shopfashion-production.up.railway.app/api/category/add';
-        // $data = array(
-        //     'image' => $request->file('fImage'),
-        //     'name' => $request->txtNName,
-        //     'desc' => $request->txtNIntro,
-        // );
-        // dd($data);
-
-        // $options = array(
-        //     CURLOPT_URL => $url,
-        //     CURLOPT_POST => true,
-        //     CURLOPT_POSTFIELDS => json_encode($data),
-        //     CURLOPT_HTTPHEADER => array(
-        //         'Content-Type: application/json',
-        //         'Content-Length: ' . strlen(json_encode($data))
-        //     ),
-        //     CURLOPT_RETURNTRANSFER => true
-        // );
-
-
-        // $curl = curl_init();
-        // curl_setopt_array($curl, $options);
-        // $response = curl_exec($curl);
-        // curl_close($curl);
-
-        // // Xử lý phản hồi từ máy chủ
-        // if ($response) {
-        //     $datareturn = json_decode($response);
-        //     dd($datareturn);
-        // } else {
-        //     dd("Load dữ liệu thất bại");
-        // }
-
-
-        $url = 'https://pbl6shopfashion-production.up.railway.app/api/category/add';
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/brand/add';
         $file = $request->file('fImage');
 
         if ($file) {
-            $data = array(
-                'name' => $request->txtNName,
-                'desc' => $request->txtNIntro,
-            );
 
             // Tạo một yêu cầu POST mới
             $postData = array(
                 'image' => new CURLFile($file->getPathname(), 'image/jpeg', $file->getClientOriginalName()),
-                'name' => $data['name'],
-                'desc' => $data['desc']
+                'name' => $request->txtNName,
+                'desc' => $request->txtNIntro
             );
 
             $ch = curl_init();
@@ -159,6 +106,8 @@ class NhomController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
             // Thực hiện yêu cầu POST
             $response = curl_exec($ch);
@@ -169,48 +118,60 @@ class NhomController extends Controller
                 dd($error);
             }
 
-            // Xử lý kết quả từ server Java (response)
-            // dd($response);
-
             // Đóng kết nối cURL
             curl_close($ch);
         } else {
-            dd("Không tìm thấy file ảnh");
+            return redirect()->route('admin.nhom.list')->with(['flash_level'=>'danger','flash_message'=>'Vui lòng chọn ảnh!!!']);
         }
-    return view('backend.nhom.them');
-
-
-
+    return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Thêm nhóm sản phẩm thành công!!!']);
 
     }
 
     public function getEdit($id) {
-    	$nhom = DB::table('nhom')->where('id',$id)->first();
+    	$api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/brand/getBrandById?id='.$id;
+        $postData = array();
+        $nhom = $this->send_data_access_token($postData,$api_url_product,"GET");
+
     	return view('backend.nhom.sua',compact('nhom'));
     }
 
-    public function postEdit(NhomEditRequest $request, $id)
+    public function postEdit(Request $request, $id)
     {
-        $fImage = $request->fImage;
-        $img_current = 'public/images/nhom/'.$request->fImageCurrent;
-        if (!empty($fImage )) {
-             $filename=$fImage ->getClientOriginalName();
-             DB::table('nhom')->where('id',$id)
-                            ->update([
-                                'nhom_ten'   => $request->txtNName,
-                                'nhom_url'   => Replace_TiengViet($request->txtNName),
-                                'nhom_mo_ta' => $request->txtNIntro,
-                                'nhom_anh' => $filename
-                                ]);
-             $fImage ->move(base_path() . '/public/images/nhom/', $filename);
-             File::delete($img_current);
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/brand/update/'.$id;
+        $file = $request->file('fImage');
+
+        if ($file) {
+
+            // Tạo một yêu cầu POST mới
+            $postData = array(
+                'image' => new CURLFile($file->getPathname(), 'image/jpeg', $file->getClientOriginalName()),
+                "id" => $id,
+                "name" => $request->txtNName,
+                "desc" => $request->txtNIntro,
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+            // Thực hiện yêu cầu POST
+            $response = curl_exec($ch);
+
+            // Kiểm tra lỗi
+            if (curl_errno($ch)) {
+                $error = curl_error($ch);
+                dd($error);
+            }
+
+            // Đóng kết nối cURL
+            curl_close($ch);
         } else {
-            DB::table('nhom')->where('id',$id)
-                            ->update([
-                                'nhom_ten'   => $request->txtNName,
-                                'nhom_url'   => Replace_TiengViet($request->txtNName),
-                                'nhom_mo_ta' => $request->txtNIntro
-                                ]);
+            return redirect()->route('admin.loaisanpham.list')->with(['flash_level'=>'danger','flash_message'=>'Vui lòng chọn ảnh!!!']);
         }
 
     	return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Cập nhật nhóm sản phẩm thành công!!!']);
@@ -218,10 +179,10 @@ class NhomController extends Controller
 
     public function getDelete($id)
 	{
-        $nhom = DB::table('nhom')->where('id',$id)->first();
-        $img = 'public/images/nhom/'.$nhom->nhom_anh;
-        File::delete($img);
-		DB::table('nhom')->where('id',$id)->delete();
-        return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Xóa loại sản phẩm thành công!!!']);
+        $api_url_product = 'https://pbl6shopfashion-production.up.railway.app/api/brand/'.$id;
+        $postData = array();
+        $data_product = $this->send_data_access_token($postData,$api_url_product,"DELETE");
+
+        return redirect()->route('admin.nhom.list')->with(['flash_level'=>'success','flash_message'=>'Xóa nhóm sản phẩm thành công!!!']);
 	}
 }

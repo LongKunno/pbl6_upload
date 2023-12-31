@@ -127,9 +127,6 @@ $comments = $data ->comments;
                    <h4>Thêm bình luận</h4>
                    <!-- review form -->
                    <form action="{!! url('binh-luan') !!}"  class="aa-review-form" method="POST">
-                   <p class="comment-notes">
-                        Địa chỉ mail của các bạn sẽ không hiện lên và nội dung bình luận sẽ được kiểm tra trước khi phát hành <span class="required">*</span>
-                      </p>
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}" />
                     <input type="hidden" name="txtID" value="{!! $sanpham_id !!}" />
                       <div class="form-group">

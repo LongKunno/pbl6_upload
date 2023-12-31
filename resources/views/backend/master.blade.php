@@ -79,16 +79,16 @@
                                 <li>
                                     <a href="{!! URL::route('admin.nhom.list') !!}">Nhóm sản phẩm</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a  href="{!! URL::route('admin.donvitinh.list') !!}">Đơn vị tính</a>
-                                </li>
+                                </li> --}}
                                 
                                 <li>
-                                    <a  href="{!! URL::route('admin.voucher.list') !!}">voucher</a>
+                                    <a  href="{!! URL::route('admin.voucher.list') !!}">Voucher</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a  href="{!! URL::route('admin.lohang.list') !!}">Lô hàng</a>
-                                </li>
+                                </li> --}}
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

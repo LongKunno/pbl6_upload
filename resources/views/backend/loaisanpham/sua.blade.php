@@ -22,7 +22,7 @@
         <div class="col-lg-12">
             <div class="form-group">
                 <label>Tên</label>
-                <input class="form-control" name="txtLSPName" placeholder="Tên loại sản phẩm..." value="{!! $loaisp->loaisanpham_ten !!}" />
+                <input class="form-control" name="txtLSPName" placeholder="Tên loại sản phẩm..." value="{!! $category->name !!}" />
                 <div>
                     {!! $errors->first('txtLSPName') !!}
                 </div>
@@ -31,22 +31,8 @@
         </div>
         <div class="col-lg-12">
             <div class="form-group">
-                <label for="input" >Nhóm</label>
-                <div>
-                    <select id="input" name="txtLSPParent"  class="form-control">
-                            <option value=""> Select Cate</option>
-                            <?php Select_Function($nhom,$loaisp->nhom_id); ?>
-                    </select>
-                </div>
-                <div>
-                    {!! $errors->first('txtLSPParent') !!}
-                </div> 
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="form-group">
                 <label>Mô tả</label>
-                <textarea class="form-control" rows="3" name="txtLSPIntro" placeholder="Mô tả...">{!! $loaisp->loaisanpham_mo_ta !!}</textarea>
+                <textarea class="form-control" rows="3" name="txtLSPIntro" placeholder="Mô tả...">{!! $category->description !!}</textarea>
                 <script type="text/javascript">CKEDITOR.replace('txtLSPIntro'); </script>
             </div>
         </div>
@@ -54,8 +40,8 @@
             <div class="form-group">
                 <label>Hình ảnh</label>
                 <br>
-                <img src="{!! asset('public/images/loaisanpham/'.$loaisp->loaisanpham_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
-                <input type="hidden" name="fImageCurrent" value="{!! $loaisp->loaisanpham_anh !!}">
+                <img src="{!! $category->imageUrl !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <input type="hidden" name="fImageCurrent" value="{!! $category->imageUrl !!}">
                 <br>
                 <input type="file" name="fImage">
                 <div>

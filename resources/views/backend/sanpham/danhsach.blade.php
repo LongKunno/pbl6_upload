@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($data as $item)
+            @foreach ($data->items as $item)
             <tr class="odd gradeX" align="left">
                 <td>{!! $item->product_id !!}</td>
                 <td>

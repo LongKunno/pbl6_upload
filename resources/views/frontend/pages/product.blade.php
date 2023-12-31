@@ -30,7 +30,6 @@
               </div>
             </div>
             <div class="aa-product-catg-body">
-              
               @if (!is_null($data->items))
                 <ul class="aa-product-catg">
                 <!-- start single product item -->

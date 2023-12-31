@@ -586,46 +586,70 @@ class HomeController extends Controller
 
     public function updateProduct(Request $request,$id)
     {
-            $id = Request::get('id');
-            $quantity = Request::input('quantity');
-            $size = Request::get('size');
-        dd("dang phat trien".$id. $quantity. $size);
-        if(Request::ajax()) {
-            $id = Request::get('id');
-            $qty = Request::get('qty');
+        $size_ex = [
+                    ['id' => 1, 'name' => 'S'],
+                    ['id' => 2, 'name' => 'M'],
+                    ['id' => 3, 'name' => 'L'],
+                    ['id' => 4, 'name' => 'XL'],
+                    ['id' => 5, 'name' => 'XXL']
+        ]; 
+
+        $data = json_decode($_COOKIE["data_update_cart"]);
+        $id = $data->id;
+        $size_id = $data->size;
+        $size = "S";
+        foreach ($size_ex as $item) {
+            if ($item['id'] == $size_id) {
+                $size = $item['name'];
+            }
         }
+        $quantity = $data->quantity;
         $user_id=request()->cookie('user_id');
-        // Xoá sản phẩm của giỏ hàng
+        // cập  nhật sản phẩm của giỏ hàng
         $postData = array(
-                "userId"=> $user_id,
-                "id"=> 0,
-                "quantity"=> 0,
-                "createdAt"=> "2023-12-15T15:28:56.900Z",
-                "productId"=> 0,
-                "size"=> "S"
+                "id"=> $id,
+                "quantity"=> $quantity,
+                "size"=> $size
             );
-        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
-        $data = $this->send_data_access_token($postData,$url,"DELETE");
-        dd($data);
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id."/".$id;
+        $data = $this->send_data_access_token($postData,$url,"PUT");
         return redirect()->route('giohang');
     }
 
     public function getCheckin()
     {
         $user_id=request()->cookie('user_id');
-        $postData = array(
-            );
+        $postData = array();
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id;
         $khachhang = $this->send_data_access_token($postData,$url,"GET");
 
+        # Lấy sản phẩm từ giỏ hàng và giữ lại những sp có trong cok
+        $array_id_sp = json_decode($_COOKIE['selectedCheckboxValues']);
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $sanpham = $this->send_data_access_token($postData,$url,"GET");
+        $sanpham = array_filter($sanpham, function($item) use ($array_id_sp) {
+            return in_array($item->id, $array_id_sp);
+        });
 
         $url = 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province';
         $response = $this->send_data_address_token($postData,$url,"POST");
         $thanhpho = $response->data;
         foreach ($thanhpho as $key => $val) {
             $list_thanhpho[] = ['id' => $val->ProvinceID, 'name'=> $val->ProvinceName];
+        }
+        
+
+        $list_giamgia = [];
+        $list_freeship = [];
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/vouchers?active=true';
+        $response = $this->send_data_address_token($postData,$url,"GET");
+        $data = $response->content;
+
+        foreach ($data as $key => $val) {
+            if($val->voucherType=="FREE_SHIP")
+                $list_freeship[] = ['id' => $val->id, 'name'=> $val->description];
+            if($val->voucherType=="PURCHASE")
+                $list_giamgia[] = ['id' => $val->id, 'name'=> $val->description];
         }
 
         $list_quan=[];
@@ -634,33 +658,47 @@ class HomeController extends Controller
         $total = 0;
 
 
-        return view('frontend.pages.checkin',compact('khachhang','sanpham','total','list_thanhpho','list_quan','list_phuong'));
+        return view('frontend.pages.checkin',compact('khachhang','sanpham','total','list_thanhpho','list_quan','list_phuong','list_giamgia','list_freeship'));
     }
 
     public function postCheckin(Request $request)
     {
         $user_id=request()->cookie('user_id');
+
+        # Lấy sản phẩm từ giỏ hàng và giữ lại những sp có trong cok
+        $postData = [];
+        $array_id_sp = json_decode($_COOKIE['selectedCheckboxValues']);
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
+        $sanpham = $this->send_data_access_token($postData,$url,"GET");
+        $sanpham = array_filter($sanpham, function($item) use ($array_id_sp) {
+            return in_array($item->id, $array_id_sp);
+        });
+
         $orderStatus = "UNCONFIRMED";
-        $paymentMethod = Request::get('paymentMethod');
+        $paymentMethod = Request::get('select_thanhtoan');
         $shippingAddress = Request::get('shippingAddress');
-        $phoneNumber = Request::get('phoneNumber');
+        $phoneNumber = Request::get('txtNNPhone');
         $note = Request::get('note');
-        $name = Request::get('name');
+        $name = Request::get('txtNNName');
         $totalPayment = Request::get('totalPayment');
         $totalProductAmount = Request::get('totalProductAmount');
         $shippingFee = Request::get('shippingFee');
         $discountAmount = Request::get('discountAmount');
         $discountShippingFee = Request::get('discountShippingFee');
 
+        $idsVoucher=[];
+        $voucher_freeship = Request::get('select_giamgiavanchuyen');
+        $voucher_giamgia = Request::get('select_giamgiasanpham');
+        if($voucher_freeship!=""){
+            $idsVoucher[]=$voucher_freeship;
+        }
+        if($voucher_giamgia!=""){
+            $idsVoucher[]=$voucher_giamgia;
+        }
 
-        $idsVoucher = Request::get('idsVoucher');
-
-
-        $orderItems = Request::get('orderItems');
-
-
-        $wardCode = Request::get('wardCode');
-        $districtId = Request::get('districtId');
+        $orderItems = $sanpham;
+        $wardCode = Request::get('select_phuong');
+        $districtId = Request::get('select_quan');
 
 
 
@@ -683,33 +721,31 @@ class HomeController extends Controller
             "districtId"=> $districtId,
 
         );
-        dd($postData);
 
-        $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/';
-        $khachhang = $this->send_data_access_token($postData,$url,"POST");
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders';
+        $response = $this->send_data_access_token($postData,$url,"POST");
         
         
         echo "<script>
           alert('Bạn đã đặt mua sản phẩm thành công!');
-          window.location = '".url('/')."';</script>";
+          window.location = '".$response->urlPayment."';</script>";
     }
 
     public function postComment(Request $request)
     {
-        
+        dd("đang phát triển");
         $user_id=request()->cookie('user_id');
         // $binhluan_ten = $request->txtName;
         // $binhluan_email = $request->txtEmail;
-        $binhluan_noi_dung = $request->txtContent;
+        $binhluan_noi_dung = Request::get("txtContent");
         // $binhluan_trang_thai = 0;
-        $sanpham_id = $request->txtID;
+        $sanpham_id = Request::get("txtID");
         $rate = 5;
         // post comment
-        $postData = array(
-
-            );
-        $url = 'https://pbl6shopfashion-production.up.railway.app/api/comment?rate='.$rate.'&userId='.$user_id.'&productId='.(int)$sanpham_id.'&content='.$binhluan_noi_dung;
+        $postData = array();
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/comment?rate='.$rate.'&userId='.$user_id.'&productId='.(int)$sanpham_id.'&orderItemId='.$orderItemId.'&content='.$binhluan_noi_dung;
         $data = $this->send_data_access_token($postData,$url,"POST");
+        dd($data);
         
         
         
@@ -737,10 +773,9 @@ class HomeController extends Controller
         //     ->paginate(5);
 
         $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/searchAll';
-        $api_url = $api_url."?keyword=".$keyword."&page=1"."&maxprice=999999999"."&minprice=0"."&pageSize=999";
+        $api_url = $api_url."?keyword=".$keyword."&page=1"."&pageSize=999";
         $postData = array();
         $data = $this->send_data_access_token($postData,$api_url,"GET");
-
         return view('frontend.pages.product',compact('data'));
     }
  

@@ -22,7 +22,7 @@
         <div class="col-lg-12">
             <div class="form-group">
                 <label>Tên</label>
-                <input class="form-control" name="txtNName" value="{!! $nhom->nhom_ten !!}" placeholder="Tên..." />
+                <input class="form-control" name="txtNName" value="{!! $nhom->name !!}" placeholder="Tên..." />
                 <div>
                     {!! $errors->first('txtNName') !!}
                 </div>
@@ -31,7 +31,7 @@
         <div class="col-lg-12">
             <div class="form-group">
                 <label>Mô tả</label>
-                <textarea class="form-control" rows="3" name="txtNIntro" placeholder="Mô tả...">{!! $nhom->nhom_mo_ta !!}</textarea>
+                <textarea class="form-control" rows="3" name="txtNIntro" placeholder="Mô tả...">{!! $nhom->description !!}</textarea>
                 <script type="text/javascript">CKEDITOR.replace('txtNIntro'); </script>
             </div>
         </div>
@@ -39,8 +39,8 @@
             <div class="form-group">
                 <label>Hình ảnh</label>
                 <br>
-                <img src="{!! asset('public/images/nhom/'.$nhom->nhom_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
-                <input type="hidden" name="fImageCurrent" value="{!! $nhom->nhom_anh !!}">
+                <img src="{!! $nhom->imageUrl !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
+                <input type="hidden" name="fImageCurrent" value="{!! $nhom->imageUrl !!}">
                 <br>
                 <input type="file" name="fImage">
                 <div>

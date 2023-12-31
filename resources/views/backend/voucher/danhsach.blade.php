@@ -1,7 +1,7 @@
 @extends('backend.master')
 @section('title')
     <h3 class="page-header">
-        voucher / 
+        Voucher / 
         <a href="{!! URL::route('admin.voucher.getAdd') !!}" class="btn btn-info" style="margin-top:-8px;">Thêm mới</a>
     </h3>
 @stop

@@ -33,6 +33,7 @@
                       <tr>
                         <th></th>
                         <th></th>
+                        <th></th>
                         <th>Ảnh</th>
                         <th>Sản phẩm</th>
                         <th style="width:70px;">Size</th>
@@ -69,8 +70,9 @@
                           $sanpham = json_decode($response);
                           
                        ?>
-                      <tr>
-                        <td><a class="updatecart edit" id="{!! $item->id !!}" href='#'><fa class=" fa fa-edit"></fa></a></td>
+                      <tr id="{!! $item->id !!}">
+                        <td><input type="checkbox" id="checkbox_cart_items" name="checkbox_cart_items" value="{!! $item->id !!}" checked></td>
+                        <td><a class="updatecart edit" id={!! $item->id !!} value={!! $item->id !!} href='#'><fa class=" fa fa-edit"></fa></a></td>
                         <td><a class="remove" href='{!! URL::route("xoasanpham", ["id" => $item->id] ) !!}'><fa class="fa fa-close"></fa></a></td>
                         <td><a href="{!! url('san-pham',$sanpham->sanpham_id) !!}"><img src="{!! $sanpham->hinhsanpham_url[0]->imageUrl !!}"  style="width: 45px; height: 50px;"></a></td>
                         <td><a class="aa-cart-title" href="{!! url('san-pham',$sanpham->sanpham_id) !!}">{!!  $sanpham->sanpham_ten !!}</a></td>
@@ -109,17 +111,17 @@
              <!-- Cart Total view -->
              <div class="cart-view-total">
                <!-- <h4>Tổng tiền</h4> -->
-               <table class="aa-totals-table">
+               {{-- <table class="aa-totals-table">
                  <tbody>
                    <tr>
                      <th>Tổng tiền</th>
                      <td> {!! number_format("$total",0,",",".") !!}vnđ</td>
                    </tr>
                  </tbody>
-               </table>
+               </table> --}}
                @if (request()->hasCookie('access_token'))
                   <a href="{!! url('/') !!}" class="aa-cart-view-btn"> Mua tiếp</a>
-                  <a href="{!! URL::route('getThanhtoan') !!}" class="aa-cart-view-btn">Thanh Toán</a>
+                  <a href="{!! URL::route('getThanhtoan') !!}" id="cart_thanhtoan" class="aa-cart-view-btn">Thanh Toán</a>
                   
                @else
                   <a href="{!! url('/') !!}" class="aa-cart-view-btn">Mua tiếp</a>
@@ -178,6 +180,30 @@
     </div>
   </div>
 </section>
+<script>
+  $(document).ready(function(){
+    $("#cart_thanhtoan").on("click",function(e){
+      e.preventDefault();
+      var selectedCheckboxValues = [];
+      $('input[name="checkbox_cart_items"]:checked').each(function() {
+        selectedCheckboxValues.push($(this).val());
+      });
+      document.cookie = "selectedCheckboxValues=" + JSON.stringify(selectedCheckboxValues) + ";";
+      window.location.href = "{!! URL::route('getThanhtoan') !!}";
+    })
+
+    $(".updatecart").on("click",function(e){
+      e.preventDefault();
+      var data_update_cart = {};
+      data_update_cart['id'] = $("#"+$(this).attr("value")+" #checkbox_cart_items").val()
+      data_update_cart['size'] =  $("#"+$(this).attr("value")+" #select_size").val()
+      data_update_cart['quantity'] =  $("#"+$(this).attr("value")+" #quantity").val()
+      document.cookie = "data_update_cart=" + JSON.stringify(data_update_cart) + ";";
+      window.location.href = "{!! URL::route('capnhat', ['id' => 'id' ]) !!}";
+    })
+
+  })
+</script>
 <!-- / Support section -->
 
  <!-- Footer -->

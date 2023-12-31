@@ -57,7 +57,7 @@
                             <div class="col-md-6">
                               <div class="aa-checkout-single-bill">
                                 <div>
-                                <select id="select_thanhtoan" class="form-control" >
+                                <select id="select_thanhtoan" name="select_thanhtoan" class="form-control" >
                                   <option value=""> -- Chọn phương thức thanh toán -- </option>
                                   <option value="VNPAY"> thành toán qua Vn Pay </option>
                                   <option value="CASH"> Thanh toán khi nhận hàng </option>
@@ -76,14 +76,24 @@
                           <div class="row">
                             <div class="col-md-12">
                               <div class="aa-checkout-single-bill">
-                                <input type="text" name="txtKHName" placeholder="Mã giảm giá sản phẩm" >
+                                <select id="select_giamgiasanpham" name="select_giamgiasanpham" class="form-control" >
+                                  <option value=""> -- Chọn mã giảm giá -- </option>
+                                  <?php 
+                                      Select_Function($list_giamgia); 
+                                    ?>
+                                </select>
                               </div>                             
                             </div>
                           </div> 
                           <div class="row">
                             <div class="col-md-12">
                               <div class="aa-checkout-single-bill">
-                                <input type="text" name="txtKHName" placeholder="Mã giảm giá vận chuyển" >
+                                <select id="select_giamgiavanchuyen" name="select_giamgiavanchuyen" class="form-control" >
+                                  <option value=""> -- Chọn mã Freeship -- </option>
+                                  <?php 
+                                      Select_Function($list_freeship); 
+                                    ?>
+                                </select>
                               </div>                             
                             </div>
                           </div>                                              
@@ -134,7 +144,7 @@
                             <div class="col-md-4">
                               <div class="aa-checkout-single-bill">
                                 <div >
-                                <select id="select_thanhpho" class="form-control" >
+                                <select id="select_thanhpho" name="select_thanhpho" class="form-control" >
                                     <?php 
                                       Select_Function($list_thanhpho); 
                                     ?>
@@ -146,7 +156,7 @@
                             <div class="col-md-4">
                               <div class="aa-checkout-single-bill">
                                 <div>
-                                <select id="select_quan" class="form-control" >
+                                <select id="select_quan" name="select_quan" class="form-control" >
                                     <?php 
                                       Select_Function($list_quan); 
                                     ?>
@@ -158,7 +168,7 @@
                             <div class="col-md-4">
                               <div class="aa-checkout-single-bill">
                                 <div >
-                                <select id="select_phuong" class="form-control" >
+                                <select id="select_phuong" name="select_phuong" class="form-control" >
                                     <?php 
                                       Select_Function($list_phuong); 
                                     ?>
@@ -249,7 +259,7 @@
                                 <textarea cols="8" name="note"  rows="3" placeholder="Ghi chú"></textarea>
                               </div>                             
                             </div>                            
-                          </div>              
+                          </div> 
                         </div>
                       </div>
                     </div>
@@ -312,6 +322,9 @@
                   
                 </div>
               </div>
+              {{-- Data --}}
+              <input type="text" name="totalPayment" val="{!! $total !!}" style="display:none">  
+
             </div>
           </form>
          </div>

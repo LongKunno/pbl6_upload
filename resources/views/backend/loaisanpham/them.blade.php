@@ -30,20 +30,6 @@
         </div>
         <div class="col-lg-12">
             <div class="form-group">
-                <label for="input" >Nhóm</label>
-                <div>
-                    <select id="input" name="txtLSPParent"  class="form-control">
-                            <option value="">--Chọn nhóm sản phẩm--</option>
-                            <?php Select_Function($nhom); ?>
-                    </select>
-                </div>
-                <div>
-                    {!! $errors->first('txtLSPParent') !!}
-                </div> 
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="form-group">
                 <label>Mô tả</label>
                 <textarea class="form-control" rows="3" name="txtLSPIntro" placeholder="Mô tả...">{!! old('txtLSPIntro') !!}</textarea>
                 <script type="text/javascript">CKEDITOR.replace('txtLSPIntro'); </script>

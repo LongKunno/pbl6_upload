@@ -99,7 +99,7 @@
                     <label>Size</label>
                     <div>
                         @foreach($size as $s)
-                            <label style="margin-right:10px;"> <input type="checkbox" data-id={{ $s['id'] }} name="sizes[]" value="{{ $s['name'] }}">{{ $s['name'] }} : <input style="width: 40px;" type="text" id="size_soluong_{{ $s['id'] }}" pattern="[0-9]+" title="Chỉ cho phép nhập số nguyên dương"></label>
+                            <label style="margin-right:10px;">{{ $s['name'] }} : <input style="width: 40px;" type="text" class="txt_them_size_soluong" data-name="{{ $s['name'] }}" id="size_soluong_{{ $s['id'] }}" pattern="[0-9]+" title="Chỉ cho phép nhập số nguyên dương"></label>
                         @endforeach
                     </div>
                     <div>
@@ -154,12 +154,13 @@ $(document).ready(function() {
         var brandId = $("#select_brand").val()
         var unit = $("#select_unit").val()
         var productSizes = [];
-        $("input[name='sizes[]']:checked").each(function() {
-            productSizes.push($(this).val()+":"+$("#size_soluong_"+$(this).data("id")).val());
+        $(".txt_them_size_soluong").each(function() {
+            if($(this).val()){
+                productSizes.push($(this).attr("data-name")+":"+$(this).val());
+            }
         });
         var promotionId = $("#select_promotion").val()
         //test
-        console.log(desc);
 
         formData.append("name", name);
         formData.append("price", price);

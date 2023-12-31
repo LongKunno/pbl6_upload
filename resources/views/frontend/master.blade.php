@@ -113,10 +113,37 @@
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">GIỎ HÀNG</span>
                   <span class="aa-cart-notify">
-                    <?php 
-                      $count = Cart::count(); 
-                      print_r($count);
-                    ?>
+                     <?php 
+                          $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.request()->cookie('user_id').'/count';
+                          $postData = array();
+                          $postData = json_encode($postData);
+                          $ch = curl_init();
+                          curl_setopt($ch, CURLOPT_URL, $url);
+                          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                          curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                          $headers = array(
+                              "Authorization: Bearer " . request()->cookie('access_token'),
+                              "Content-Type: application/json"
+                          );
+                          curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                          // Thực hiện yêu cầu POST
+                          $response = curl_exec($ch);
+                          // Kiểm tra lỗi
+                          if (curl_errno($ch)) {
+                              $error = curl_error($ch);
+                              dd($error);
+                          }
+                          // Đóng kết nối cURL
+                          curl_close($ch);
+                          $count = json_decode($response);
+                          if (!is_numeric($count)) {
+                              $count = 0;
+                          }
+                          print_r($count);
+                       ?>
                   </span>
                 </a>
               </div>
