@@ -55,6 +55,12 @@ Route::post('post-update-imformation', 'HomeController@post_update_imformation')
 
 Route::get('hien-san-pham/{id}','HomeController@hiensanpham');
 
+Route::get('donhang','HomeController@getdonhang');
+
+Route::get('huydonhang','HomeController@huydonhang');
+
+// Route::get('danhgiasanpham','HomeController@getdanhgiasanpham');
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('nhom-san-pham/{url_id}', 'HomeController@group');

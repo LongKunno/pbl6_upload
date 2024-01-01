@@ -184,10 +184,10 @@ class HomeController extends Controller
         if ($response) {
             $data = json_decode($response);
             if(isset($data->accessToken)){
-                $cookie_access_token = cookie('access_token', $data->accessToken, 60);
-                $cookie_fullName = cookie('fullName', $data->fullName, 60);
-                $cookie_user_id = cookie('user_id', $data->id, 60);
-                $cookie_refresh_token = cookie('refresh_token', $data->refreshToken, 60);
+                $cookie_access_token = cookie('access_token', $data->accessToken, 1200);
+                $cookie_fullName = cookie('fullName', $data->fullName, 1200);
+                $cookie_user_id = cookie('user_id', $data->id, 1200);
+                $cookie_refresh_token = cookie('refresh_token', $data->refreshToken, 1200);
                 return redirect()->to('/')
                 ->withCookie($cookie_access_token)
                 ->withCookie($cookie_user_id)
@@ -208,6 +208,16 @@ class HomeController extends Controller
     public function getregister()
     {
         return view('auth.register');
+    }
+
+    public function getdonhang()
+    {
+        $user_id=request()->cookie('user_id');
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/users/'.$user_id;
+        $data_init = $this->send_data_access_token([],$api_url,"GET");
+        $data = $data_init->content;
+
+        return view('auth.donhang',compact('data'));
     }
 
     public function postregister(Request $request)
@@ -273,10 +283,11 @@ class HomeController extends Controller
             $data = json_decode($response);
 
             if(isset($data->accessToken)){
-                $cookie_access_token = cookie('access_token', $data->accessToken, 60);
-                $cookie_fullName = cookie('fullName', $data->fullName, 60);
-                $cookie_user_id = cookie('user_id', $data->id, 60);
-                $cookie_refresh_token = cookie('refresh_token', $data->refreshToken, 60);
+
+                $cookie_access_token = cookie('access_token', $data->accessToken, 1200);
+                $cookie_fullName = cookie('fullName', $data->fullName, 1200);
+                $cookie_user_id = cookie('user_id', $data->id, 1200);
+                $cookie_refresh_token = cookie('refresh_token', $data->refreshToken, 1200);
                 echo "<script>alert('Đăng kí tài khoản thành công!');</script>";
                     return redirect()->to('/')
                     ->withCookie($cookie_access_token)
@@ -725,10 +736,16 @@ class HomeController extends Controller
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders';
         $response = $this->send_data_access_token($postData,$url,"POST");
         
-        
-        echo "<script>
-          alert('Bạn đã đặt mua sản phẩm thành công!');
-          window.location = '".$response->urlPayment."';</script>";
+        if($response->urlPayment!=null){
+            echo "<script>
+            alert('Bạn đã đặt mua sản phẩm thành công!');
+            window.location = '".$response->urlPayment."';</script>";
+        }else{
+            echo "<script>
+            alert('Bạn đã đặt mua sản phẩm thành công!');
+            window.location = '".url('/')."';</script>";
+        }
+
     }
 
     public function postComment(Request $request)
@@ -758,6 +775,22 @@ class HomeController extends Controller
     {
 
         return view('frontend.pages.product');
+    }
+
+    public function huydonhang($id)
+    {
+        dd($id);
+        // $user_id=request()->cookie('user_id');
+        // // Xoá sản phẩm của giỏ hàng
+        // $postData = array(
+        //         $id
+        //     );
+        // $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$."?userId=".$user_id;
+        // $data = $this->send_data_access_token($postData,$url,"DELETE");
+
+        echo "<script>
+            alert('Bạn đã huỷ đơn hàng thành công!');
+            window.location = '".url('donhang')."';</script>";
     }
 
     public function postFind()

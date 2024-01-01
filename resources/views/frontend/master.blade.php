@@ -76,6 +76,7 @@
                   @if (request()->hasCookie('access_token'))
                     <img href="{{ url('/update-imformation') }}" src="{!! asset('public/images/avatar.jpg') !!}" alt="fashion img" style="border-radius: 50%;width: 22px;height: 22px;">
                     <li class="hidden-xs"><a href="{{ url('/update-imformation') }}">{{ request()->cookie('fullName') }}</a></li>
+                    <li class="hidden-xs"><a href="{{ url('/donhang') }}">Đơn hàng</a></li>
                     <li class="hidden-xs"><a href="{{ url('/logout') }}">Thoát</a></li>
                   @else
                     <li class="hidden-xs"><a href="{{ url('/getregister') }}">Đăng kí</a></li>

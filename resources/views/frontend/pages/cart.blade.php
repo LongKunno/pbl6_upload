@@ -76,17 +76,46 @@
                         <td><a class="remove" href='{!! URL::route("xoasanpham", ["id" => $item->id] ) !!}'><fa class="fa fa-close"></fa></a></td>
                         <td><a href="{!! url('san-pham',$sanpham->sanpham_id) !!}"><img src="{!! $sanpham->hinhsanpham_url[0]->imageUrl !!}"  style="width: 45px; height: 50px;"></a></td>
                         <td><a class="aa-cart-title" href="{!! url('san-pham',$sanpham->sanpham_id) !!}">{!!  $sanpham->sanpham_ten !!}</a></td>
+                        <?php 
+                          $url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product_detail?id='.$sanpham->sanpham_id;
+                          $postData = array();
+                          $postData = json_encode($postData);
+                          $ch = curl_init();
+                          curl_setopt($ch, CURLOPT_URL, $url);
+                          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                          curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                          // Thực hiện yêu cầu POST
+                          $response = curl_exec($ch);
+                          // Kiểm tra lỗi
+                          if (curl_errno($ch)) {
+                              $error = curl_error($ch);
+                              dd($error);
+                          }
+                          // Đóng kết nối cURL
+                          curl_close($ch);
+                          $data_product_detail = json_decode($response);
+                          $data_product_detail_size = $data_product_detail->sizeNames;
+                       ?>
                         <td>
                           <div>
                             <select id="select_size" class="form-control" style="width: 70px;">
                                 <?php
                                   foreach ($size as $option) {
                                       if ($option["name"] == $item->size) {
-                                        
-                                          echo '<option value="' . $option["id"] . '" selected>' . $option["name"] . '</option>';
-                                          
+                                        if (in_array($option["name"], $data_product_detail_size)) {
+                                          echo '<option value="' . $option["id"] . '" selected style="display:;">' . $option["name"] . '</option>';
+                                        } else {
+                                          echo '<option value="' . $option["id"] . '" selected style="display:none;">' . $option["name"] . '</option>';
+                                        }
                                       } else {
-                                          echo '<option value="' . $option["id"] . '">' . $option["name"] . '</option>';
+                                        if (in_array($option["name"], $data_product_detail_size)) {
+                                          echo '<option value="' . $option["id"] . '" style="display:;">' . $option["name"] . '</option>';
+                                        } else {
+                                          echo '<option value="' . $option["id"] . '" style="display:none;">' . $option["name"] . '</option>';
+                                        }
                                       }
                                   }
                                 ?>
