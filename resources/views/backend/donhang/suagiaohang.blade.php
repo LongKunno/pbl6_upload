@@ -9,7 +9,7 @@
             <div class="panel-heading" style="height:60px;">
               <h3 >
                 <a href="{!! URL::route('admin.donhang.list') !!}" style="color:blue;"><i class="fa fa-product-hunt" style="color:blue;">Quản lý đơn hàng</i></a>
-                /Cập nhật thông tin giao hàng đơn hàng số {{$donhang->id}}
+                /Cập nhật thông tin giao hàng đơn hàng số {{$data->id}}
               </h3>
             <div class="navbar-right" style="margin-right:10px;margin-top:-50px;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
@@ -30,19 +30,15 @@
                   <tbody>
                       <tr>
                           <td><b>Tên khách hàng</b></td>
-                          <td>{!! $khachhang->khachhang_ten !!}</td>
+                          <td>{!! $data->name !!}</td>
                       </tr>
                       <tr>
                           <td><b>Số điện thoại</b></td>
-                          <td>{!! $khachhang->khachhang_sdt !!}</td>
-                      </tr>
-                      <tr>
-                          <td><b>Email</b></td>
-                          <td>{!! $khachhang->khachhang_email !!}</td>
+                          <td>{!! $data->phoneNumber !!}</td>
                       </tr>
                       <tr>
                           <td><b>Địa chỉ</b></td>
-                          <td>{!! $khachhang->khachhang_dia_chi !!}</td>
+                          <td>{!! $data->shippingAddress !!}</td>
                       </tr>
                   </tbody>
               </table>
@@ -54,10 +50,17 @@
             <div class="form-group">
                 <label for="input" >Tình trạng đơn hàng</label>
                 <div>
-                    <?php
-                    $t = DB::table('tinhtranghd')->where('id', $donhang->tinhtranghd_id)->first();  
-                    ?>
-                    <input class="form-control" name="txtLHQuant" value="{!! $t->tinhtranghd_ten !!}" disabled="true" />
+                    <select id="select_order_status" name="select_order_status" class="form-control" >
+                      <?php
+                        foreach ($order_status as $option) {
+                              if ($option["name"]== $data->orderStatus) {
+                                echo '<option value="' . $option["id"] . '" selected>' . $option["name"] . '</option>';
+                              } else {
+                                echo '<option value="' . $option["id"] . '">' . $option["name"] . '</option>';
+                              }
+                        }
+                      ?>
+                  </select>
                 </div>
             </div>
         </div>
@@ -68,39 +71,30 @@
             <h3 class="panel-title">Thông tin giao hàng</h3>
           </div>
           <div class="panel-body">
-              <div class="col-lg-7">
-            <div class="form-group">
-                <label>Người nhận hàng</label>
-                <input class="form-control" name="txtName" value="{!! $donhang->donhang_nguoi_nhan !!}" placeholder="Ký hiệu..." />
-               
-            </div>
+          <div class="table-responsive">
+              <table class="table table-hover">
+
+                  <tbody>
+                      <tr>
+                          <td><b>Tên người nhận</b></td>
+                          <td>{!! $data->name !!}</td>
+                      </tr>
+                      <tr>
+                          <td><b>Số điện thoại</b></td>
+                          <td>{!! $data->phoneNumber !!}</td>
+                      </tr>
+                      <tr>
+                          <td><b>Địa chỉ</b></td>
+                          <td>{!! $data->shippingAddress !!}</td>
+                      </tr>
+                      <tr>
+                          <td><b>Ghi chú</b></td>
+                          <td>{!! $data->note !!}</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>    
         </div>
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label>Số điện thoại</label>
-                <input class="form-control" name="txtPhone" value="{!! $donhang->donhang_nguoi_nhan_sdt !!}"/>
-                  
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label>Email</label>
-                <input class="form-control" name="txtEmail" value="{!! $donhang->donhang_nguoi_nhan_email !!}"/>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="form-group">
-                <label>Địa chỉ</label>
-                <textarea class="form-control" name="txtAddress" rows="2">{!! $donhang->donhang_nguoi_nhan_dia_chi !!}</textarea>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="form-group">
-                <label>Ghi chú</label>
-                <textarea class="form-control" name="txtNote" rows="2" >{!! $donhang->donhang_ghi_chu !!}</textarea>
-            </div>
-        </div>
-          </div>
         </div> 
         </div>
     </div>
@@ -123,26 +117,51 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <?php $count = 0; ?>
-                            @foreach ($chitiet as $val)
+                        <?php 
+                            $count = 0; 
+                            $tongtien = 0; 
+                        ?>
+                            @foreach ($data->orderItems as $val)
                                 <tr>
                                     <td>{!! $count = $count + 1 !!}</td>
                                     <td>
                                         <?php  
-                                            $sp = DB::table('sanpham')->where('id',$val->sanpham_id)->first();
-                                            print_r($sp->sanpham_ten);
+                                            $url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product_detail?id='.$val->productId;
+                                            $postData = array();
+                                            $postData = json_encode($postData);
+                                            $ch = curl_init();
+                                            curl_setopt($ch, CURLOPT_URL, $url);
+                                            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                                            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                                            // Thực hiện yêu cầu POST
+                                            $response = curl_exec($ch);
+                                            // Kiểm tra lỗi
+                                            if (curl_errno($ch)) {
+                                                $error = curl_error($ch);
+                                                dd($error);
+                                            }
+                                            // Đóng kết nối cURL
+                                            curl_close($ch);
+                                            $data_orders_product_detail = json_decode($response);
+                                            print_r($data_orders_product_detail->productName);
                                         ?>
                                     </td>
                                     <td>
-                                    {!! number_format($val->chitietdonhang_thanh_tien/$val->chitietdonhang_so_luong,0,",",".") !!} vnđ 
+                                    {!! number_format($val->unitPrice,0,",",".") !!} vnđ 
                                     </td>
-                                    <td>{!! $val->chitietdonhang_so_luong !!}</td>
-                                    <td>{!! number_format("$val->chitietdonhang_thanh_tien",0,",",".") !!} vnđ </td>
+                                    <td>{!! $val->quantity !!}</td>
+                                    <td>{!! number_format($val->unitPrice*$val->quantity,0,",",".") !!} vnđ </td>
+                                    @php
+                                        $tongtien += $val->unitPrice*$val->quantity
+                                    @endphp
                                 </tr>
                             @endforeach
                             <tr>
                             <td colspan="5">
-                            <b>Tổng tiền : {!! number_format("$donhang->donhang_tong_tien",0,",",".") !!} vnđ </b>
+                            <b>Tổng tiền : {!! number_format("$tongtien",0,",",".") !!} vnđ </b>
                                 
                             </td>
                                 

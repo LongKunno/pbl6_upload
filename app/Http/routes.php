@@ -33,6 +33,8 @@ Route::get('/demo3', 'HomeController@demo3');
 
 Route::get('logout', 'HomeController@logout');
 
+Route::get('login/google', 'HomeController@login_google');
+
 Route::get('login', 'HomeController@login');
 
 Route::post('postlogin', 'HomeController@postlogin');
@@ -57,7 +59,7 @@ Route::get('hien-san-pham/{id}','HomeController@hiensanpham');
 
 Route::get('donhang','HomeController@getdonhang');
 
-Route::get('huydonhang','HomeController@huydonhang');
+Route::get('huydonhang/{id}','HomeController@huydonhang');
 
 // Route::get('danhgiasanpham','HomeController@getdanhgiasanpham');
 

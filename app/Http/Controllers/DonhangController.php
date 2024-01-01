@@ -181,27 +181,35 @@ class DonhangController extends Controller
     }
     public function getEdit1($id)
     {
-    	$data = DB::table('tinhtranghd')->get();
-		foreach ($data as $key => $val) {
-			$tinhtrang[] = ['id' => $val->id, 'name'=> $val->tinhtranghd_ten];
-		}
-    	$donhang = DB::table('donhang')->where('id',$id)->first();
-    	$khachhang = DB::table('khachhang')->where('id',$donhang->khachhang_id)->first();
-    	$chitiet = DB::table('chitietdonhang')->where('donhang_id',$donhang->id)->get();
-    	return view('backend.donhang.suagiaohang',compact('donhang','tinhtrang','khachhang','chitiet'));
+    	$user_id=request()->cookie('user_id');
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$id;
+        $data = $this->send_data_access_token([],$api_url,"GET");
+
+		$order_status = [
+                    ['id' => "UNCONFIRMED", 'name' => 'UNCONFIRMED'],
+                    ['id' => "CONFIRMED", 'name' => 'CONFIRMED'],
+                    ['id' => "PACKAGING", 'name' => 'PACKAGING'],
+                    ['id' => "IN_TRANSIT", 'name' => 'IN_TRANSIT'],
+                    ['id' => "DELIVERED", 'name' => 'DELIVERED'],
+					['id' => "CANCELLED", 'name' => 'CANCELLED'],
+					['id' => "RETURN_EXCHANGE", 'name' => 'RETURN_EXCHANGE'],
+					['id' => "REFUNDED", 'name' => 'REFUNDED'],
+					['id' => "PREPARING_PAYMENT", 'name' => 'PREPARING_PAYMENT'],
+        ];
+
+
+    	return view('backend.donhang.suagiaohang',compact('data','order_status'));
     }
 
-    public function postEdit1(GiaohangRequest $request,$id)
+    public function postEdit1(Request $request,$id)
     {
-    	DB::table('donhang')
-    		->where('id',$id)
-    		->update([
-    			'donhang_nguoi_nhan'=> $request->txtName,
-    			'donhang_nguoi_nhan_sdt'=> $request->txtPhone,
-    			'donhang_nguoi_nhan_email'=> $request->txtEmail,
-    			'donhang_nguoi_nhan_dia_chi'=> $request->txtAddress,
-    			'donhang_ghi_chu'=> $request->txtNote,
-    		]);
+		if($request->select_order_status!=null){
+			$url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$id.'?orderId='.$id.'&orderStatus='.$request->select_order_status;
+		}else{
+			return redirect()->route('admin.donhang.list')->with(['flash_level'=>'danger','flash_message'=>'Không nhân được giá trị !!!']);
+		}
+        $data = $this->send_data_access_token([], $url, "PUT");
+
     	return redirect()->route('admin.donhang.list')->with(['flash_level'=>'success','flash_message'=>'Chỉnh sửa thành công!!!']);
     }
 
@@ -263,7 +271,6 @@ class DonhangController extends Controller
 		$api_url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$id;
         $postData = array();
         $donhang = $this->send_data_access_token($postData,$api_url,"GET");
-		dd($donhang);
 
 		$api_url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$donhang->userId;
         $postData = array();

@@ -22,7 +22,7 @@
     
     <table>
       <tr>
-        <td width="120px"><strong>Khách hàng:</strong></td> <td>{!!$donhang->note!!}</td>
+        <td width="120px"><strong>Khách hàng:</strong></td> <td>{!!$donhang->name!!}</td>
         <td><strong></td>
       </tr>
       <tr>
@@ -34,7 +34,7 @@
         <td></td>
       </tr>
       <tr>
-        <td width="120px"><strong>Email:</strong></td> <td> {!!$khachhang->gmail!!}</td>
+        <td width="120px"><strong>Note:</strong></td> <td> {!!$donhang->note!!}</td>
         <td></td>
       </tr>
     </table><br><br>
@@ -42,7 +42,7 @@
       <thead>
         <tr>
           <td style="border:thin solid;" width="50px"><strong>STT</strong></td>
-          <td style="border:thin solid;" width="150px"><strong>ID sản phẩm</strong></td>
+          <td style="border:thin solid;" width="150px"><strong>Sản phẩm</strong></td>
           <td style="border:thin solid;" width="50px"><strong>Số lượng</strong></td>
           <td style="border:thin solid;" width="50px"><strong>Size</strong></td>
           <td style="border:thin solid;" width="150px"><strong>Đơn giá</strong></td>
@@ -55,15 +55,36 @@
             <tr >
               <td style="border:thin blue solid;border-style:dashed;">{!! $count = $count + 1 !!}</td>
               <td style="border:thin blue solid;border-style:dashed;">
-
+                <?php  
+                    $url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product_detail?id='.$val->productId;
+                    $postData = array();
+                    $postData = json_encode($postData);
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                    // Thực hiện yêu cầu POST
+                    $response = curl_exec($ch);
+                    // Kiểm tra lỗi
+                    if (curl_errno($ch)) {
+                        $error = curl_error($ch);
+                        dd($error);
+                    }
+                    // Đóng kết nối cURL
+                    curl_close($ch);
+                    $data_orders_product_detail = json_decode($response);
+                    print_r($data_orders_product_detail->productName);
+                ?>
               </td>
               <td style="border:thin blue solid;border-style:dashed;">{!! $val->quantity !!}</td>
               <td style="border:thin blue solid;border-style:dashed;">{!! $val->sizeType !!}</td>
               <td style="border:thin blue solid;border-style:dashed;">
-              {!! number_format($val->unitPrice/$val->quantity,0,",",".") !!} vnđ 
+              {!! number_format($val->unitPrice,0,",",".") !!} vnđ 
               </td>
-              <td style="border:thin blue solid;border-style:dashed;">{!! $val->productId !!}</td>
-              <td style="border:thin blue solid;border-style:dashed;" >{!! number_format("$val->unitPrice",0,",",".") !!} vnđ </td>
+              <td style="border:thin blue solid;border-style:dashed;" >{!! number_format($val->unitPrice*$val->quantity,0,",",".") !!} vnđ </td>
           </tr>
             @endforeach
             <tr>
@@ -82,8 +103,8 @@
         <td style="border:thin blue solid;border-style:dashed;" width="152px">{!! number_format($donhang->totalProductAmount, 0, ",", ".") !!} vnđ</td>
       </tr>
       <tr>
-        <td width="500px">Tổng giá trị</td>
-        <td width="152px" style="border:thin blue solid;border-style:dashed;">{!! number_format($donhang->totalProductAmount, 0, ",", ".") !!} vnđ</td>
+        <td width="500px">Số tiền phải trả</td>
+        <td width="152px" style="border:thin blue solid;border-style:dashed;">{!! number_format($donhang->totalPayment, 0, ",", ".") !!} vnđ</td>
       </tr>
     </table><br>
     <table style="margin-bottom:-300px;">

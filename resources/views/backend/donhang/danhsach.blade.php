@@ -42,6 +42,12 @@
                         title="Thông tin chi tiết">
                         <i class="fa fa-crosshairs"></i>
                     </a>
+                    <a href="{!! URL::route('admin.donhang.getEdit2', $item->id ) !!}" 
+                       type="button" class="btn btn-danger" 
+                       data-toggle="tooltip" data-placement="left" 
+                       title="Chuyển trạng thái tiếp theo">
+                        <i class="fa fa-credit-card"></i>
+                    </a>
                     <a href="{!! URL::route('admin.donhang.pdf', $item->id ) !!}" 
                        type="button" class="btn btn-default" 
                        data-toggle="tooltip" data-placement="left" 

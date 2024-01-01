@@ -537,6 +537,9 @@ class HomeController extends Controller
 
     public function buyding(Request $request,$id,$size)
     {
+        if(Request::input("size")=="size"){
+            return back();
+        }
         $user_id=request()->cookie('user_id');
         // Xoá sản hết phẩm
         // $postData = array("userId"=> $user_id);
@@ -779,14 +782,8 @@ class HomeController extends Controller
 
     public function huydonhang($id)
     {
-        dd($id);
-        // $user_id=request()->cookie('user_id');
-        // // Xoá sản phẩm của giỏ hàng
-        // $postData = array(
-        //         $id
-        //     );
-        // $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$."?userId=".$user_id;
-        // $data = $this->send_data_access_token($postData,$url,"DELETE");
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$id.'?orderId='.$id.'&orderStatus=CANCELLED';
+        $data = $this->send_data_access_token([],$url,"PUT");
 
         echo "<script>
             alert('Bạn đã huỷ đơn hàng thành công!');

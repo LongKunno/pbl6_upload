@@ -32,7 +32,7 @@ $sanpham = $data;
                           $image = $item->imageUrls;
                         ?>
                             <a class="aa-product-img" href="{!! url('san-pham',$item->id) !!}"><img src="{!! $image[0] !!}" style="width: 250px; height: 300px;"></a>
-                            <a class="aa-add-card-btn" href="{!! url('mua-hang',[$item->id,$item->id]) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
+                            <a class="aa-add-card-btn" href="{!! url('san-pham',$item->id) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
                             <figcaption>
                               <h4 class="aa-product-title"><a href="{!! url('san-pham',$item->id) !!}">{!! $item->name !!}</a></h4>
                               <input type="hidden" name="txtqty" value="1" />

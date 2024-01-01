@@ -62,19 +62,15 @@
                                 <tbody>
                                     <tr>
                                         <td><b>Tên khách hàng</b></td>
-                                        <td>{!! $khachhang->khachhang_ten !!}</td>
+                                        <td>{!! $item->name !!}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Số điện thoại</b></td>
-                                        <td>{!! $khachhang->khachhang_sdt !!}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Email</b></td>
-                                        <td>{!! $khachhang->khachhang_email !!}</td>
+                                        <td>{!! $item->phoneNumber !!}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Địa chỉ</b></td>
-                                        <td>{!! $khachhang->khachhang_dia_chi !!}</td>
+                                        <td>{!! $item->shippingAddress !!}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -225,13 +221,13 @@
                                                 <tr>
                                                 <td colspan="5">
                                                 <b>Số tiền thực tế phải trả : {!! number_format("$item->totalPayment",0,",",".") !!} vnđ </b>
-                                                    @if ()
+                                                    @if ($item->orderStatus == "UNCONFIRMED")
                                                         <a href="{!! url("huydonhang",$item->id) !!}">
                                                             <button style="float: right; background-color: #3498db; color: #fff; border: none; font-size: 16px; padding: 10px 20px; margin-top: 10px;">Huỷ đơn hàng</button>
                                                         </a>
                                                     @endif
-                                                    @if ()
-                                                        <a href="{!! url("danhgiasanpham") !!}">
+                                                    @if ($item->orderStatus == "DELIVERED")
+                                                        <a href="{!! url("danhgiasanpham",$item->id) !!}">
                                                             <button style="float: right; background-color: #3498db; color: #fff; border: none; font-size: 16px; padding: 10px 20px; margin-top: 10px;">Đánh giá</button>
                                                         </a>
                                                     @endif

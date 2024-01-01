@@ -34,7 +34,7 @@
                     @else
                       <a class="aa-product-img" href="{!! url('san-pham',$item->product_id) !!}"><img src="https://bizweb.dktcdn.net/100/332/013/themes/685588/assets/no-product.jpg?1675674448471"  style="width: 250px; height: 300px;"></a>
                     @endif
-                    <a class="aa-add-card-btn" href="{!! url('mua-hang',[$item->product_id,$item->product_id]) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
+                    <a class="aa-add-card-btn" href="{!! url('san-pham',$item->product_id) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
                     <figcaption>
                       <h4 class="aa-product-title"><a href="{!! url('san-pham',$item->product_id) !!}">{!! $item->product_name !!}</a></h4>
                       <input type="hidden" name="txtqty" value="1" />

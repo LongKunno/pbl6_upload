@@ -56,7 +56,7 @@
               <figure>
                 <a class="aa-product-img" href="{!! url('san-pham',$sanpham->id) !!}"><img src="{!! $sanpham->imageUrls[0] !!}" style="width: 250px; height: 300px;" alt="polo shirt img"></a>
                 
-                <a class="aa-add-card-btn" href="{!! url('mua-hang',[$sanpham->id,$sanpham->id]) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
+                <a class="aa-add-card-btn" href="{!! url('san-pham',$sanpham->id) !!}"><span class="fa fa-shopping-cart"></span>Mua ngay</a>
                 <figcaption>
                   <h4 class="aa-product-title"><a href="{!! url('san-pham',$sanpham->id) !!}">{!! $sanpham->name !!}</a></h4>
                   <input type="hidden" name="txtqty" value="1" />

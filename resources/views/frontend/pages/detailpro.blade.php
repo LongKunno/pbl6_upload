@@ -12,6 +12,29 @@ $loaisanpham_id = $data->loaisanpham_id;
 $lohang_gia_ban_ra = $data->lohang_gia_ban_ra;
 $sanpham_mota = $data->sanpham_mota;
 $comments = $data ->comments;
+
+
+  $url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product_detail?id='.$sanpham_id;
+  $postData = array();
+  $postData = json_encode($postData);
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+  // Thực hiện yêu cầu POST
+  $response = curl_exec($ch);
+  // Kiểm tra lỗi
+  if (curl_errno($ch)) {
+      $error = curl_error($ch);
+      dd($error);
+  }
+  // Đóng kết nối cURL
+  curl_close($ch);
+  $data_product_detail = json_decode($response);
+  $data_product_detail_size = $data_product_detail->sizeNames;
 ?>
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
@@ -69,9 +92,18 @@ $comments = $data ->comments;
             </div>
             <div class="aa-prod-view-bottom">
               <div style="width:16%">
-                <select id="select_size" class="form-control" >
-                    <?php Select_Function($size); ?>
-                </select>
+                <select id="select_size" class="form-control" style="width: 70px;">
+                      <?php
+                      echo '<option value="">size</option>';
+                        foreach ($size as $option) {
+                              if (in_array($option["name"], $data_product_detail_size)) {
+                                echo '<option value="' . $option["id"] . '" style="display:;">' . $option["name"] . '</option>';
+                              } else {
+                                echo '<option value="' . $option["id"] . '" style="display:none;">' . $option["name"] . '</option>';
+                              }
+                        }
+                      ?>
+                  </select>
               </div>
               <a id="buy-btn" class="aa-add-to-cart-btn" href="{!! url('mua-hang',[$sanpham_id,$sanpham_id]) !!}" style="background-color: #28a54b;">
                 <span class="fa fa-shopping-cart" style="color: white !important;font-size: 15px;">Mua hàng</a>
