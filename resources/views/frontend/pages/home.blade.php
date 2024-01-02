@@ -45,8 +45,8 @@ $sanpham = $data;
                               //   $tylegia = DB::select('select khuyenmai_phan_tram from sanpham as sp, sanphamkhuyenmai as spkm, khuyenmai as km where sp.id = spkm.sanpham_id and spkm.khuyenmai_id = km.id and sp.sanpham_khuyenmai = 1 and km.khuyenmai_tinh_trang = 1 ');
                               //  $giakm = ($item->lohang_gia_ban_ra - ($tylegia[0]->khuyenmai_phan_tram*$item->lohang_gia_ban_ra * 0.01));
                               //  $tyle = $tylegia[0]->khuyenmai_phan_tram*0.01;
-                              $giakm = ($item->price - ($item->promotionValue*$item->price * 0.01));
-                              $tyle = $item->promotionValue*0.01;
+                              $giakm = ($item->price - $item->promotionValue);
+                              $tyle = $item->promotionValue;
                               ?> 
                               
                                 {!! number_format($giakm,0,",",".") !!} vnđ

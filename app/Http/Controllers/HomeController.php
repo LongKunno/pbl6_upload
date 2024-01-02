@@ -89,7 +89,8 @@ class HomeController extends Controller
             curl_close($ch);
             return json_decode($response);
         } else {
-            dd("vui lòng đăng nhập");
+            echo "<script>alert('Vui lòng đăng nhập!');</script>";
+            return "dangnhap";
         }
     }
 
@@ -215,6 +216,9 @@ class HomeController extends Controller
         $user_id=request()->cookie('user_id');
         $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/users/'.$user_id;
         $data_init = $this->send_data_access_token([],$api_url,"GET");
+        if($data_init == "dangnhap"){
+            return view('auth.login');
+        }
         $data = $data_init->content;
 
         return view('auth.donhang',compact('data'));
@@ -338,10 +342,13 @@ class HomeController extends Controller
         );
         $curl = curl_init();
         curl_setopt_array($curl, $options);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $response = curl_exec($curl);
         curl_close($curl);
         // Xử lý phản hồi từ máy chủ
         $data  = json_decode($response);
+        dd($data);
         if (!isset($data->status)) {
             return view('forgot-password-otp');
         } else {
@@ -359,6 +366,9 @@ class HomeController extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id;
         $user_info = $this->send_data_access_token($postData,$url,"GET");
+        if($user_info == "dangnhap"){
+            return view('auth.login');
+        }
         return view('auth.imformation',compact('user_info'));
     }
 
@@ -377,6 +387,9 @@ class HomeController extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id;
         $user_info = $this->send_data_access_token($postData,$url,"PUT");
+        if($user_info == "dangnhap"){
+            return view('auth.login');
+        }
         echo "<script>alert('Cập nhật thông tin thành công!');</script>";
         return view('auth.imformation',compact('user_info'));
     }
@@ -558,6 +571,9 @@ class HomeController extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $data = $this->send_data_access_token($postData,$url,"POST");
+        if($data == "dangnhap"){
+            return view('auth.login');
+        }
     
         return redirect()->route('giohang');
     }
@@ -571,6 +587,9 @@ class HomeController extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $data = $this->send_data_access_token($postData,$url,"GET");
+        if($data == "dangnhap"){
+            return view('auth.login');
+        }
 
         // data test
         $total = 0;
@@ -595,6 +614,9 @@ class HomeController extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id."?userId=".$user_id;
         $data = $this->send_data_access_token($postData,$url,"DELETE");
+        if($data == "dangnhap"){
+            return view('auth.login');
+        }
         return redirect()->route('giohang');
     }
 
@@ -627,6 +649,9 @@ class HomeController extends Controller
             );
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id."/".$id;
         $data = $this->send_data_access_token($postData,$url,"PUT");
+        if($data == "dangnhap"){
+            return view('auth.login');
+        }
         return redirect()->route('giohang');
     }
 
@@ -661,9 +686,9 @@ class HomeController extends Controller
 
         foreach ($data as $key => $val) {
             if($val->voucherType=="FREE_SHIP")
-                $list_freeship[] = ['id' => $val->id, 'name'=> $val->description];
+                $list_freeship[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue];
             if($val->voucherType=="PURCHASE")
-                $list_giamgia[] = ['id' => $val->id, 'name'=> $val->description];
+                $list_giamgia[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue];
         }
 
         $list_quan=[];
@@ -684,13 +709,16 @@ class HomeController extends Controller
         $array_id_sp = json_decode($_COOKIE['selectedCheckboxValues']);
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
         $sanpham = $this->send_data_access_token($postData,$url,"GET");
+        if($sanpham == "dangnhap"){
+            return view('auth.login');
+        }
         $sanpham = array_filter($sanpham, function($item) use ($array_id_sp) {
             return in_array($item->id, $array_id_sp);
         });
 
         $orderStatus = "UNCONFIRMED";
         $paymentMethod = Request::get('select_thanhtoan');
-        $shippingAddress = Request::get('shippingAddress');
+        $shippingAddress = Request::get('tinh_tp').' - '.Request::get('quan_huyen').' - '.Request::get('xa_phuong').' - '.Request::get('shippingAddress');
         $phoneNumber = Request::get('txtNNPhone');
         $note = Request::get('note');
         $name = Request::get('txtNNName');
@@ -741,7 +769,7 @@ class HomeController extends Controller
         
         if($response->urlPayment!=null){
             echo "<script>
-            alert('Bạn đã đặt mua sản phẩm thành công!');
+            alert('Hoàn tất thanh toán!');
             window.location = '".$response->urlPayment."';</script>";
         }else{
             echo "<script>
@@ -765,6 +793,7 @@ class HomeController extends Controller
         $postData = array();
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/comment?rate='.$rate.'&userId='.$user_id.'&productId='.(int)$sanpham_id.'&orderItemId='.$orderItemId.'&content='.$binhluan_noi_dung;
         $data = $this->send_data_access_token($postData,$url,"POST");
+
         dd($data);
         
         
@@ -784,6 +813,9 @@ class HomeController extends Controller
     {
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$id.'?orderId='.$id.'&orderStatus=CANCELLED';
         $data = $this->send_data_access_token([],$url,"PUT");
+        if($data == "dangnhap"){
+            return view('auth.login');
+        }
 
         echo "<script>
             alert('Bạn đã huỷ đơn hàng thành công!');

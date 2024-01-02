@@ -34,7 +34,11 @@
                 <td>{!! $item->code !!}</td>
                 <td>{!! $item->expiryDate !!}</td>
                 <td>{!! $item->voucherType !!}</td>
-                <td>{!! $item->discountValue !!}</td>
+                 @if ($item->discountType=="PERCENTAGE")
+                    <td>{!! $item->discountValue !!}%</td>
+                @else
+                    <td>{!! $item->discountValue !!}đ</td>
+                @endif
                 <td>{!! $item->active !!}</td>
                 <td class="center">
                 <a onclick="return confirmDel('Bạn có chắc muốn xóa dữ liệu này?')" href="{!! URL::route('admin.voucher.getDelete', $item->id ) !!}" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Xóa"><i class="fa fa-trash-o  fa-fw"></i></a>

@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label>Nội dung</label>
+                        <label>Mô tả</label>
                         <textarea class="form-control" rows="3" name="txtKMContent" placeholder="Mô tả...">{!! old('txtKMContent') !!}</textarea>
                         <script type="text/javascript">CKEDITOR.replace('txtKMContent'); </script>
                         <div>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-lg-12">
                         <div class="form-group">
-                            <label>Tỷ lệ giá khuyến mãi</label>
+                            <label>Giá trị khuyến mãi</label>
                             <input class="form-control" type="number" name="txtKMPer" value="{!! old('txtKMPer') !!}" placeholder="VD: 10,20,30,..." />
                             <div>
                                 {!! $errors->first('txtKMPer') !!}
@@ -52,8 +52,17 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label>Thời gian khuyến mãi</label>
-                            <input class="form-control" type="number" name="txtKMTime" value="{!! old('txtKMTime') !!}" placeholder="VD:10,30,..." />
+                            <label>Thời gian bắt đầu khuyến mãi</label>
+                            <input type="datetime-local" class="form-control" id='khuyenmai_them_startDate' name='khuyenmai_them_startDate' placeholder="YYYY-MM-DD">
+                            <div>
+                                {!! $errors->first('txtKMTime') !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Thời gian kết thúc khuyến mãi</label>
+                            <input type="datetime-local" class="form-control" id='khuyenmai_them_endDate' name='khuyenmai_them_endDate' placeholder="YYYY-MM-DD">
                             <div>
                                 {!! $errors->first('txtKMTime') !!}
                             </div>
@@ -61,11 +70,11 @@
                     </div>
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label>Hình ảnh</label>
-                        <input type="file" name="fImage" value="{!! old('fImage') !!}" />
-                        <div>
-                            {!! $errors->first('fImage') !!}
-                        </div>
+                        <label>Kiểu giảm giá</label>
+                        <select class="form-control" name="khuyenmai_them_discountType">
+                            <option value="AMOUNT" >AMOUNT</option>
+                            <option value="PERCENTAGE" >PERCENTAGE</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -86,13 +95,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $item)
+                    @foreach ($data_product as $item)
                     <tr>
                         <td>
-                            <input type="checkbox" name="products[{!! $item->id !!}]" id="{!! $item->id !!}" value="{!! $item->id !!}">
+                            <input type="checkbox" name="products[{!! $item['id'] !!}]" id="{!! $item['id'] !!}" value="{!! $item['id'] !!}">
                         </td>
                         <td>
-                            {!! $item->sanpham_ten !!}
+                            {!! $item['name'] !!}
                         </td>
                     </tr>
                     @endforeach

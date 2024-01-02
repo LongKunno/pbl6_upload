@@ -84,139 +84,98 @@ class KhuyenmaiController extends Controller
 
     public function getAdd()
     {
-         $data = DB::table('sanpham')->orderBy('id','DESC')->get();
-    	return view('backend.khuyenmai.them',compact('data'));
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/searchAll';
+        $api_url = $api_url."?page=1"."&pageSize=999";
+        $postData = array();
+        $data = $this->send_data_access_token($postData,$api_url,"GET");
+
+        $data_product=[];
+        foreach ($data->items as $key => $val) {
+            $data_product[] = ['id' => $val->product_id, 'name'=> $val->product_name];
+        }
+
+    	return view('backend.khuyenmai.them',compact('data_product'));
     }
 
-    public function postAdd(KhuyenmaiAddRequest $request)
+    public function postAdd(Request $request)
     {
-        $request->file('fImage')->getClientOriginalName();
-    	$filename=$request->file('fImage')->getClientOriginalName();
-        $request->file('fImage')->move(
-            base_path() . '/public/images/khuyenmai/', $filename
-        );
-        $khuyenmai = new Khuyenmai;
-        $khuyenmai->khuyenmai_tieu_de   = $request->txtKMTittle;
-        $khuyenmai->khuyenmai_noi_dung = $request->txtKMContent;
-        $khuyenmai->khuyenmai_url   = Replace_TiengViet($request->txtKMTittle);
-        $khuyenmai->khuyenmai_phan_tram   = $request->txtKMPer;
-        $khuyenmai->khuyenmai_thoi_gian = $request->txtKMTime;
-        $khuyenmai->khuyenmai_anh= $filename;
-        $khuyenmai->khuyenmai_tinh_trang= 1;
-        $khuyenmai->save();
-
-        $data = $request->input('products',[]);
-        foreach ($data as  $item) {
-            DB::table('sanpham')
-                ->where('id',$item)
-                ->update([
-                        'sanpham_khuyenmai'=> 1,
-                    ]);
-            //print_r($item);
-            $sanphamkhuyenmai = new Sanphamkhuyenmai;
-            $sanphamkhuyenmai->sanpham_id = $item;
-            $sanphamkhuyenmai->khuyenmai_id = $khuyenmai->id;
-            $sanphamkhuyenmai->save();
-            
+        $list_product_id="";
+        foreach ($request->products as $key => $val) {
+            $list_product_id = $list_product_id.$val.',' ;
         }
+        
+
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/promotion';
+        $postData = array(
+            "promotionName" => $request->txtKMTittle,
+            "discountType" => $request->khuyenmai_them_discountType,
+            "desc" => $request->txtKMContent,
+            "value" => $request->txtKMPer,
+            "startAt" => $request->khuyenmai_them_startDate,
+            "endAt" => $request->khuyenmai_them_endDate,
+            "productIds" => $list_product_id,
+        );
+        $data = $this->send_data_access_token($postData,$api_url,"POST");
+        
+
         return redirect()->route('admin.khuyenmai.list')->with(['flash_level'=>'success','flash_message'=>'Thêm thành công!!!']);
     }
 
     public function getDelete($id)
     {
-        $khuyenmai = DB::table('khuyenmai')->where('id',$id)->first();
-        $img = 'public/images/khuyenmai/'.$khuyenmai->khuyenmai_anh;
-        File::delete($img);
-    	DB::table('khuyenmai')->where('id',$id)->delete();
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/promotion/'.$id.'?promotionId='.$id;
+        $postData = array(
+        );
+        $data = $this->send_data_access_token($postData,$api_url,"DELETE");
+
         return redirect()->route('admin.khuyenmai.list')->with(['flash_level'=>'success','flash_message'=>'Xóa thành công!!!']);
     }
 
     public function getEdit($id)
     {
-    	$khuyenmai = DB::table('khuyenmai')->where('id',$id)->first();
-        $spkhuyenmai = DB::table('sanphamkhuyenmai')->select('sanpham_id')->where('khuyenmai_id',$id)->get();
-        foreach ($spkhuyenmai as $key => $val) {
-            $khmai[] = $val->sanpham_id;
-        }
-        if (!empty($khmai)) {
-        
-            $sanpham1 = DB::table('sanpham')
-                    ->whereIn('id',$khmai)
-                    ->get();
-        } else {
-            $sanpham1 = DB::table('sanpham')
-                    ->whereIn('id',['0'])
-                    ->get();
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/product/searchAll';
+        $api_url = $api_url."?page=1"."&pageSize=999";
+        $postData = array();
+        $data = $this->send_data_access_token($postData,$api_url,"GET");
+
+        $data_product=[];
+        foreach ($data->items as $key => $val) {
+            $data_product[] = ['id' => $val->product_id, 'name'=> $val->product_name];
         }
 
-        if (empty($khmai)) {
-            $sanpham2 = DB::table('sanpham')
-                    ->whereNotIn('id',['0'])
-                    ->get();
-        } else {
-            $sanpham2 = DB::table('sanpham')
-                    ->whereNotIn('id',$khmai)
-                    ->get();
-        }
-        return view('backend.khuyenmai.sua',compact('khuyenmai','sanpham1','sanpham2'));
+    	$api_url = 'https://pbl6shopfashion-production.up.railway.app/api/promotion/detail/'.$id;
+        $postData = array();
+        $data = $this->send_data_access_token($postData,$api_url,"GET");
+
+        $list_discountType = [
+                    ['id' => 'PERCENTAGE', 'name' => 'PERCENTAGE'],
+                    ['id' => 'AMOUNT', 'name' => 'AMOUNT'],
+        ];
+
+
+        return view('backend.khuyenmai.sua',compact('data','data_product','list_discountType'));
     }
 
     public function postEdit(Request $request,$id)
     {
+        $list_product_id="";
+        foreach ($request->products as $key => $val) {
+            $list_product_id = $list_product_id.$val.',' ;
+        }
+        
 
-    	$fImage = $request->fImage;
-        $img_current = '/public/images/khuyenmai/'.$request->fImageCurrent;
-        if (!empty($fImage )) {
-             $filename=$fImage ->getClientOriginalName();
-             DB::table('khuyenmai')->where('id',$id)
-                            ->update([
-                                'khuyenmai_tieu_de'   => $request->txtKMTittle,
-                                'khuyenmai_noi_dung' => $request->txtKMContent,
-                                'khuyenmai_url'   => Replace_TiengViet($request->txtKMTittle),
-                                'khuyenmai_phan_tram'   => $request->txtKMPer,
-                                'khuyenmai_thoi_gian' => $request->txtKMTime,
-                                'khuyenmai_anh'=> $filename,
-                                'khuyenmai_tinh_trang'=>1
-                                ]);
-             $fImage ->move(base_path() . '/public/images/khuyenmai/', $filename);
-             File::delete($img_current);
-        } else {
-            DB::table('khuyenmai')->where('id',$id)
-                            ->update([
-                                'khuyenmai_tieu_de'   => $request->txtKMTittle,
-                                'khuyenmai_noi_dung' => $request->txtKMContent,
-                                'khuyenmai_url'   => Replace_TiengViet($request->txtKMTittle),
-                                'khuyenmai_phan_tram'   => $request->txtKMPer,
-                                'khuyenmai_thoi_gian' => $request->txtKMTime,
-                                'khuyenmai_tinh_trang'=>1
-                                ]);
-        }
-        
-        $ids = DB::table('sanphamkhuyenmai')->select('sanpham_id')->where('khuyenmai_id',$id)->get();
-        // print_r($ids);
-        foreach ($ids as $val) {
-            $p = DB::table('sanpham')
-                ->where('id',$val->sanpham_id)
-                ->update([
-                        'sanpham_khuyenmai'=> 0
-                    ]);
-        }
-        DB::table('sanphamkhuyenmai')->where('khuyenmai_id',$id)->delete();
-        
-        //Them $val moi
-        $data = $request->input('products',[]);
-        //print_r($data);
-        
-        foreach ($data as  $item) {
-            $u = DB::table('sanpham')
-                ->where('id',$item)
-                ->update(['sanpham_khuyenmai' => 1]);
-            $sanphamkhuyenmai = new Sanphamkhuyenmai;
-            $sanphamkhuyenmai->sanpham_id = $item;
-            $sanphamkhuyenmai->khuyenmai_id = $id;
-            $sanphamkhuyenmai->save(); 
-            
-        }
+        $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/promotion/'.$id.'?promotionId='.$id;
+        $postData = array(
+            "promotionName" => $request->txtKMTittle,
+            "discountType" => $request->khuyenmai_them_discountType,
+            "description" => $request->txtKMContent,
+            "discountValue" => $request->txtKMPer,
+            "startAt" => $request->khuyenmai_them_startDate,
+            "endAt" => $request->khuyenmai_them_endDate,
+            "productIds" => $list_product_id,
+        );
+        $data = $this->send_data_access_token($postData,$api_url,"PUT");
+
         return redirect()->route('admin.khuyenmai.list')->with(['flash_level'=>'success','flash_message'=>'Edit thành công!!!']);
     }
 

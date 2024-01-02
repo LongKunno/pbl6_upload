@@ -26,7 +26,7 @@
             <div class="col-lg-12">
             <div class="form-group">
                 <label>Tiêu đề</label>
-                <input class="form-control" name="txtKMTittle" value="{!! $khuyenmai->khuyenmai_tieu_de !!}" placeholder="Tiêu đề..." />
+                <input class="form-control" name="txtKMTittle" value="{!! $data->data->promotion->name !!}" placeholder="Tiêu đề..." />
                 <div>
                     {!! $errors->first('txtKMTittle') !!}
                 </div>
@@ -34,8 +34,8 @@
         </div>
         <div class="col-lg-12">
             <div class="form-group">
-                <label>Nội dung</label>
-                <textarea class="form-control" rows="3" name="txtKMContent" placeholder="Mô tả...">{!! $khuyenmai->khuyenmai_noi_dung !!}</textarea>
+                <label>Mô tả</label>
+                <textarea class="form-control" rows="3" name="txtKMContent" placeholder="Mô tả...">{!! $data->data->promotion->description !!}</textarea>
                 <script type="text/javascript">CKEDITOR.replace('txtKMContent'); </script>
                 <div>
                     {!! $errors->first('txtKMContent') !!}
@@ -44,8 +44,8 @@
         </div>
         <div class="col-lg-12">
                 <div class="form-group">
-                    <label>Tỷ lệ giá khuyến mãi</label>
-                    <input class="form-control" name="txtKMPer" value="{!! $khuyenmai->khuyenmai_phan_tram !!}" placeholder="VD: 10,20,30,..." />
+                    <label>Giá trị khuyến mãi</label>
+                    <input class="form-control" name="txtKMPer" value="{!! $data->data->promotion->discountValue !!}" placeholder="VD: 10,20,30,..." />
                     <div>
                         {!! $errors->first('txtKMPer') !!}
                     </div>
@@ -53,8 +53,29 @@
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label>Thời gian khuyến mãi</label>
-                    <input class="form-control" name="txtKMTime" value="{!! $khuyenmai->khuyenmai_thoi_gian !!}" placeholder="VD:10,30,..." />
+                    <label>Thời gian bắt đầu khuyến mãi</label>
+                        <input type="datetime-local" class="form-control" id='khuyenmai_them_startDate' name='khuyenmai_them_startDate' placeholder="YYYY-MM-DD">
+                        <script>
+                            var expiryDate = "{!! $data->data->promotion->startAt !!}";
+                            var parts = expiryDate.split(" ");
+                            var formattedDate = parts[1].split("-").reverse().join("-") + "T" + parts[0];
+                            document.getElementById('khuyenmai_them_startDate').value = formattedDate;
+                        </script>
+                    <div>
+                        {!! $errors->first('txtKMTime') !!}
+                    </div>
+                </div>
+            </div>
+        <div class="col-lg-12">
+                <div class="form-group">
+                    <label>Thời gian kết thúc khuyến mãi</label>
+                    <input type="datetime-local" class="form-control" id='khuyenmai_them_endDate' name='khuyenmai_them_endDate' placeholder="YYYY-MM-DD">
+                    <script>
+                            var expiryDate = "{!! $data->data->promotion->endAt !!}";
+                            var parts = expiryDate.split(" ");
+                            var formattedDate = parts[1].split("-").reverse().join("-") + "T" + parts[0];
+                            document.getElementById('khuyenmai_them_endDate').value = formattedDate;
+                        </script>
                     <div>
                         {!! $errors->first('txtKMTime') !!}
                     </div>
@@ -62,12 +83,18 @@
             </div>
         <div class="col-lg-12">
             <div class="form-group">
-                <label>Hình ảnh</label>
-                <br>
-                <img src="{!! asset('public/images/khuyenmai/'.$khuyenmai->khuyenmai_anh) !!}" class="img-responsive img-rounded" alt="Image" style="width: 150px; height: 200px;">
-                <input type="hidden" name="fImageCurrent" value="{!! $khuyenmai->khuyenmai_anh !!}">
-                <br>
-                <input type="file" name="fImage" >
+                <label>Kiểu giảm giá</label>
+                <select class="form-control" name="khuyenmai_them_discountType">
+                    <?php
+                        foreach ($list_discountType as $option) {
+                              if ($option["name"]== $data->data->promotion->discountType) {
+                                echo '<option value="' . $option["id"] . '" selected>' . $option["name"] . '</option>';
+                              } else {
+                                echo '<option value="' . $option["id"] . '">' . $option["name"] . '</option>';
+                              }
+                        }
+                      ?>
+                </select>
             </div>
         </div>
      </div>
@@ -88,23 +115,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($sanpham1 as $item)
+                    @foreach ($data_product as $item)
                     <tr>
                         <td>
-                            <input type="checkbox" name="products[{!! $item->id !!}]" id="{!! $item->id !!}" value="{!! $item->id !!}" checked="true">
+                            @php
+                                $products = $data->data->products;
+                                $ids = array_map(function($products) {
+                                    return $products->id;
+                                }, $products);
+                            @endphp 
+                            @if (in_array($item['id'],$ids) )
+                                <input type="checkbox" name="products[{!! $item['id'] !!}]" id="{!! $item['id'] !!}" value="{!! $item['id'] !!}" checked>
+                            @else
+                                <input type="checkbox" name="products[{!! $item['id'] !!}]" id="{!! $item['id'] !!}" value="{!! $item['id'] !!}">
+                            @endif
                         </td>
                         <td>
-                            {!! $item->sanpham_ten !!}
-                        </td>
-                    </tr>
-                    @endforeach
-                    @foreach ($sanpham2 as $item)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="products[{!! $item->id !!}]" id="{!! $item->id !!}" value="{!! $item->id !!}">
-                        </td>
-                        <td>
-                            {!! $item->sanpham_ten !!}
+                            {!! $item['name'] !!}
                         </td>
                     </tr>
                     @endforeach

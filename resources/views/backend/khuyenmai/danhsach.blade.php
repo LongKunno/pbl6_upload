@@ -42,7 +42,11 @@
                      ?> 
                 </td>
                 <td>{!! $item->name !!}</td>
-                <td>{!! $item->discountValue !!}%</td>
+                @if ($item->discountType=="PERCENTAGE")
+                    <td>{!! $item->discountValue !!}%</td>
+                @else
+                    <td>{!! $item->discountValue !!}đ</td>
+                @endif
                 <td>{!! $item->startAt !!}</td>
                 <td>{!! $item->endAt !!}</td>
                 <td>
