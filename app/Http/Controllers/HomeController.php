@@ -261,7 +261,7 @@ class HomeController extends Controller
         # Send data
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/auth/register';
         $data = array(
-            'email' => $email,
+            'gmail' => $email,
             'username' => $username,
             'name' => $name,
             'password' => $password,
@@ -300,7 +300,18 @@ class HomeController extends Controller
                     ->withCookie($cookie_fullName);
             }
             else{
-                echo "<script>alert('".$data->error->message."!');</script>";
+                if(isset($data->error->gmail)){
+                    echo "<script>alert('".$data->error->gmail."!');</script>";
+                }
+                if(isset($data->error->username)){
+                    echo "<script>alert('".$data->error->username."!');</script>";
+                }
+                if(isset($data->error->name)){
+                    echo "<script>alert('".$data->error->name."!');</script>";
+                }
+                if(isset($data->error->password)){
+                    echo "<script>alert('".$data->error->password."!');</script>";
+                }
                 return view('auth.register');
             }
             
