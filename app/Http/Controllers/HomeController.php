@@ -537,6 +537,7 @@ class HomeController extends Controller
         $postData = array();
         $data = $this->send_data_no_access_token($postData,$api_url,"GET");
         
+        
         //========== size ============
         $size = [
                     ['id' => 1, 'name' => 'S'],
@@ -562,7 +563,21 @@ class HomeController extends Controller
     public function buyding(Request $request,$id,$size)
     {
         if(Request::input("size")=="size"){
-            return back();
+            $api_url = 'https://pbl6shopfashion-production.up.railway.app/api/product/detail/'.$id;
+            $postData = array();
+            $data = $this->send_data_no_access_token($postData,$api_url,"GET");
+            
+            
+            //========== size ============
+            $size = [
+                        ['id' => 1, 'name' => 'S'],
+                        ['id' => 2, 'name' => 'M'],
+                        ['id' => 3, 'name' => 'L'],
+                        ['id' => 4, 'name' => 'XL'],
+                        ['id' => 5, 'name' => 'XXL']
+                    ];
+            echo "<script>alert('Vui lòng chọn size sản phẩm !');</script>";
+            return view('frontend.pages.detailpro',compact('data',"size"));
         }
         $user_id=request()->cookie('user_id');
         // Xoá sản hết phẩm
@@ -702,18 +717,41 @@ class HomeController extends Controller
                 $list_giamgia[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue];
         }
 
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id.'/addresses';
+        $response = $this->send_data_access_token([],$url,"GET");
+        $thongtinnhanhang = $response;
+        $list_thongtinnhanhang=[];
+        foreach ($thongtinnhanhang as $key => $val) {
+            $list_thongtinnhanhang[] = ['id' => $val->id, 'name'=> $val->name.' ('.$val->phoneNumber.'): '.$val->street.' - '.$val->address];
+        }
+
         $list_quan=[];
         $list_phuong=[];
 
         $total = 0;
 
 
-        return view('frontend.pages.checkin',compact('khachhang','sanpham','total','list_thanhpho','list_quan','list_phuong','list_giamgia','list_freeship'));
+        return view('frontend.pages.checkin',compact('user_id','khachhang','sanpham','total','list_thanhpho','list_quan','list_phuong','list_giamgia','list_freeship','list_thongtinnhanhang'));
     }
 
     public function postCheckin(Request $request)
     {
         $user_id=request()->cookie('user_id');
+
+        # Thêm địa chỉ mới
+        if(Request::get('select_thongtinnhanhang')=="new"){
+            $postData = array(
+                "phoneNumber" => Request::get('txtNNPhone'),
+                "address"=> Request::get('xa_phuong').' - '.Request::get('quan_huyen').' - '.Request::get('tinh_tp'),
+                "name"=> Request::get('txtNNName'),
+                "street"=> Request::get('shippingAddress'),
+                "wardCode"=> Request::get('select_phuong'),
+                "districtId"=> Request::get('select_quan'),
+                "isDefault"=> false,
+            );
+        $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id.'/addresses';
+        $response = $this->send_data_access_token($postData,$url,"POST");
+        }
 
         # Lấy sản phẩm từ giỏ hàng và giữ lại những sp có trong cok
         $postData = [];
@@ -729,7 +767,7 @@ class HomeController extends Controller
 
         $orderStatus = "UNCONFIRMED";
         $paymentMethod = Request::get('select_thanhtoan');
-        $shippingAddress = Request::get('tinh_tp').' - '.Request::get('quan_huyen').' - '.Request::get('xa_phuong').' - '.Request::get('shippingAddress');
+        $shippingAddress = Request::get('shippingAddress').' - '.Request::get('xa_phuong').' - '.Request::get('quan_huyen').' - '.Request::get('tinh_tp');
         $phoneNumber = Request::get('txtNNPhone');
         $note = Request::get('note');
         $name = Request::get('txtNNName');

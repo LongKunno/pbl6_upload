@@ -85,7 +85,19 @@ class DonhangController extends Controller
         $data_init = $this->send_data_access_token($postData,$api_url,"GET");
         $data = $data_init->content;
 
-    	return view('backend.donhang.danhsach',compact('data'));
+		$order_status = [
+                    ['id' => "UNCONFIRMED", 'name' => 'UNCONFIRMED'],
+                    ['id' => "CONFIRMED", 'name' => 'CONFIRMED'],
+                    ['id' => "PACKAGING", 'name' => 'PACKAGING'],
+                    ['id' => "IN_TRANSIT", 'name' => 'IN_TRANSIT'],
+                    ['id' => "DELIVERED", 'name' => 'DELIVERED'],
+					['id' => "CANCELLED", 'name' => 'CANCELLED'],
+					['id' => "RETURN_EXCHANGE", 'name' => 'RETURN_EXCHANGE'],
+					['id' => "REFUNDED", 'name' => 'REFUNDED'],
+					['id' => "PREPARING_PAYMENT", 'name' => 'PREPARING_PAYMENT'],
+        ];
+
+    	return view('backend.donhang.danhsach',compact('data',"order_status"));
     }
 
     public function getEdit($id)
@@ -203,18 +215,23 @@ class DonhangController extends Controller
 
     public function postEdit1(Request $request,$id)
     {
+		$postData = [];
+		$postData[]=$id;
+		
 		if($request->select_order_status!=null){
-			$url = 'https://pbl6shopfashion-production.up.railway.app/api/orders/'.$id.'?orderId='.$id.'&orderStatus='.$request->select_order_status;
+			$url = 'https://pbl6shopfashion-production.up.railway.app/api/orders?orderStatus='.$request->select_order_status;
 		}else{
 			return redirect()->route('admin.donhang.list')->with(['flash_level'=>'danger','flash_message'=>'Không nhân được giá trị !!!']);
 		}
-        $data = $this->send_data_access_token([], $url, "PUT");
+		
+        $data = $this->send_data_access_token($postData, $url, "PUT");
 
     	return redirect()->route('admin.donhang.list')->with(['flash_level'=>'success','flash_message'=>'Chỉnh sửa thành công!!!']);
     }
 
     public function getEdit2($id)
     {
+		dd("get");
     	$data = DB::table('tinhtranghd')->get();
 		foreach ($data as $key => $val) {
 			$tinhtrang[] = ['id' => $val->id, 'name'=> $val->tinhtranghd_ten];
@@ -226,6 +243,7 @@ class DonhangController extends Controller
     }
     public function postEdit2(Request $request,$id)
     {
+		dd("post");
     	// $idSP = DB::table('chitietdonhang')->select('sanpham_id')->where('donhang_id',$id)->get();
     	$sp= DB::select('select sanpham_id,chitietdonhang_so_luong,chitietdonhang_thanh_tien,(chitietdonhang_thanh_tien/chitietdonhang_so_luong) as gia from chitietdonhang where donhang_id = ?', [$id]);
     	// print_r(count($idSP));

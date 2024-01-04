@@ -27,7 +27,7 @@
             <div class="row">
                   <div class="panel-body">
                        
-                    <input type="submit" value="Hoàn tất mua hàng" class="aa-browse-btn">
+                    <input type="submit" value="Xác nhận" class="aa-browse-btn">
                   </div>
               <div class="col-md-8">
                 <div class="checkout-left">
@@ -115,10 +115,25 @@
                       </div>
                       <div id="collapseFour" class="panel-collapse collapse">
                         <div class="panel-body">
+                          {{-- Chọn thông tin mặc định --}}
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="aa-checkout-single-bill">
+                                <select id="select_thongtinnhanhang" name="select_thongtinnhanhang" class="form-control" >
+                                  <option value="new">Nhập thông tin nhận hàng mới</option>
+                                    <?php 
+                                      foreach ($list_thongtinnhanhang as $option) {
+                                        echo '<option value="' . $option["id"] . '" >' . $option["name"] . '</option>';
+                                      }
+                                    ?>
+                                </select>
+                              </div>       
+                              </div>                             
+                            </div>
                          <div class="row">
                             <div class="col-md-12">
                               <div class="aa-checkout-single-bill">
-                                <input type="text" name="txtNNName"  placeholder="Họ và tên*">
+                                <input type="text" name="txtNNName" id="txtNNName"  placeholder="Họ và tên*">
                                 <div>
                                     {!! $errors->first('txtNNName') !!}
                                 </div>
@@ -126,17 +141,9 @@
                             </div>
                           </div> 
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                               <div class="aa-checkout-single-bill">
-                                <input type="email" name="txtNNEmail"  placeholder="Email*">
-                                <div>
-                                    {!! $errors->first('txtNNEmail') !!}
-                                </div>
-                              </div>                             
-                            </div>
-                            <div class="col-md-6">
-                              <div class="aa-checkout-single-bill">
-                                <input type="tel" name="txtNNPhone"  placeholder="Số điện thoại*">
+                                <input type="tel" name="txtNNPhone"  id="txtNNPhone" placeholder="Số điện thoại*">
                                 <div>
                                     {!! $errors->first('txtNNPhone') !!}
                                 </div>
@@ -204,7 +211,7 @@
                                           success: function(response){
                                               $('#loading').hide();
                                               var data = response.data
-                                              for(let i=0;i<=data.length;i++){
+                                              for(let i=0;i<data.length;i++){
                                                 $("#select_quan").append($('<option>').val(data[i].DistrictID).text(data[i].DistrictName));
                                               }
                                               
@@ -236,7 +243,7 @@
                                           success: function(response){
                                               $('#loading').hide();
                                               var data = response.data
-                                              for(let i=0;i<=data.length;i++){
+                                              for(let i=0;i<data.length;i++){
                                                 $("#select_phuong").append($('<option>').val(data[i].WardCode).text(data[i].WardName));
                                               }
                                               
@@ -307,12 +314,172 @@
                                     $("#totalPayment").val(total);
                                     
                                   }
+                                  $("#select_thongtinnhanhang").on("change",function(){
+                                    if($(this).val()!='new'){
+                                      $.ajax({
+                                          method: "GET",
+                                           headers: {
+                                                  "Authorization": "Bearer " + "{!! request()->cookie('access_token') !!}",
+                                                },
+                                          url: "{!! 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id.'/addresses/' !!}" + $(this).val(),
+                                          success: function(response_data){
+                                            console.log(response_data)
+                                            $("#shippingAddress").val(response_data.street +" - "+ response_data.address).hide();
+                                            $("#txtNNName").val(response_data.name).hide();
+                                            $("#txtNNPhone").val(response_data.phoneNumber).hide();
+                                            $("#select_thanhpho").val("").hide();
+                                            $("#select_quan").html("<option value='"+response_data.districtId+"' selected></option>").hide()
+                                            $("#select_phuong").html("<option value='"+response_data.wardCode+"' selected></option>").hide()
+                                            reload_total_price()
+                                            var selectedOption = $("#select_phuong").find('option:selected');
+                                                var dataValue = selectedOption.text();
+                                                $("#xa_phuong").val(dataValue);
+                                                
+                                                if($("#select_phuong").val()!=""){
+                                                  $('#loading').show();
+                                                  var selectedValue = $("#select_phuong").val();
+                                                  $.ajax({
+                                                      method: "GET",
+                                                      url: 'https://pbl6shopfashion-production.up.railway.app/api/orders/fee-ship?districtId='+$("#select_quan").val()+'&wardCode='+$("#select_phuong").val(),
+                                                      success: function(response_fee){
+                                                          $('#loading').hide();
+                                                          var data = response_fee.data
+                                                          $("#phi_ship").val(data.feeShip);
+                                                          reload_total_price()
+                                                          
+                                                      },
+                                                      error: function(e){
+                                                          $('#loading').hide();
+                                                          console.log(e);
+                                                          alert(e.responseText);
+                                                      }
+                                                  })     
+                                                }
+                                      //         $("#txtNNName").prop("disabled", true).css("background-color", "#e8f4ff").val(response_data.name);
+                                      //         $("#txtNNPhone").prop("disabled", true).css("background-color", "#e8f4ff").val(response_data.phoneNumber);
+                                      //         // test data
+                                      //         $("#select_thanhpho").prop("disabled", true).css("background-color", "#e8f4ff").val("203");
+                                      //         // Lấy dữ liệu
+                                      //               var selectedOption = $("#select_thanhpho").find('option:selected');
+                                      //               var dataValue = selectedOption.text();
+                                      //               $("#tinh_tp").val(dataValue);
+                                      //               $('#loading').show();
+                                      //               $("#select_quan").html("");
+                                      //                 var selectedValue = $("#select_thanhpho").val();
+                                      //                 $.ajax({
+                                      //                     method: "GET",
+                                      //                     url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district',
+                                      //                     headers: {
+                                      //                       'Token': 'c61b8d62-a18d-11ee-a6e6-e60958111f48',
+                                      //                       'Content-Type': 'application/json'
+                                      //                     },
+                                      //                     data: {
+                                      //                       "province_id": selectedValue
+                                      //                     },
+                                      //                     success: function(response_quan){
+                                      //                         $('#loading').hide();
+                                      //                         var data = response_quan.data;
+                                      //                         for(let i=0;i<data.length;i++){
+                                      //                           $("#select_quan").append($('<option>').val(data[i].DistrictID).text(data[i].DistrictName));
+                                      //                         }
+                                      //                         // 
+                                      //                           $("#select_quan").prop("disabled", true).css("background-color", "#e8f4ff").val(response_data.districtId);
+                                      //                           // Lấy dữ liệu
+                                      //                                 var selectedOption = $("#select_quan").find('option:selected');
+                                      //                                 var dataValue = selectedOption.text();
+                                      //                                 $("#quan_huyen").val(dataValue);
+                                      //                                 $('#loading').show();
+                                      //                                 $("#select_phuong").html("");
+                                      //                                   var selectedValue = $("#select_quan").val();
+                                      //                                   $.ajax({
+                                      //                                       method: "GET",
+                                      //                                       url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward',
+                                      //                                       headers: {
+                                      //                                         'Token': 'c61b8d62-a18d-11ee-a6e6-e60958111f48',
+                                      //                                         'Content-Type': 'application/json'
+                                      //                                       },
+                                      //                                       data: {
+                                      //                                         "district_id": selectedValue
+                                      //                                       },
+                                      //                                       success: function(response_phuong){
+                                      //                                           $('#loading').hide();
+                                      //                                           var data = response_phuong.data
+                                      //                                           for(let i=0;i<data.length;i++){
+                                      //                                             $("#select_phuong").append($('<option>').val(data[i].WardCode).text(data[i].WardName));
+                                      //                                           }
+                                      //                                           // 
+                                      //                                             $("#select_phuong").prop("disabled", true).css("background-color", "#e8f4ff").val(response_data.wardCode);
+                                      //                                             // lấy dữ liệu
+                                      //                                                   var selectedOption = $("#select_phuong").find('option:selected');
+                                      //                                                   var dataValue = selectedOption.text();
+                                      //                                                   $("#xa_phuong").val(dataValue);
+                                                                                        
+                                      //                                                   if($("#select_phuong").val()!=""){
+                                      //                                                     $('#loading').show();
+                                      //                                                     var selectedValue = $("#select_phuong").val();
+                                      //                                                     $.ajax({
+                                      //                                                         method: "GET",
+                                      //                                                         url: 'https://pbl6shopfashion-production.up.railway.app/api/orders/fee-ship?districtId='+$("#select_quan").val()+'&wardCode='+$("#select_phuong").val(),
+                                      //                                                         success: function(response_fee){
+                                      //                                                             $('#loading').hide();
+                                      //                                                             var data = response_fee.data
+                                      //                                                             $("#phi_ship").val(data.feeShip);
+                                      //                                                             reload_total_price()
+                                                                                                  
+                                      //                                                         },
+                                      //                                                         error: function(e){
+                                      //                                                             $('#loading').hide();
+                                      //                                                             console.log(e);
+                                      //                                                             alert(e.responseText);
+                                      //                                                         }
+                                      //                                                     })     
+                                      //                                                   }
+                                      //                                             // 
+                                      //                                           // 
+                                                                                
+                                      //                                       },
+                                      //                                       error: function(e){
+                                      //                                           $('#loading').hide();
+                                      //                                           console.log(e);
+                                      //                                           alert(e.responseText);
+                                      //                                       }
+                                      //                                   })
+                                      //                           // 
+                                      //                         // 
+                                                            
+                                      //                     },
+                                      //                     error: function(e){
+                                      //                         $('#loading').hide();
+                                      //                         console.log(e);
+                                      //                         alert(e.responseText);
+                                      //                     }
+                                      //                 })     
+                                      //         // 
+                                              
+                                      //         $("#shippingAddress").prop("disabled", true).css("background-color", "#e8f4ff").val(response_data.street);
+                                          },
+                                          error: function(e){
+                                              $('#loading').hide();
+                                              console.log(e);
+                                              alert(e.responseText);
+                                          }
+                                      })     
+
+                                    }else{
+                                      $("#txtNNName").val("").show();
+                                      $("#txtNNPhone").val("").show();
+                                      $("#select_thanhpho").val("").show();
+                                      $("#select_quan").val("").show();
+                                      $("#select_phuong").val("").show();
+                                      $("#shippingAddress").val("").show();
+                                    }
+                                  })
                               });
                             </script>
                           <div class="row">
                             <div class="col-md-12">
                               <div class="aa-checkout-single-bill">
-                                <input type="text" name="shippingAddress"  placeholder="Địa chi cụ thể*">
+                                <input type="text" name="shippingAddress" id="shippingAddress"   placeholder="Địa chi cụ thể*">
                                 <div>
                                     {!! $errors->first('txtNNName') !!}
                                 </div>
@@ -369,14 +536,14 @@
                        ?>
                         <tr>
                           <td style="border:1px solid #000" >{!! $sanpham->sanpham_ten !!} <strong> x  {!! $item->quantity !!}</strong></td>
-                          <td style="border:1px solid #000" ><input class="gia_sp" value="{!! $sanpham->lohang_gia_ban_ra*$item->quantity !!}" style="
+                          <td style="border:1px solid #000" ><input class="gia_sp" value="{!! $sanpham->actualPrice*$item->quantity !!}" style="
     text-align: center;
     width: 100px;
     background-color: #faebd700;
     border: none;
 " disabled></td>
                           @php
-                              $total += $sanpham->lohang_gia_ban_ra*$item->quantity
+                              $total += $sanpham->actualPrice*$item->quantity
                           @endphp
                         </tr>
                       @endforeach

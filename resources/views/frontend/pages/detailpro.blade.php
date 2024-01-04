@@ -81,7 +81,10 @@ $comments = $data ->comments;
             <div class="aa-price-block">
               <h3>
               Giá: 
-              <span class="aa-product-view-price">{!! number_format("$lohang_gia_ban_ra",0,",",".") !!}vnđ</span>
+              <span class="aa-product-price">
+                <del>{!! number_format("$data->lohang_gia_ban_ra",0,",",".") !!} vnđ</del>
+              </span> 
+              <span class="aa-product-view-price">{!! number_format("$data->actualPrice",0,",",".") !!}vnđ</span>
               </h3>
             </div>
             

@@ -110,7 +110,7 @@
                     <label>Size</label>
                     <div>
                         @foreach($size as $s)
-                            <label style="margin-right:10px;"> <input id="size_id_2" type="checkbox" data-id={{ $s['id'] }} name="sizes[]" value="{{ $s['name'] }}">{{ $s['name'] }} : <input style="width: 40px;" type="text" id="size_soluong_{{ $s['id'] }}" pattern="[0-9]+" title="Chỉ cho phép nhập số nguyên dương"></label>
+                            <label style="margin-right:10px;">{{ $s['name'] }} : <input style="width: 40px;" type="text" class="txt_sua_size_soluong" data-name="{{ $s['name'] }}" id="size_soluong_{{ $s['id'] }}" pattern="[0-9]+" title="Chỉ cho phép nhập số nguyên dương"></label>
                         @endforeach
                     </div>
                     <div>
@@ -151,14 +151,13 @@
     $(document).ready(function(){
         $("#form_update_product #select_catology").val({!! $data_product->categoryType !!})
         $("#form_update_product #select_brand").val({!! $data_product->brandType !!})
-        $("#form_update_product #select_brand").val({!! $data_product->brandType !!})
         
         var list_size_id = {!! json_encode($data_product->sizeTypes) !!};
         var list_size_quantity = {!! json_encode($data_product->sizeQuantity) !!};
         for(var i=0;i<=list_size_id.length;i++){
             $("#form_update_product #size_soluong_"+list_size_id[i]).val(list_size_quantity[i])
         }
-        $("#form_update_product #select_promotion").val({!! $data_product->brandType !!})
+        $("#form_update_product #select_promotion").val({!! $data_product->promotionId !!})
 
         //submit
         $("#form_update_product").submit(function(e) {
@@ -174,9 +173,12 @@
             var brandId = $("#form_update_product #select_brand").val()
             var unit = $("#form_update_product #select_unit").val()
             var productSizes = [];
-            $("input[name='sizes[]']:checked").each(function() {
-                productSizes.push($(this).val()+":"+$("#form_update_product #size_soluong_"+$(this).data("id")).val());
+            $(".txt_sua_size_soluong").each(function() {
+                if($(this).val()){
+                    productSizes.push($(this).attr("data-name")+":"+$(this).val());
+                }
             });
+            console.log(productSizes)
             var promotionId = $("#form_update_product #select_promotion").val()
 
             formData.append("name", name);

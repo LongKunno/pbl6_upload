@@ -123,11 +123,11 @@
                           </div>
 
                         </td>
-                        <td>{!! number_format("$sanpham->lohang_gia_ban_ra",0,",",".") !!}vnđ</td>
+                        <td>{!! number_format("$data_product_detail->price_promote",0,",",".") !!}vnđ</td>
                         <td><input class="qty aa-cart-quantity" id="quantity" name="quantity" type="number" value="{!!  $item->quantity !!}"></td>
-                        <td>{!! number_format($sanpham->lohang_gia_ban_ra*$item->quantity,0,",",".") !!}vnđ</td>
+                        <td>{!! number_format($data_product_detail->price_promote*$item->quantity,0,",",".") !!}vnđ</td>
                         @php
-                            $total += $sanpham->lohang_gia_ban_ra*$item->quantity;
+                            $total += $data_product_detail->price_promote*$item->quantity;
                         @endphp
                       </tr>
                     @endforeach
