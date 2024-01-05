@@ -12,13 +12,6 @@
                   <h3>Menu</h3>
                   <ul class="aa-footer-nav">
                     <li><a href="{!! url('/') !!}">Trang chủ</a></li>
-                    <?php 
-                      $nhom =  DB::table('nhom')->get();
-                     ?>
-                     @foreach ($nhom as $menu_1)
-                      <li><a href="{!! url('nhom-san-pham',$menu_1->nhom_url) !!}">{!! $menu_1->nhom_ten !!}</a>
-                      </li>
-                      @endforeach
                   </ul>
                 </div>
               </div>
