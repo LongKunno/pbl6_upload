@@ -37,9 +37,9 @@
                                 <br>
                                 <div style="margin-right: 100px;margin-top: 10px;">
                                     <center>
-                                        <a mar href="http://localhost:8080/oauth2/authorization/google" class="btn btn-primary facebook">  <i class="fa fa-facebook"></i> </a>
-                                        <a mar href="http://localhost:8080/oauth2/authorization/google" class="btn btn-primary facebook">  <i class="fa fa-google"></i> </a>
-                                        <a mar href="http://localhost:8080/oauth2/authorization/google" class="btn btn-primary facebook">  <i class="fa fa-github"></i> </a>
+                                        <a mar href="https://pbl6shopfashion-production.up.railway.app/oauth2/authorization/google" class="btn btn-primary facebook">  <i class="fa fa-facebook"></i> </a>
+                                        <a mar href="https://pbl6shopfashion-production.up.railway.app/oauth2/authorization/google" class="btn btn-primary facebook">  <i class="fa fa-google"></i> </a>
+                                        <a mar href="https://pbl6shopfashion-production.up.railway.app/oauth2/authorization/google" class="btn btn-primary facebook">  <i class="fa fa-github"></i> </a>
                                     </center>
                                 </div>
                             </div>

@@ -839,7 +839,6 @@ class HomeController extends Controller
         
         if($response->urlPayment!=null){
             echo "<script>
-            alert('Hoàn tất thanh toán!');
             window.location = '".$response->urlPayment."';</script>";
         }else{
             echo "<script>
