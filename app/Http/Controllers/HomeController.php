@@ -134,7 +134,7 @@ class HomeController extends Controller
     public function login_google(Request $request){
         $accessToken = Request::input("accessToken");
         $refreshToken = Request::input("refreshToken");
-        $fullName = Request::input("name");
+        $fullName = Request::input("fullName");
         $user_id = Request::input("id");
         if(isset($accessToken)){
             $cookie_access_token = cookie('access_token', $accessToken, 1200);

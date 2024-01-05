@@ -13,7 +13,7 @@
   
   <body >
     <div>
-      <b><span>CỬA HÀNG NO NAME</span></b><br>
+      <b><span>CỬA HÀNG Fashion BOY</span></b><br>
       Sơn Trà - Đà Nẵng<br>
       Số điện thoại: 0919900743<br>
       Website: http://localhost/pbl6/

@@ -163,7 +163,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php $count = 0; ?>
+                                            <?php $count = 0;?>
                                                 @foreach ($data_orders_product as $val)
                                                     <tr>
                                                         <td>{!! $count = $count + 1 !!}</td>
@@ -198,7 +198,7 @@
                                                         <td>{!! $val->quantity !!}</td>
                                                         <td>{!! number_format($val->unitPrice*$val->quantity,0,",",".") !!} vnđ </td>
                                                         @if ($item->orderStatus == "DELIVERED")
-                                                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-id="{!! $val->productId !!}" data-target="#modal_create_task_data">
+                                                            <td><button type="button" class="btn btn-primary btn-create-comment" data-toggle="modal" data-idorder="{!! $val->id !!}" data-idproduct="{!! $val->productId !!}" data-target="#modal_create_task_data">
                                                                 Đánh giá
                                                             </button></td>
                                                         @else
@@ -266,25 +266,70 @@
         <h5 class="modal-title">Thêm bình luận</h5>
       </div>
       <div class="modal-body"> 
+        <input id="idsanpham" type="text" class="form-control" style="display:none;"> 
+        <input id="orderItemId" type="text" class="form-control" style="display:none;"> 
+        <input id="userId" type="text" class="form-control" value="{!! request()->cookie('user_id'); !!}" style="display:none;"> 
         <label>Mức độ hài lòng</label>
         <select id="select_mucdohailong" class="form-control" >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
             <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
         </select>
         <label style="margin-top:15px;">Đánh giá</label>
         <input id="danhgiasanpham" type="text" class="form-control" placeholder="Đánh giá"> 
     </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" id="save-comment" class="btn btn-primary">Save changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+    $(".btn-create-comment").click(function(e){
+        e.preventDefault();
+        $("#modal_create_task_data #idsanpham").val($(this).attr("data-idproduct"));
+        $("#modal_create_task_data #orderItemId").val($(this).attr("data-idorder"));
+        $("#modal_create_task_data").show();
+    })
+
+    $("#modal_create_task_data #save-comment").click(function(e){
+        e.preventDefault();
+        productId = $("#modal_create_task_data #idsanpham").val();
+        rate = $("#modal_create_task_data #select_mucdohailong").val();
+        content = $("#modal_create_task_data #danhgiasanpham").val();
+        orderItemId = $("#modal_create_task_data #orderItemId").val();
+        userId = $("#modal_create_task_data #userId").val();
+
+        $.ajax({
+            method: "POST",
+            url: 'https://pbl6shopfashion-production.up.railway.app/api/comment?rate='+rate+'&orderItemId='+orderItemId+'&productId='+productId+'&userId='+userId+'&content='+content,
+            contentType: "application/json",
+            beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + "{!! request()->cookie('access_token'); !!}");
+            },
+            success: function(response){
+                $('#loading').hide();
+                console.log(response.status);
+                if(response.status==400){
+                    alert("Đánh giá thất bại!");
+                }else{
+                    alert("Đánh giá thành công!");
+                }
+                
+            },
+            error: function(response){
+                $('#loading').hide();
+                console.log(response.responseText);
+                alert("Thất bại!");
+            }
+        })     
+        
+    })
+</script>
 
 
 @endsection

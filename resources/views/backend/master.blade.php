@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shop No Name</title>
+    <title>Shop Fashion BOY</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ url('public/backend/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -46,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{!! URL('admin/bang-dieu-khien')!!}">Shop No Name</a>
+                <a class="navbar-brand" href="{!! URL('admin/bang-dieu-khien')!!}">Shop Fashion BOY</a>
             </div>
             <!-- /.navbar-header -->
 

@@ -79,7 +79,7 @@
         <div class="row">
         <div class="col-md-12">
           <div class="aa-footer-bottom-area">
-            <p>PBL6: <a href="#">Shop No Name</a></p>
+            <p>PBL6: <a href="#">Shop Fashion BOY</a></p>
             <div class="aa-footer-payment">
               <!-- <span class="fa fa-cc-mastercard"></span>
               <span class="fa fa-cc-visa"></span>
