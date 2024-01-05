@@ -118,7 +118,7 @@
                         <li>
                             <a  href="{!! URL::route('admin.khuyenmai.list') !!}"><i class="fa fa-bars"></i>Khuyến mãi</a>
                         </li>
-                        <li>
+                        <li style="display:none;">
                             <a  href="{!! URL::route('admin.thongke.list') !!}"><i class="fa fa-cubes"></i>Kho hàng</a>
                         </li>
                     </ul>
