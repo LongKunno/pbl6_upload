@@ -711,7 +711,7 @@ class HomeController extends Controller
 
         # Lấy sản phẩm từ giỏ hàng và giữ lại những sp có trong cok
         $array_id_sp = json_decode($_COOKIE['selectedCheckboxValues']);
-        if(count($array_id_sp < 1)){
+        if(count($array_id_sp) < 1){
             return redirect()->to('/');
         }
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/carts/user/'.$user_id;
