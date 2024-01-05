@@ -8,7 +8,7 @@
 	
 	<body >
 		<div class="shop-info">
-			<span>CỬA HÀNG GIÀY ĐÀ NẴNG {!!$shop->name!!}</span><br>
+			<span>CỬA HÀNG NO NAME {!!$shop->name!!}</span><br>
 			{!!$shop->address!!}<br>
 			Số điện thoại: {!!$shop->phone_number!!}<br>
 			Email: {!!$shop->email!!}<br>

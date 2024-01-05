@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shop giày No Name</title>
+    <title>Shop No Name</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ url('public/backend/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -23,6 +23,8 @@
 
     <!-- DataTables Responsive CSS -->
     <link href="{{ url('public/backend/bower_components/datatables-responsive/css/dataTables.responsive.css') }}" rel="stylesheet">
+
+    
 
       
 
@@ -44,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{!! URL('admin/bang-dieu-khien')!!}">Shop giày No Name</a>
+                <a class="navbar-brand" href="{!! URL('admin/bang-dieu-khien')!!}">Shop No Name</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -105,7 +107,7 @@
                             <a  href="{!! URL::route('admin.binhluan.list') !!}"><i class="fa fa-comments"></i> Bình luận khách hàng</a>
                         </li>
                         <li>
-                            <a  href="{!! URL::route('admin.thongtin.list') !!}"><i class="fa fa-list"></i>Thông tin Giày</a>
+                            <a  href="{!! URL::route('admin.thongtin.list') !!}"><i class="fa fa-list"></i>Blog</a>
                         </li>
                         <li>
                             <a  href="{!! URL::route('admin.quangcao.list') !!}"><i class="fas fa-ad"></i>Quảng cáo</a>

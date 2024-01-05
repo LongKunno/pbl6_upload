@@ -59,7 +59,7 @@
                <div class="col-md-4">
                  <div class="aa-contact-address-right" style="font: tahoma, sans-serif;">
                    <address>
-                     <h4 style="font:24px tahoma, sans-serif; color:red;"><b><i>Shop giày No Name</i></b></h4>
+                     <h4 style="font:24px tahoma, sans-serif; color:red;"><b><i>Shop No Name</i></b></h4>
                      <p>Chất lượng hàng đầu</p>
                      <p><span class="fa fa-home"></span> Sơn Trà - Đà Nẵng</p>
                      <p><span class="fa fa-phone"></span>0919900743</p>

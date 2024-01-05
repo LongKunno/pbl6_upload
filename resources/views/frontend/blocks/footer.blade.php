@@ -28,7 +28,7 @@
                     <h3>Trang liên quan</h3>
                     <ul class="aa-footer-nav">
                       <li><a href="{!! url('khuyen-mai') !!}">Khuyến mãi</a></li>
-                      <li><a href="{!! url('thong-tin') !!}">Thông tin Giày</a></li>            
+                      <li><a href="{!! url('thong-tin') !!}">Blog</a></li>            
                       <li><a href="{!! url('tuyen-dung') !!}">Tuyển dụng</a></li>
                       <li><a href="{!! url('lien-he') !!}">Liên hệ</a></li>
                     </ul>
@@ -79,7 +79,7 @@
         <div class="row">
         <div class="col-md-12">
           <div class="aa-footer-bottom-area">
-            <p>PBL6: <a href="#">Shop giày No Name</a></p>
+            <p>PBL6: <a href="#">Shop No Name</a></p>
             <div class="aa-footer-payment">
               <!-- <span class="fa fa-cc-mastercard"></span>
               <span class="fa fa-cc-visa"></span>

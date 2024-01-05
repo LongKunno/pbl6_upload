@@ -61,8 +61,6 @@ Route::get('donhang','HomeController@getdonhang');
 
 Route::get('huydonhang/{id}','HomeController@huydonhang');
 
-// Route::get('danhgiasanpham','HomeController@getdanhgiasanpham');
-
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('nhom-san-pham/{url_id}', 'HomeController@group');

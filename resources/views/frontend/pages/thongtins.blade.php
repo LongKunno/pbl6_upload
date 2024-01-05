@@ -7,10 +7,10 @@
    <div class="aa-catg-head-banner-area">
      <div class="container">
       <div class="aa-catg-head-banner-content">
-        <h2>Thông tin Giày</h2>
+        <h2>Blog</h2>
         <ol class="breadcrumb">
           <li><a href="{!! url('/') !!}">Home</a></li>         
-          <li class="active">Thông tin Giày</li>
+          <li class="active">Blog</li>
         </ol>
       </div>
      </div>

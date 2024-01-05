@@ -86,7 +86,6 @@ class DonhangController extends Controller
         $data = $data_init->content;
 
 		$order_status = [
-                    ['id' => "UNCONFIRMED", 'name' => 'UNCONFIRMED'],
                     ['id' => "CONFIRMED", 'name' => 'CONFIRMED'],
                     ['id' => "PACKAGING", 'name' => 'PACKAGING'],
                     ['id' => "IN_TRANSIT", 'name' => 'IN_TRANSIT'],
@@ -198,7 +197,6 @@ class DonhangController extends Controller
         $data = $this->send_data_access_token([],$api_url,"GET");
 
 		$order_status = [
-                    ['id' => "UNCONFIRMED", 'name' => 'UNCONFIRMED'],
                     ['id' => "CONFIRMED", 'name' => 'CONFIRMED'],
                     ['id' => "PACKAGING", 'name' => 'PACKAGING'],
                     ['id' => "IN_TRANSIT", 'name' => 'IN_TRANSIT'],

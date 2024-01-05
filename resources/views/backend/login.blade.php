@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Shop giày No Name</title>
+    <title>Shop No Name</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ url('public/backend/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">

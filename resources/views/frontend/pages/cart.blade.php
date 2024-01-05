@@ -101,7 +101,7 @@
                        ?>
                         <td>
                           <div>
-                            <select id="select_size" class="form-control" style="width: 70px;">
+                            <select id="select_size" data={!! $item->id !!} class="form-control" style="width: 70px;">
                                 <?php
                                   foreach ($size as $option) {
                                       if ($option["name"] == $item->size) {
@@ -124,7 +124,7 @@
 
                         </td>
                         <td>{!! number_format("$data_product_detail->price_promote",0,",",".") !!}vnđ</td>
-                        <td><input class="qty aa-cart-quantity" id="quantity" name="quantity" type="number" value="{!!  $item->quantity !!}"></td>
+                        <td><input class="qty aa-cart-quantity" id="quantity" data={!! $item->id !!} name="quantity" type="number" value="{!!  $item->quantity !!}" min="0"></td>
                         <td>{!! number_format($data_product_detail->price_promote*$item->quantity,0,",",".") !!}vnđ</td>
                         @php
                             $total += $data_product_detail->price_promote*$item->quantity;
@@ -227,6 +227,26 @@
       data_update_cart['id'] = $("#"+$(this).attr("value")+" #checkbox_cart_items").val()
       data_update_cart['size'] =  $("#"+$(this).attr("value")+" #select_size").val()
       data_update_cart['quantity'] =  $("#"+$(this).attr("value")+" #quantity").val()
+      document.cookie = "data_update_cart=" + JSON.stringify(data_update_cart) + ";";
+      window.location.href = "{!! URL::route('capnhat', ['id' => 'id' ]) !!}";
+    })
+
+    $("#select_size").on("change",function(e){
+      e.preventDefault();
+      var data_update_cart = {};
+      data_update_cart['id'] = $("#"+$(this).attr("data")+" #checkbox_cart_items").val()
+      data_update_cart['size'] =  $("#"+$(this).attr("data")+" #select_size").val()
+      data_update_cart['quantity'] =  $("#"+$(this).attr("data")+" #quantity").val()
+      document.cookie = "data_update_cart=" + JSON.stringify(data_update_cart) + ";";
+      window.location.href = "{!! URL::route('capnhat', ['id' => 'id' ]) !!}";
+    })
+
+    $("#quantity").on("change",function(e){
+      e.preventDefault();
+      var data_update_cart = {};
+      data_update_cart['id'] = $("#"+$(this).attr("data")+" #checkbox_cart_items").val()
+      data_update_cart['size'] =  $("#"+$(this).attr("data")+" #select_size").val()
+      data_update_cart['quantity'] =  $("#"+$(this).attr("data")+" #quantity").val()
       document.cookie = "data_update_cart=" + JSON.stringify(data_update_cart) + ";";
       window.location.href = "{!! URL::route('capnhat', ['id' => 'id' ]) !!}";
     })

@@ -27,9 +27,6 @@
             </tr>
         </thead>
         <tbody>
-            @php
-                // dd($data);
-            @endphp
              @foreach ($data as $item)
             <tr class="odd gradeX">
                 <td>{!! $item->id !!}</td>

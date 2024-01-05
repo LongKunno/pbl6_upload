@@ -33,7 +33,7 @@
                     case 'DELIVERED':
                         $color = "green";
                         break;
-                    case 'UNCONFIRMED':
+                    case 'CONFIRMED':
                         $color = "#af8a00";
                         break;
                     default:
@@ -159,6 +159,7 @@
                                                     <th>Đơn giá</th>
                                                     <th>Số lượng</th>
                                                     <th>Thành tiền</th>
+                                                    <th>Đánh giá</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -196,39 +197,43 @@
                                                         </td>
                                                         <td>{!! $val->quantity !!}</td>
                                                         <td>{!! number_format($val->unitPrice*$val->quantity,0,",",".") !!} vnđ </td>
+                                                        @if ($item->orderStatus == "DELIVERED")
+                                                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-id="{!! $val->productId !!}" data-target="#modal_create_task_data">
+                                                                Đánh giá
+                                                            </button></td>
+                                                        @else
+                                                            <td><button type="button" class="btn btn-primary" disabled>
+                                                                Chưa hoàn thành
+                                                            </button></td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                 <b>Tổng tiền sản phẩm : {!! number_format("$item->totalProductAmount",0,",",".") !!} vnđ </b>
                                                 </td>
                                                 </tr>
                                                 <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                 Chi phí vận chuyển : {!! number_format("$item->shippingFee",0,",",".") !!} vnđ 
                                                 </td>
                                                 </tr>
                                                 <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                 Giảm giá sản phẩm : {!! number_format("$item->discountAmount",0,",",".") !!} vnđ 
                                                 </td>
                                                 </tr>
                                                 <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                 Giảm giá vận chuyển : {!! number_format("$item->discountShippingFee",0,",",".") !!} vnđ 
                                                 </td>
                                                 </tr>
                                                 <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                 <b>Số tiền thực tế phải trả : {!! number_format("$item->totalPayment",0,",",".") !!} vnđ </b>
-                                                    @if ($item->orderStatus == "UNCONFIRMED")
+                                                    @if ($item->orderStatus == "CONFIRMED")
                                                         <a href="{!! url("huydonhang",$item->id) !!}">
                                                             <button style="float: right; background-color: #3498db; color: #fff; border: none; font-size: 16px; padding: 10px 20px; margin-top: 10px;">Huỷ đơn hàng</button>
-                                                        </a>
-                                                    @endif
-                                                    @if ($item->orderStatus == "DELIVERED")
-                                                        <a href="{!! url("danhgiasanpham",$item->id) !!}">
-                                                            <button style="float: right; background-color: #3498db; color: #fff; border: none; font-size: 16px; padding: 10px 20px; margin-top: 10px;">Đánh giá</button>
                                                         </a>
                                                     @endif
                                                 </td>
@@ -253,4 +258,33 @@
 
  </section>
  <!-- / Cart view section -->
+
+  <div class="modal"  id="modal_create_task_data" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm bình luận</h5>
+      </div>
+      <div class="modal-body"> 
+        <label>Mức độ hài lòng</label>
+        <select id="select_mucdohailong" class="form-control" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <label style="margin-top:15px;">Đánh giá</label>
+        <input id="danhgiasanpham" type="text" class="form-control" placeholder="Đánh giá"> 
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 @endsection

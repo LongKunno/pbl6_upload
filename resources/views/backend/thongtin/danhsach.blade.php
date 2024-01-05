@@ -1,7 +1,7 @@
 @extends('backend.master')
 @section('title')
     <h3 class="page-header">
-        Thông tin Giày /
+        Blog /
         <a href="{!! URL::route('admin.thongtin.getAdd') !!}" class="btn btn-info" style="margin-top:-8px;">Đăng bài</a>
     </h3>
 @stop

@@ -8,7 +8,7 @@
         <div class="panel panel-green">
             <div class="panel-heading" style="height:60px;">
               <h3 >
-                <a href="{!! URL::route('admin.thongtin.list') !!}" style="color:blue;"><i class="fa fa-product-hunt" style="color:blue;">Thông tin Giày</i></a>
+                <a href="{!! URL::route('admin.thongtin.list') !!}" style="color:blue;"><i class="fa fa-product-hunt" style="color:blue;">Blog</i></a>
                 /Cập nhật
               </h3>
             <div class="navbar-right" style="margin-right:10px;margin-top:-50px;">

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Shop giày No Name</title>
+    <title>Shop No Name</title>
     
     <!-- Font awesome -->
     <link href="{{ url('public/frontend/css/font-awesome.css') }}" rel="stylesheet">
@@ -102,7 +102,7 @@
                 <!-- Text based logo -->
                 <a href="{!! URL('/') !!}">
                   <span class="fa fa-shopping-cart"></span>
-                  <p>Shop giày <strong>No Name</strong> <span>Giá tốt - Chất lượng cao</span></p>
+                  <p>Shop <strong>No Name</strong> <span>Giá tốt - Chất lượng cao</span></p>
                 </a>
                 <!-- img based logo -->
                 <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->

@@ -131,6 +131,28 @@ class HomeController extends Controller
 
 
 
+    public function login_google(Request $request){
+        dd($_REQUEST);
+        $accessToken = Request::input("accessToken");
+        $refreshToken = Request::input("refreshToken");
+        $fullName = Request::input("name");
+        $user_id = Request::input("id");
+        if(isset($accessToken)){
+            $cookie_access_token = cookie('access_token', $accessToken, 1200);
+            $cookie_fullName = cookie('fullName', $fullName, 1200);
+            $cookie_user_id = cookie('user_id', $user_id, 1200);
+            $cookie_refresh_token = cookie('refresh_token', $refreshToken, 1200);
+            return redirect()->to('/')
+            ->withCookie($cookie_access_token)
+            ->withCookie($cookie_user_id)
+            ->withCookie($cookie_refresh_token)
+            ->withCookie($cookie_fullName);
+        }
+        else{
+            echo "<script>alert('Tài khoản hoặc mặt khẩu không đúng!');</script>";
+            return view('auth.login');
+        }
+    }
 
     public function login(){
         return view('auth.login'); 
@@ -765,7 +787,7 @@ class HomeController extends Controller
             return in_array($item->id, $array_id_sp);
         });
 
-        $orderStatus = "UNCONFIRMED";
+        $orderStatus = "CONFIRMED";
         $paymentMethod = Request::get('select_thanhtoan');
         $shippingAddress = Request::get('shippingAddress').' - '.Request::get('xa_phuong').' - '.Request::get('quan_huyen').' - '.Request::get('tinh_tp');
         $phoneNumber = Request::get('txtNNPhone');

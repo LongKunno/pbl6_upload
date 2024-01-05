@@ -43,7 +43,6 @@
                                     </center>
                                 </div>
                             </div>
-                            <a href="{{ url('/forgot-password') }}" style="margin-left: 70%;"> Quên mật khẩu ?</a>
                         </div>
                     </form>
                 </div>

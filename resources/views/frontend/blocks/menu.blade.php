@@ -41,7 +41,7 @@
       </li>
       @endforeach
       <li><a href="{!! url('khuyen-mai') !!}" style="font: 18px tahoma, sans-serif;">Khuyến mãi</a></li>
-      <li><a href="{!! url('thong-tin') !!}" style="font: 18px tahoma, sans-serif;">Thông tin Giày</a></li>            
+      <li><a href="{!! url('thong-tin') !!}" style="font: 18px tahoma, sans-serif;">Blog</a></li>            
       <li><a href="{!! url('tuyen-dung') !!}" style="font: 18px tahoma, sans-serif;">Tuyển dụng</a></li>
       <li><a href="{!! url('lien-he') !!}" style="font: 18px tahoma, sans-serif;">Liên hệ</a></li>
     </ul>
