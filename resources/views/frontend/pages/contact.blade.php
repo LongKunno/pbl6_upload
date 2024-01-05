@@ -52,7 +52,7 @@
                     <div class="form-group">                        
                       <textarea class="form-control" name="txtContent" rows="3" placeholder="Message" style="width: 100%;"></textarea>
                     </div>
-                    <button class="aa-secondary-btn">Gửi</button>
+                    <button class="aa-secondary-btn" disabled>Gửi</button>
                   </form>
                  </div>
                </div>
