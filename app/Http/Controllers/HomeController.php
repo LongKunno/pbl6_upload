@@ -736,9 +736,9 @@ class HomeController extends Controller
 
         foreach ($data as $key => $val) {
             if($val->voucherType=="FREE_SHIP")
-                $list_freeship[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue];
+                $list_freeship[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue, 'discountType'=> $val->discountType, 'maxDiscountValue'=> $val->maxDiscountValue];
             if($val->voucherType=="PURCHASE")
-                $list_giamgia[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue];
+                $list_giamgia[] = ['id' => $val->id, 'name'=> $val->code, 'discountValue'=> $val->discountValue, 'discountType'=> $val->discountType, 'maxDiscountValue'=> $val->maxDiscountValue];
         }
 
         $url = 'https://pbl6shopfashion-production.up.railway.app/api/users/'.$user_id.'/addresses';
@@ -760,6 +760,18 @@ class HomeController extends Controller
 
     public function postCheckin(Request $request)
     {
+        
+        
+        if (Request::get('xa_phuong')==""&&Request::get('select_thongtinnhanhang')=="new"){
+        echo "<script>
+         alert('Vui lòng chọn xã / phường!');
+         window.location='".url('/thanh-toan')."'
+        </script>";
+        }
+
+        
+
+
         $user_id=request()->cookie('user_id');
 
         # Thêm địa chỉ mới

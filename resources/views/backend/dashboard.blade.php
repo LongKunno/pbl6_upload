@@ -155,7 +155,7 @@
             <?php
                 //tổng sl theo từng tháng
                 for ($i= 0; $i < count($thongtin) ; $i++) {
-                    $keys[] = 'Tháng '. $thongtin[$i]->month;
+                    $keys[] = 'Tháng '. $thongtin[$i]->month.'/'.$thongtin[$i]->year;
                     $val[] = array($thongtin[$i]->soldNumber,$thongtin[$i]->totalAmount/1000000);
                 }
                 $data = array_combine($keys, $val);

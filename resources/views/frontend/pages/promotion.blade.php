@@ -46,7 +46,6 @@
                       <b>{{date('d/m/Y',strtotime($ngaybd))}}</b>
                       đến
                       <b>{{date('d/m/Y',strtotime($ngaykt))}}</b>
-                      ({!! $khuyenmai->data->promotion->description !!})
                       </p>
                   
                       <ul class="aa-product-catg aa-related-item-slider">

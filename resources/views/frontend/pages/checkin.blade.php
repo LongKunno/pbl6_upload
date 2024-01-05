@@ -80,7 +80,7 @@
                                   <option value=""> -- Chọn mã giảm giá -- </option>
                                   <?php 
                                       foreach ($list_giamgia as $option) {
-                                        echo '<option data-value="'. $option["discountValue"] .'" value="' . $option["id"] . '" >' . $option["name"] . '</option>';
+                                        echo '<option '.'data-maxDiscountValue="'. $option["maxDiscountValue"] .'" data-discountType="'. $option["discountType"] .'" data-value="'. $option["discountValue"] .'" value="' . $option["id"] . '" >' . $option["name"] . '</option>';
                                       }
                                     ?>
                                 </select>
@@ -94,7 +94,7 @@
                                   <option value=""> -- Chọn mã Freeship -- </option>
                                   <?php 
                                       foreach ($list_freeship as $option) {
-                                        echo '<option data-value="'. $option["discountValue"] .'" value="' . $option["id"] . '" >' . $option["name"] . '</option>';
+                                        echo '<option '.'data-maxDiscountValue="'. $option["maxDiscountValue"] .'" data-discountType="'. $option["discountType"] .'" data-value="'. $option["discountValue"] .'" value="' . $option["id"] . '" >' . $option["name"] . '</option>';
                                       }
                                     ?>
                                 </select>
@@ -284,13 +284,33 @@
                                   $('#select_giamgiasanpham').change(function() {
                                     var selectedOption = $(this).find('option:selected');
                                     var dataValue = selectedOption.attr('data-value');
-                                     $("#giam_gia_sp").val(dataValue);
+                                    var discountType = selectedOption.attr('data-discountType');
+                                    var maxDiscountValue = selectedOption.attr('data-maxDiscountValue');
+                                    if(discountType=="PERCENTAGE"){
+                                      $("#kieu_giam_gia_sp").val("%");
+                                      $("#giam_gia_sp_show").val(dataValue+"%");
+                                    }else{
+                                      $("#kieu_giam_gia_sp").val("vnd");
+                                      $("#giam_gia_sp_show").val(dataValue+" vnd");
+                                    }
+                                    $("#giam_gia_sp").val(dataValue);
+                                     $("#maxDiscountValue_sp").val(maxDiscountValue)
                                      reload_total_price()
                                   });
                                   $('#select_giamgiavanchuyen').change(function() {
                                     var selectedOption = $(this).find('option:selected');
                                     var dataValue = selectedOption.attr('data-value');
+                                    var discountType = selectedOption.attr('data-discountType');
+                                    var maxDiscountValue = selectedOption.attr('data-maxDiscountValue');
+                                    if(discountType=="PERCENTAGE"){
+                                      $("#kieu_giam_gia_vc").val("%");
+                                      $("#giam_gia_vc_show").val(dataValue+"%");
+                                    }else{
+                                      $("#kieu_giam_gia_vc").val("vnd");
+                                      $("#giam_gia_vc_show").val(dataValue+" vnd");
+                                    }
                                      $("#giam_gia_vc").val(dataValue);
+                                     $("#maxDiscountValue_vc").val(maxDiscountValue)
                                      reload_total_price()
                                   });
                                   function reload_total_price(){
@@ -299,15 +319,35 @@
                                       total +=  parseInt($(this).val());
                                     })
                                     if($("#giam_gia_sp").val()!=""){
-                                      var giam_gia_sp = parseInt($("#giam_gia_sp").val());
-                                      total -= giam_gia_sp;
+                                      if($("#kieu_giam_gia_sp").val()=="vnd"){
+                                        var giam_gia_sp = parseInt($("#giam_gia_sp").val());
+                                        var giam_gia_sp_last = giam_gia_sp;
+                                        total -= giam_gia_sp_last;
+                                      }else{
+                                        var giam_gia_sp = parseInt($("#giam_gia_sp").val());
+                                        var giam_gia_sp_last = ((total * giam_gia_sp)/100);
+                                        if(giam_gia_sp_last > $("#maxDiscountValue_sp").val()){
+                                          giam_gia_sp_last = $("#maxDiscountValue_sp").val()
+                                        }
+                                        total = total - giam_gia_sp_last;
+                                      }
                                     }
                                     if($("#phi_ship").val()!=""){
                                       var phi_ship = parseInt($("#phi_ship").val());
                                       total += phi_ship;
-                                      if($("#giam_gia_vc").val()!=""){
-                                      var giam_gia_vc = parseInt($("#giam_gia_vc").val());
-                                      total -= giam_gia_vc;
+                                      if($("#giam_gia_sp").val()!=""){
+                                        if($("#kieu_giam_gia_vc").val()=="vnd"){
+                                          var giam_gia_vc = parseInt($("#giam_gia_vc").val());
+                                          var giam_gia_vc_last = giam_gia_vc;
+                                          total -= giam_gia_vc_last;
+                                        }else{
+                                          var giam_gia_vc = parseInt($("#giam_gia_vc").val());
+                                          var giam_gia_vc_last = ((total * giam_gia_vc)/100);
+                                          if(giam_gia_vc_last > $("#maxDiscountValue_vc").val()){
+                                            giam_gia_vc_last = $("#maxDiscountValue_vc").val()
+                                          }
+                                          total = total - giam_gia_vc_last;
+                                        }
                                     }
                                     }
                                     $("#tong_cong").val(total);
@@ -558,7 +598,16 @@
     border: none;
 " disabled></td>
                         </tr>
-                        <tr>
+                          <tr>
+                          <th style="border:1px solid #000" >Giảm giá sản phẩm</th>
+                          <td style="border:1px solid #000" ><input id="giam_gia_sp_show" style="
+    text-align: center;
+    width: 100px;
+    background-color: #faebd700;
+    border: none;
+" disabled></td>
+                        </tr>
+                        <tr style="display:none;">
                           <th style="border:1px solid #000" >Giảm giá sản phẩm</th>
                           <td style="border:1px solid #000" ><input id="giam_gia_sp" style="
     text-align: center;
@@ -567,7 +616,25 @@
     border: none;
 " disabled></td>
                         </tr>
+                        <tr style="display:none;">
+                          <th style="border:1px solid #000" >Kiểu giảm giá SP</th>
+                          <td style="border:1px solid #000" ><input id="kieu_giam_gia_sp" style="
+    text-align: center;
+    width: 100px;
+    background-color: #faebd700;
+    border: none;
+" disabled></td>
+                        </tr>
                         <tr>
+                          <th style="border:1px solid #000" >Giảm giá vận chuyển</th>
+                          <td style="border:1px solid #000" ><input id="giam_gia_vc_show" style="
+    text-align: center;
+    width: 100px;
+    background-color: #faebd700;
+    border: none;
+" disabled></td>
+                        </tr>
+                        <tr style="display:none;">
                           <th style="border:1px solid #000" >Giảm giá vận chuyển</th>
                           <td style="border:1px solid #000" ><input id="giam_gia_vc" style="
     text-align: center;
@@ -576,6 +643,16 @@
     border: none;
 " disabled></td>
                         </tr>
+                        <tr style="display:none;">
+                          <th style="border:1px solid #000" >Kiểu giảm giá VC</th>
+                          <td style="border:1px solid #000" ><input id="kieu_giam_gia_vc" style="
+    text-align: center;
+    width: 100px;
+    background-color: #faebd700;
+    border: none;
+" disabled></td>
+                        </tr>
+
                         <tr>
                           <th style="border:1px solid #000" >Tổng cộng</th>
                           <td style="border:1px solid #000" ><input id="tong_cong" style="
@@ -597,6 +674,8 @@
               <input type="text" id="tinh_tp" name="tinh_tp" val="" style="display:none">
               <input type="text" id="quan_huyen" name="quan_huyen" val="" style="display:none">
               <input type="text" id="xa_phuong" name="xa_phuong" val="" style="display:none"> 
+              <input type="text" id="maxDiscountValue_sp" name="maxDiscountValue_sp" val="" style="display:none">
+              <input type="text" id="maxDiscountValue_vc" name="maxDiscountValue_vc" val="" style="display:none">
 
             </div>
           </form>
