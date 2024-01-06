@@ -22,7 +22,6 @@
                 <th>Loại</th>
                 <th>Xóa</th>
                 <th>Sửa</th>
-                <th>Nhập hàng</th>
             </tr>
         </thead>
         <tbody>
@@ -49,9 +48,9 @@
                 <a href="{!! URL::route('admin.sanpham.getDelete', $item->product_id ) !!}" onclick="return confirmDel('Bạn có chắc muốn xóa dữ liệu này?')" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Xóa"><i class="fa fa-trash-o  fa-fw"></i></a></td>
                 </td>
                 <td class="center" > <a href="{!! URL::route('admin.sanpham.getEdit', $item->product_id ) !!}" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="Chỉnh sửa"><i class="fa fa-pencil fa-fw"></i></a></td>
-                <td class="center">
+                {{-- <td class="center">
                 <a style="display:none"  href="{!! URL::route('admin.lohang.getNhaphang', [$item->product_id] ) !!}" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="Nhập hàng"><i class="fa fa-plus"></i></a>
-                </td>
+                </td> --}}
             </tr>
             @endforeach
         </tbody>
