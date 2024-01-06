@@ -23,7 +23,6 @@
                 <th >Loại TK</th>
                 <th >Trạng thái</th>
                 <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -55,8 +54,6 @@
                         echo('<td class="center"></td>');
                     }
                 @endphp
-                <td class="center"><a href="{!! URL::route('admin.khachhang.getHistory', $item->id ) !!}" type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="left" title="Xem lịch sử mua hàng"><i class="fa fa-history"></i></a>
-                </td>
             </tr>
             @endforeach
         </tbody>
